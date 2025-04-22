@@ -9,6 +9,13 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 export default function Pricing() {
   const [billingCycle, setBillingCycle] = useState<"monthly" | "hourly">("hourly")
 
+  const calculateSavings = (originalPrice: string, price: string) => {
+    const original = parseFloat(originalPrice.replace("€", ""))
+    const current = parseFloat(price.replace("€", ""))
+    if (!original || !current || original <= current) return null
+    return Math.round(((original - current) / original) * 100)
+  }
+
   const hourlyRates = [
     {
       name: "Standard",
@@ -18,14 +25,15 @@ export default function Pricing() {
       features: [
         "Unity & C# Entwicklung",
         "2D/3D Game Development",
-        "UI/UX Design",
+        "Prototyping",
+        "Optimierung bestehender Projekte",
         "Performance-Optimierung",
         "Unbegrenzte Revisionen (Bonus)",
       ],
       recommended: false,
       color: "bg-teal-100 dark:bg-teal-900/50",
       textColor: "text-gray-800 dark:text-white",
-      buttonVariant: "outline" as const,
+      buttonVariant: "default" as const,
     },
     {
       name: "Mixed Reality",
@@ -176,59 +184,67 @@ export default function Pricing() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {pricingPlans.map((plan, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              whileHover={{ y: -10 }}
-              viewport={{ once: true }}
-              className={`rounded-3xl overflow-hidden ${plan.recommended ? "md:-mt-4 md:mb-4" : ""}`}
-            >
-              <div className={`${plan.color} p-6 relative`}>
-                {plan.recommended && (
-                  <div className="absolute top-0 right-0 bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-bl-lg">
-                    Empfohlen
-                  </div>
-                )}
-                <h3 className={`text-2xl font-bold ${plan.textColor}`}>{plan.name}</h3>
-                <p className={`${plan.textColor} opacity-80 mt-1`}>{plan.description}</p>
-                <div className="mt-4">
-                  <span className={`text-3xl font-bold ${plan.textColor}`}>{plan.price}</span>
-                  {plan.originalPrice && (
-                    <span className={`${plan.textColor} opacity-70 ml-2 line-through text-sm`}>
-                      {plan.originalPrice}
-                    </span>
+          {pricingPlans.map((plan, index) => {
+            const savings = calculateSavings(plan.originalPrice, plan.price)
+            return (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                whileHover={{ y: -10 }}
+                viewport={{ once: true }}
+                className={`rounded-3xl overflow-hidden shadow-lg ${plan.recommended ? "md:-mt-4 md:mb-4" : ""}`}
+              >
+                <div className={`${plan.color} p-6 relative`}>
+                  {plan.recommended && (
+                    <div className="absolute top-0 right-0 bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-bl-lg">
+                      Empfohlen
+                    </div>
                   )}
-                  <span className={`${plan.textColor} opacity-70 ml-1`}>
-                    {billingCycle === "hourly" ? "/Stunde" : billingCycle === "monthly" ? "/Monat" : ""}
-                  </span>
+                  <h3 className={`text-2xl font-bold ${plan.textColor}`}>{plan.name}</h3>
+                  <p className={`${plan.textColor} opacity-80 mt-1`}>{plan.description}</p>
+                  <div className="mt-4">
+                    <span className={`text-3xl font-bold ${plan.textColor}`}>{plan.price}</span>
+                    {plan.originalPrice && (
+                      <span className={`${plan.textColor} opacity-70 ml-2 line-through text-sm`}>
+                        {plan.originalPrice}
+                      </span>
+                    )}
+                    {savings && (
+                      <span className="ml-2 text-sm font-medium text-green-600 dark:text-green-400">
+                        ({savings}% Ersparnis)
+                      </span>
+                    )}
+                    <span className={`${plan.textColor} opacity-70 ml-1`}>
+                      {billingCycle === "hourly" ? "/Stunde" : billingCycle === "monthly" ? "/Monat" : ""}
+                    </span>
+                  </div>
                 </div>
-              </div>
-              <div className="bg-white dark:bg-gray-800 p-6">
-                <ul className="space-y-3 mb-6">
-                  {plan.features.map((feature, i) => (
-                    <li key={i} className="flex items-start gap-2">
-                      <Check className="h-5 w-5 text-teal-600 dark:text-teal-400 mt-0.5 flex-shrink-0" />
-                      <span className="text-gray-600 dark:text-gray-300">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-                <Button
-                  variant={plan.buttonVariant}
-                  className={`w-full rounded-full ${
-                    plan.buttonVariant === "outline"
-                      ? "border-teal-600 text-teal-700 dark:border-teal-500 dark:text-teal-400 hover:bg-teal-50 dark:hover:bg-teal-900/20"
-                      : ""
-                  }`}
-                  onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
-                >
-                  Anfrage starten
-                </Button>
-              </div>
-            </motion.div>
-          ))}
+                <div className="bg-white dark:bg-gray-700 p-6 flex flex-col min-h-[200px]">
+                  <ul className="space-y-3 mb-6 flex-grow">
+                    {plan.features.map((feature, i) => (
+                      <li key={i} className="flex items-start gap-2">
+                        <Check className="h-5 w-5 text-teal-600 dark:text-teal-400 mt-0.5 flex-shrink-0" />
+                        <span className="text-gray-600 dark:text-gray-300">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <Button
+                    variant={plan.buttonVariant}
+                    className={`w-full rounded-full ${
+                      plan.buttonVariant === "outline"
+                        ? "border-teal-600 text-teal-700 dark:border-teal-500 dark:text-teal-400 hover:bg-teal-50 dark:hover:bg-teal-900/20"
+                        : "bg-teal-600 text-white hover:bg-teal-700"
+                    }`}
+                    onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
+                  >
+                    Anfrage starten
+                  </Button>
+                </div>
+              </motion.div>
+            )
+          })}
         </div>
 
         <motion.div
