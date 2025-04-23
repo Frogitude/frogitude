@@ -121,8 +121,8 @@ export default function Hero() {
             className="md:w-1/2 flex justify-center"
           >
             <div className="relative w-full max-w-md">
-              <motion.div
-                className="relative aspect-square"
+                <motion.div
+                className="relative aspect-square scale-125"
                 animate={{
                   y: [0, -15, 0],
                 }}
@@ -132,14 +132,14 @@ export default function Hero() {
                   repeatType: "reverse",
                   ease: "easeInOut",
                 }}
-              >
+                >
                 <Image
-                  src="/images/unity-frog.png"
+                  src="/images/small-frog.png"
                   alt="Ein entspannter Frosch mit Unity-Logo"
                   fill
                   className="object-contain"
                 />
-              </motion.div>
+                </motion.div>
               <motion.div
                 className="absolute bottom-4 right-4 bg-mint-100 dark:bg-teal-900 rounded-full p-3 shadow-lg"
                 whileHover={{ rotate: 10, scale: 1.1 }}

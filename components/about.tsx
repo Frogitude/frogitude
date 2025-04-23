@@ -33,15 +33,16 @@ export default function About() {
           >
             <div className="relative">
               <div className="absolute -top-4 -left-4 w-24 h-24 bg-teal-100 dark:bg-teal-900/50 rounded-full z-0"></div>
-              <div className="relative z-10 rounded-3xl overflow-hidden shadow-xl">
+                <div className="relative z-10 rounded-3xl overflow-hidden shadow-xl">
                 <Image
-                  src="/images/profile-photo.jpg"
+                  src="/images/ggbavaria2.jpg"
                   alt="Fred Newton, Akdogan"
-                  width={400}
+                  width={1000}
                   height={500}
-                  className="object-cover"
+                  className="object-cover w-full h-full"
+                  priority
                 />
-              </div>
+                </div>
               <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-orange-100 dark:bg-orange-900/50 rounded-full z-0"></div>
 
               {/* Small frog decoration */}
