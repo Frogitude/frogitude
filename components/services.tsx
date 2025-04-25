@@ -10,16 +10,16 @@ export default function Services() {
 
   const services = [
     {
-      icon: <Gamepad2 className="h-10 w-10 text-teal-600 dark:text-teal-400" />,
-      title: t("gameDevelopment"),
-      description: t("gameDevelopmentDesc"),
-      image: "/images/broomstickBarry.gif",
-    },
-    {
       icon: <Glasses className="h-10 w-10 text-teal-600 dark:text-teal-400" />,
       title: t("xrDevelopment"),
       description: t("xrDevelopmentDesc"),
       image: "/images/womenvr.gif",
+    },
+    {
+      icon: <Gamepad2 className="h-10 w-10 text-teal-600 dark:text-teal-400" />,
+      title: t("gameDevelopment"),
+      description: t("gameDevelopmentDesc"),
+      image: "/images/broomstickBarry.gif",
     },
     {
       icon: <Cube className="h-10 w-10 text-teal-600 dark:text-teal-400" />,
