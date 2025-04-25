@@ -2,130 +2,131 @@
 
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { Check } from "lucide-react"
+import { Check, Star } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { useLanguage } from "@/context/language-context"
 
 export default function Pricing() {
   const [billingCycle, setBillingCycle] = useState<"monthly" | "hourly">("hourly")
+  const { t } = useLanguage()
 
   const calculateSavings = (originalPrice: string, price: string) => {
-    const original = parseFloat(originalPrice.replace("€", ""))
-    const current = parseFloat(price.replace("€", ""))
+    const original = Number.parseFloat(originalPrice.replace("€", ""))
+    const current = Number.parseFloat(price.replace("€", ""))
     if (!original || !current || original <= current) return null
     return Math.round(((original - current) / original) * 100)
   }
 
   const hourlyRates = [
     {
-      name: "Standard",
-      description: "Unity Development",
+      name: t("standard"),
+      description: t("unityDevelopment"),
       price: "50€",
       originalPrice: "60€",
       features: [
-        "Unity & C# Entwicklung",
-        "2D/3D Game Development",
-        "Prototyping",
-        "Optimierung bestehender Projekte",
-        "Performance-Optimierung",
-        "Unbegrenzte Revisionen (Bonus)",
+        t("unityCSharpDev"),
+        t("2d3dGameDev"),
+        t("prototyping"),
+        t("existingProjectOptimization"),
+        t("performanceOptimization"),
+        t("unlimitedRevisions"),
       ],
       recommended: false,
-      color: "bg-teal-100 dark:bg-teal-900/50",
-      textColor: "text-gray-800 dark:text-white",
-      buttonVariant: "default" as const,
+      color: "from-teal-400 to-teal-600",
+      textColor: "text-white",
+      buttonVariant: "outline" as const,
     },
     {
-      name: "Mixed Reality",
-      description: "AR/VR Development",
+      name: t("mixedReality"),
+      description: t("arVrDevelopment"),
       price: "60€",
       originalPrice: "75€",
       features: [
-        "Alles aus Standard",
-        "AR/VR Entwicklung",
-        "HoloLens/Quest Entwicklung",
-        "3D-Interaktionen",
-        "XR Optimierung",
-        "Unbegrenzte Revisionen (Bonus)",
+        t("allFromStandard"),
+        t("arVrDev"),
+        t("hololensQuestDev"),
+        t("3dInteractions"),
+        t("xrOptimization"),
+        t("unlimitedRevisions"),
       ],
       recommended: true,
-      color: "bg-teal-600 dark:bg-teal-700",
+      color: "from-teal-500 to-teal-700",
       textColor: "text-white",
       buttonVariant: "default" as const,
     },
     {
-      name: "Multiplayer",
-      description: "Netzwerk & Multiplayer",
+      name: t("multiplayer"),
+      description: t("networkMultiplayer"),
       price: "65€",
       originalPrice: "80€",
       features: [
-        "Alles aus Standard",
-        "Multiplayer-Implementierung",
-        "Netzwerk-Architektur",
-        "Server-Client Kommunikation",
-        "Lobby-Systeme",
-        "Unbegrenzte Revisionen (Bonus)",
+        t("allFromStandard"),
+        t("multiplayerImplementation"),
+        t("networkArchitecture"),
+        t("serverClientCommunication"),
+        t("lobbySystems"),
+        t("unlimitedRevisions"),
       ],
       recommended: false,
-      color: "bg-orange-500 dark:bg-orange-700",
+      color: "from-orange-400 to-orange-600",
       textColor: "text-white",
-      buttonVariant: "default" as const,
+      buttonVariant: "outline" as const,
     },
   ]
 
   const monthlyRates = [
     {
-      name: "Teilzeit",
-      description: "80 Stunden pro Monat",
+      name: t("partTime"),
+      description: t("hoursPerMonth", { hours: 80 }),
       price: "3.800€",
       originalPrice: "4.800€",
       features: [
-        "80 Stunden pro Monat",
-        "Wöchentliche Updates",
-        "Direkter Kommunikationskanal",
-        "Flexible Zeiteinteilung",
-        "Unbegrenzte Revisionen",
+        t("hoursPerMonth", { hours: 80 }),
+        t("weeklyUpdates"),
+        t("directCommunication"),
+        t("flexibleScheduling"),
+        t("unlimitedRevisions"),
       ],
       recommended: false,
-      color: "bg-teal-100 dark:bg-teal-900/50",
-      textColor: "text-gray-800 dark:text-white",
+      color: "from-teal-400 to-teal-600",
+      textColor: "text-white",
       buttonVariant: "outline" as const,
     },
     {
-      name: "Vollzeit",
-      description: "160 Stunden pro Monat",
+      name: t("fullTime"),
+      description: t("hoursPerMonth", { hours: 160 }),
       price: "7.200€",
       originalPrice: "9.600€",
       features: [
-        "160 Stunden pro Monat",
-        "Tägliche Updates",
-        "Direkter Kommunikationskanal",
-        "Volle Verfügbarkeit",
-        "Unbegrenzte Revisionen",
-        "Priorisierte Bearbeitung",
+        t("hoursPerMonth", { hours: 160 }),
+        t("dailyUpdates"),
+        t("directCommunication"),
+        t("fullAvailability"),
+        t("unlimitedRevisions"),
+        t("prioritizedProcessing"),
       ],
       recommended: true,
-      color: "bg-teal-600 dark:bg-teal-700",
+      color: "from-teal-500 to-teal-700",
       textColor: "text-white",
       buttonVariant: "default" as const,
     },
     {
-      name: "Projekt",
-      description: "Individuelle Projektbasis",
-      price: "Individuell",
+      name: t("project"),
+      description: t("individualProjectBasis"),
+      price: t("individual"),
       originalPrice: "",
       features: [
-        "Maßgeschneiderte Lösung",
-        "Fester Projektpreis",
-        "Klare Meilensteine",
-        "Detaillierte Projektplanung",
-        "Unbegrenzte Revisionen",
-        "Nachbetreuung",
+        t("customSolution"),
+        t("fixedProjectPrice"),
+        t("clearMilestones"),
+        t("detailedProjectPlanning"),
+        t("unlimitedRevisions"),
+        t("aftercare"),
       ],
       recommended: false,
-      color: "bg-orange-500 dark:bg-orange-700",
+      color: "from-orange-400 to-orange-600",
       textColor: "text-white",
-      buttonVariant: "default" as const,
+      buttonVariant: "outline" as const,
     },
   ]
 
@@ -146,14 +147,12 @@ export default function Pricing() {
           className="text-center mb-16"
         >
           <div className="inline-block bg-teal-100 dark:bg-teal-900/50 text-teal-800 dark:text-teal-300 px-4 py-1 rounded-full text-sm font-medium mb-4">
-            Preise
+            {t("pricing")}
           </div>
           <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-800 dark:text-white">
-            Transparente Preisgestaltung
+            {t("transparentPricing")}
           </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Wählen Sie das passende Modell für Ihr Projekt oder kontaktieren Sie mich für ein individuelles Angebot.
-          </p>
+          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">{t("choosePricingModel")}</p>
         </motion.div>
 
         <div className="flex justify-center mb-12">
@@ -167,7 +166,7 @@ export default function Pricing() {
                     : "text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600"
                 }`}
               >
-                Stundensatz
+                {t("hourlyRate")}
               </button>
               <button
                 onClick={() => setBillingCycle("monthly")}
@@ -177,7 +176,7 @@ export default function Pricing() {
                     : "text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600"
                 }`}
               >
-                Projektbasiert
+                {t("projectBased")}
               </button>
             </div>
           </div>
@@ -196,14 +195,14 @@ export default function Pricing() {
                 viewport={{ once: true }}
                 className={`rounded-3xl overflow-hidden shadow-lg ${plan.recommended ? "md:-mt-4 md:mb-4" : ""}`}
               >
-                <div className={`${plan.color} p-6 relative`}>
+                <div className={`bg-gradient-to-br ${plan.color} p-6 relative`}>
                   {plan.recommended && (
-                    <div className="absolute top-0 right-0 bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-bl-lg">
-                      Empfohlen
+                    <div className="absolute top-3 right-3 bg-yellow-400 text-gray-900 rounded-full p-1">
+                      <Star className="h-5 w-5 fill-current" />
                     </div>
                   )}
                   <h3 className={`text-2xl font-bold ${plan.textColor}`}>{plan.name}</h3>
-                  <p className={`${plan.textColor} opacity-80 mt-1`}>{plan.description}</p>
+                  <p className={`${plan.textColor} opacity-90 mt-1`}>{plan.description}</p>
                   <div className="mt-4">
                     <span className={`text-3xl font-bold ${plan.textColor}`}>{plan.price}</span>
                     {plan.originalPrice && (
@@ -212,16 +211,14 @@ export default function Pricing() {
                       </span>
                     )}
                     {savings && (
-                      <span className="ml-2 text-sm font-medium text-green-600 dark:text-green-400">
-                        ({savings}% Ersparnis)
-                      </span>
+                      <span className="ml-2 text-sm font-medium bg-white/20 px-2 py-0.5 rounded-full">-{savings}%</span>
                     )}
                     <span className={`${plan.textColor} opacity-70 ml-1`}>
-                      {billingCycle === "hourly" ? "/Stunde" : billingCycle === "monthly" ? "/Monat" : ""}
+                      {billingCycle === "hourly" ? t("perHour") : billingCycle === "monthly" ? t("perMonth") : ""}
                     </span>
                   </div>
                 </div>
-                <div className="bg-white dark:bg-gray-700 p-6 flex flex-col min-h-[200px]">
+                <div className="bg-white dark:bg-gray-700 p-6 flex flex-col min-h-[300px]">
                   <ul className="space-y-3 mb-6 flex-grow">
                     {plan.features.map((feature, i) => (
                       <li key={i} className="flex items-start gap-2">
@@ -239,7 +236,7 @@ export default function Pricing() {
                     }`}
                     onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
                   >
-                    Anfrage starten
+                    {t("startInquiry")}
                   </Button>
                 </div>
               </motion.div>
@@ -252,28 +249,16 @@ export default function Pricing() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.3 }}
           viewport={{ once: true }}
-          className="mt-16 bg-white dark:bg-gray-700 p-8 rounded-3xl shadow-md text-center"
+          className="mt-16 bg-gradient-to-br from-teal-500 to-teal-700 p-8 rounded-3xl shadow-md text-center text-white"
         >
-          <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-4">Offen für alternative Modelle</h3>
-          <p className="text-gray-600 dark:text-gray-300 mb-6 max-w-2xl mx-auto">
-            Jedes Projekt ist einzigartig. Ich bin offen für verschiedene Zusammenarbeitsmodelle und erstelle gerne ein
-            maßgeschneidertes Angebot, das genau auf Ihre Anforderungen zugeschnitten ist.
-          </p>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  className="bg-teal-600 hover:bg-teal-700 text-white rounded-full px-8 py-6 text-lg transition-transform hover:scale-105"
-                  onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
-                >
-                  Individuelles Angebot anfragen
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Erhalten Sie ein maßgeschneidertes Angebot für Ihr Projekt</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <h3 className="text-2xl font-bold mb-4">{t("openToAlternativeModels")}</h3>
+          <p className="mb-6 max-w-2xl mx-auto opacity-90">{t("uniqueProjectDescription")}</p>
+          <Button
+            className="bg-white text-teal-700 hover:bg-gray-100 rounded-full px-8 py-6 text-lg transition-transform hover:scale-105"
+            onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
+          >
+            {t("requestCustomOffer")}
+          </Button>
         </motion.div>
       </div>
     </section>

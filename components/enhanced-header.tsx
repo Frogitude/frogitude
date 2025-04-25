@@ -3,20 +3,20 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Menu, X, ChevronDown } from "lucide-react"
+import { Menu, X, ChevronDown, Globe } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { ThemeToggle } from "@/components/theme-toggle"
+import { useLanguage } from "@/context/language-context"
 
 export default function EnhancedHeader() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
+  const { language, setLanguage, t } = useLanguage()
 
+  // Script-based scroll handling
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10)
-    }
-
+    const handleScroll = () => setIsScrolled(window.scrollY > 10)
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
@@ -26,35 +26,27 @@ export default function EnhancedHeader() {
   }
 
   const navItems = [
-    { name: "Dienstleistungen", href: "#services" },
-    { name: "Preise", href: "#pricing" },
+    { name: t("services"), href: "#services" },
+    { name: t("pricing"), href: "#pricing" },
     {
-      name: "Projekte",
+      name: t("projects"),
       href: "#",
       dropdown: [
-        { name: "Meowdieval Kingdom", href: "#game" },
-        { name: "Portfolio", href: "#portfolio" },
+        { name: t("meowdieval"), href: "#game" },
+        { name: t("portfolio"), href: "#portfolio" },
       ],
     },
-    { name: "Über mich", href: "#about" },
-    { name: "Kontakt", href: "#contact" },
+    { name: t("about"), href: "#about" },
+    { name: t("contact"), href: "#contact" },
   ]
 
-  const headerVariants = {
-    hidden: { opacity: 0, y: -20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-  }
-
-  const dropdownVariants = {
-    hidden: { opacity: 0, y: -5, height: 0 },
-    visible: { opacity: 1, y: 0, height: "auto", transition: { duration: 0.3 } },
-  }
+  const toggleLanguage = () => setLanguage(language === "de" ? "en" : "de")
 
   return (
     <motion.header
-      initial="hidden"
-      animate="visible"
-      variants={headerVariants}
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled ? "bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm shadow-md py-2" : "bg-transparent py-4"
       }`}
@@ -88,10 +80,10 @@ export default function EnhancedHeader() {
                     <AnimatePresence>
                       {activeDropdown === item.name && (
                         <motion.div
-                          initial="hidden"
-                          animate="visible"
-                          exit="hidden"
-                          variants={dropdownVariants}
+                          initial={{ opacity: 0, y: -5, height: 0 }}
+                          animate={{ opacity: 1, y: 0, height: "auto" }}
+                          exit={{ opacity: 0, y: -5, height: 0 }}
+                          transition={{ duration: 0.3 }}
                           className="absolute top-full left-0 mt-1 bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden min-w-[180px]"
                         >
                           {item.dropdown.map((dropdownItem, idx) => (
@@ -122,17 +114,31 @@ export default function EnhancedHeader() {
           </nav>
 
           <div className="hidden md:flex items-center gap-4">
+            <button
+              onClick={toggleLanguage}
+              className="flex items-center gap-1 text-gray-700 dark:text-gray-200 hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+            >
+              <Globe className="h-4 w-4" />
+              <span>{language.toUpperCase()}</span>
+            </button>
             <ThemeToggle />
             <Button
               className="bg-teal-600 hover:bg-teal-700 text-white rounded-full transition-transform hover:scale-105"
               onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
             >
-              Projekt anfragen
+              {t("requestProject")}
             </Button>
           </div>
 
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center gap-2">
+            <button
+              onClick={toggleLanguage}
+              className="flex items-center gap-1 text-gray-700 dark:text-gray-200 hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+            >
+              <Globe className="h-4 w-4" />
+              <span>{language.toUpperCase()}</span>
+            </button>
             <ThemeToggle />
             <button
               className="text-gray-700 dark:text-gray-200 p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors"
@@ -212,7 +218,7 @@ export default function EnhancedHeader() {
                       setIsMobileMenuOpen(false)
                     }}
                   >
-                    Projekt anfragen
+                    {t("requestProject")}
                   </Button>
                 </div>
               </nav>

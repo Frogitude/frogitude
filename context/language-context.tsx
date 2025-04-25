@@ -1,0 +1,487 @@
+"use client"
+
+import { createContext, useContext, useState, useEffect, type ReactNode } from "react"
+
+type Language = "de" | "en"
+
+type TranslationParams = {
+  [key: string]: string | number
+}
+
+interface LanguageContextType {
+  language: Language
+  setLanguage: (lang: Language) => void
+  t: (key: string, params?: TranslationParams) => string
+}
+
+const LanguageContext = createContext<LanguageContextType>({
+  language: "de",
+  setLanguage: () => {},
+  t: (key: string) => key,
+})
+
+// Define translations directly in the file
+const translations = {
+  de: {
+    // Navigation
+    services: "Dienstleistungen",
+    pricing: "Preise",
+    projects: "Projekte",
+    meowdieval: "Meowdieval Kingdom",
+    portfolio: "Portfolio",
+    about: "Über mich",
+    contact: "Kontakt",
+    requestProject: "Projekt anfragen",
+
+    // Hero
+    unityDevStudio: "Unity Development Studio",
+    unityDevelopment: "Unity Development",
+    withFrogitude: "mit Frogitude",
+    heroDescription:
+      "Entspannte und professionelle Unity-Entwicklung für Games, XR und 3D-Visualisierungen. Mit der richtigen Balance aus Kreativität und Technik.",
+    discoverServices: "Dienstleistungen entdecken",
+
+    // About
+    aboutMe: "Über mich",
+    aboutMeDescription:
+      "Ich bin ein deutscher Unity-Entwickler mit über 4 Jahren Berufserfahrung in Unity & C#, spezialisiert auf innovative XR-Lösungen für iOS, HoloLens und Automotive-Anwendungen. Mein Fokus liegt auf performanten, benutzerzentrierten Erlebnissen durch agile Projektmethoden und Clean Code.",
+    coreCompetencies: "Meine Kernkompetenzen",
+    myExperience: "Meine Erfahrung",
+
+    // Skills
+    unitySkill: "Unity & C# (4+ Jahre)",
+    arVrSkill: "AR/VR-Entwicklung",
+    hololensSkill: "Microsoft HoloLens",
+    performanceSkill: "Performance-Optimierung",
+    cleanCodeSkill: "Clean Code",
+    agileSkill: "Agile Methoden",
+    zenjectSkill: "Dependency Injection (Zenject)",
+    uniRxSkill: "Reactive Programming (UniRx/UniTask)",
+
+    // Services
+    myServices: "Meine Dienstleistungen",
+    whatIOffer: "Was ich anbiete",
+    servicesDescription:
+      "Spezialisiert auf Unity-basierte Entwicklung biete ich maßgeschneiderte Lösungen mit einer entspannten und professionellen Herangehensweise.",
+    gameDevelopment: "Game Development",
+    gameDevelopmentDesc:
+      "Entwicklung von Spielen für PC, Mobile und Konsolen mit Unity. Von der Konzeption bis zum fertigen Produkt.",
+    xrDevelopment: "XR Development",
+    xrDevelopmentDesc:
+      "Professionelle Entwicklung von AR- und VR-Anwendungen für verschiedene Plattformen und Endgeräte.",
+    visualization: "3D Visualisierung",
+    visualizationDesc:
+      "Erstellung interaktiver 3D-Visualisierungen für Architektur, Produktpräsentation und Marketing.",
+    whyWorkWithMe: "Warum mit mir zusammenarbeiten?",
+    technicalExpertise: "Technische Expertise",
+    technicalExpertiseDesc: "Fundierte Kenntnisse in C#, Clean Code und Performance-Optimierung für Unity-Projekte.",
+    creativeSolutions: "Kreative Lösungen",
+    creativeSolutionsDesc: "Innovative Ansätze für komplexe Probleme und benutzerorientierte Entwicklung.",
+    relaxedCollaboration: "Entspannte Zusammenarbeit",
+    relaxedCollaborationDesc: "Transparente Kommunikation, agile Arbeitsweise und termingerechte Lieferung.",
+
+    // Game Showcase
+    indieGameDev: "Indie Game Development",
+    meowdievalKingdom: "Meowdieval Kingdom",
+    meowdievalDesc: "Ein gemütliches 3D-Idle-Strategiespiel im mittelalterlichen Katzensetting.",
+    comingSoon: "Neue Informationen folgen bald!",
+    gameDescription:
+      "Wir arbeiten fleißig an unserem gemütlichen Katzenabenteuer. Bleiben Sie dran für Updates und Neuigkeiten zu Meowdieval Kingdom.",
+    signUpForUpdates: "Für Updates anmelden",
+
+    // Frogitude Definition
+    definition: "Definition",
+    whatIsFrogitude: "Was ist Frogitude?",
+    frogitudeNoun: "Substantiv, feminin [die]",
+    frogitudePronunciation: "Aussprache: [ˈfrɔgɪˌtuːd], auch [ˈfroʊ̯gɪˌtjuːd]",
+    frogitudePronunciationUK: "/ˈfrɒɡɪˌtjuːd/",
+    frogitudePronunciationUS: "/ˈfrɑːɡɪˌtuːd/",
+    frogitudeExplanation:
+      "Das Wort Frogitude ist ein Portmanteau, das aus den Wörtern „frog“ (Frosch) und „gratitude“ (Dankbarkeit) gebildet wurde. Es ruft ein Gefühl spielerischer Wertschätzung für die Momente des Lebens hervor und ermutigt dazu, mit der gleichen Energie und Flexibilität wie ein Frosch in die Dankbarkeit zu springen.",
+    explanation: "Erklärung", // Added translation for "explanation"
+    meaning: "Bedeutung",
+    colloquial: "(umgangssprachlich, scherzhaft)",
+    netJargon: "(Netzjargon)",
+    frogitudeMeaning1:
+      "eine gelassene, eigenwillige und humorvolle Lebenseinstellung, die sich an der vermeintlichen Wesensart eines Frosches orientiert; Mischung aus Ruhe, Spontanität und charmantem Desinteresse an gesellschaftlichen Konventionen.",
+    frogitudeMeaning2:
+      "Haltung, bei der man mit kindlicher Neugier, Selbstironie und einer Prise Chaos durchs Leben geht; das Leben mit „Frosch-Vibes“ leben.",
+    origin: "Herkunft",
+    frogitudeOrigin:
+      'Kombination aus dem englischen "frog" (Frosch) und "gratitude" (Dankbarkeit); beschreibt die dankbare, gelassene Lebenseinstellung eines Frosches, der das Leben in vollen Zügen genießt.',
+    examples: "Beispiele",
+    frogitudeExample1:
+      "Seit sie ihren Job gekündigt hat, lebt sie mit echter Frogitude – barfuß im Garten und völlig entspannt.",
+    frogitudeExample2: "Er hat so eine Frogitude, nichts bringt ihn aus der Ruhe.",
+    frogitudeInUnity: "Frogitude in der Unity-Entwicklung",
+    frogitudeInUnityDescription:
+      "Bei uns bedeutet Frogitude eine entspannte, aber professionelle Herangehensweise an die Unity-Entwicklung. Wir kombinieren technische Expertise mit einer gelassenen Arbeitsweise, die Raum für Kreativität und Innovation lässt. Wie ein Frosch auf seinem Seerosenblatt sind wir ruhig und fokussiert, aber immer bereit, spontan auf neue Herausforderungen zu reagieren. Gleichzeitig sind wir dankbar für jedes Projekt und schätzen die Zusammenarbeit mit unseren Kunden.",
+
+    // Pricing
+    transparentPricing: "Transparente Preisgestaltung",
+    choosePricingModel:
+      "Wählen Sie das passende Modell für Ihr Projekt oder kontaktieren Sie mich für ein individuelles Angebot.",
+    hourlyRate: "Stundensatz",
+    projectBased: "Projektbasiert",
+    recommended: "Empfohlen",
+    savings: "Ersparnis",
+    perHour: "/Stunde",
+    perMonth: "/Monat",
+    startInquiry: "Anfrage starten",
+    openToAlternativeModels: "Offen für alternative Modelle",
+    uniqueProjectDescription:
+      "Jedes Projekt ist einzigartig. Ich bin offen für verschiedene Zusammenarbeitsmodelle und erstelle gerne ein maßgeschneidertes Angebot, das genau auf Ihre Anforderungen zugeschnitten ist.",
+    requestCustomOffer: "Individuelles Angebot anfragen",
+    getCustomOffer: "Erhalten Sie ein maßgeschneidertes Angebot für Ihr Projekt",
+
+    // Pricing Plans
+    standard: "Standard",
+    unityCSharpDev: "Unity & C# Entwicklung",
+    "2d3dGameDev": "2D/3D Game Development",
+    prototyping: "Prototyping",
+    existingProjectOptimization: "Optimierung bestehender Projekte",
+    performanceOptimization: "Performance-Optimierung",
+    unlimitedRevisions: "Unbegrenzte Revisionen (Bonus)",
+
+    mixedReality: "Mixed Reality",
+    arVrDevelopment: "AR/VR Development",
+    allFromStandard: "Alles aus Standard",
+    arVrDev: "AR/VR Entwicklung",
+    hololensQuestDev: "HoloLens/Quest Entwicklung",
+    "3dInteractions": "3D-Interaktionen",
+    xrOptimization: "XR Optimierung",
+
+    multiplayer: "Multiplayer",
+    networkMultiplayer: "Netzwerk & Multiplayer",
+    multiplayerImplementation: "Multiplayer-Implementierung",
+    networkArchitecture: "Netzwerk-Architektur",
+    serverClientCommunication: "Server-Client Kommunikation",
+    lobbySystems: "Lobby-Systeme",
+
+    partTime: "Teilzeit",
+    hoursPerMonth: "{hours} Stunden pro Monat",
+    weeklyUpdates: "Wöchentliche Updates",
+    directCommunication: "Direkter Kommunikationskanal",
+    flexibleScheduling: "Flexible Zeiteinteilung",
+
+    fullTime: "Vollzeit",
+    dailyUpdates: "Tägliche Updates",
+    fullAvailability: "Volle Verfügbarkeit",
+    prioritizedProcessing: "Priorisierte Bearbeitung",
+
+    project: "Projekt",
+    individualProjectBasis: "Individuelle Projektbasis",
+    individual: "Individuell",
+    customSolution: "Maßgeschneiderte Lösung",
+    fixedProjectPrice: "Fester Projektpreis",
+    clearMilestones: "Klare Meilensteine",
+    detailedProjectPlanning: "Detaillierte Projektplanung",
+    aftercare: "Nachbetreuung",
+
+    // Footer
+    footerTagline: "Unity-Entwicklung mit Gelassenheit und Expertise",
+    navigation: "Navigation",
+    legal: "Rechtliches",
+    imprint: "Impressum",
+    privacy: "Datenschutz",
+    terms: "AGB",
+    allRightsReserved: "Alle Rechte vorbehalten.",
+    cookieSettings: "Cookie-Einstellungen",
+    accessibility: "Barrierefreiheit",
+    theme: "Theme",
+    scrollToTop: "Nach oben scrollen",
+
+    // Companies
+    workExperience: "Berufserfahrung",
+    superswipeGames: "superswipe.games",
+    mercedesBenz: "Mercedes Benz",
+    fridie: "FRIDIE",
+    mercedesBenzTechMotion: "Mercedes-Benz Tech Motion GmbH",
+    technologyAndStrategy: "Technology & Strategy Group",
+    bosch: "Bosch",
+
+    // Roles
+    unityDeveloper: "Unity Developer",
+    arEngineer: "Augmented Reality Engineer",
+    consultant: "Consultant",
+    softwareEngineer: "Software Engineer",
+
+    // Contact
+    contactMe: "Kontakt",
+    letsTalk: "Lass uns sprechen",
+    contactDescription: "Haben Sie ein Projekt oder eine Idee? Kontaktieren Sie mich für ein unverbindliches Gespräch.",
+    projectRequest: "Projekt anfragen",
+    name: "Name",
+    email: "E-Mail",
+    subject: "Betreff",
+    message: "Nachricht",
+    yourName: "Ihr Name",
+    yourEmail: "Ihre E-Mail",
+    messageSubject: "Betreff Ihrer Anfrage",
+    messageDescription: "Beschreiben Sie Ihr Projekt oder Ihre Anfrage",
+    sendRequest: "Anfrage senden",
+    sending: "Wird gesendet...",
+    messageSent: "Nachricht gesendet!",
+    thankYou: "Vielen Dank für Ihre Anfrage. Ich werde mich so schnell wie möglich bei Ihnen melden.",
+    contactInfo: "Kontaktinformationen",
+    phone: "Telefon",
+    location: "Standort",
+    availability: "Verfügbarkeit",
+    availableForProjects: "Verfügbar für neue Projekte",
+    locationInfo: "Mit Sitz in Erding bin ich für Projekte in ganz Deutschland und international verfügbar.",
+    emailMeAt: "Schreiben Sie mir eine E-Mail an",
+    sendEmail: "E-Mail senden",
+  },
+  en: {
+    // Navigation
+    services: "Services",
+    pricing: "Pricing",
+    projects: "Projects",
+    meowdieval: "Meowdieval Kingdom",
+    portfolio: "Portfolio",
+    about: "About Me",
+    contact: "Contact",
+    requestProject: "Request Project",
+
+    // Hero
+    unityDevStudio: "Unity Development Studio",
+    unityDevelopment: "Unity Development",
+    withFrogitude: "with Frogitude",
+    heroDescription:
+      "Relaxed and professional Unity development for games, XR, and 3D visualizations. With the right balance of creativity and technical expertise.",
+    discoverServices: "Discover Services",
+
+    // About
+    aboutMe: "About Me",
+    aboutMeDescription:
+      "I am a German Unity developer with over 4 years of professional experience in Unity & C#, specializing in innovative XR solutions for iOS, HoloLens, and automotive applications. My focus is on high-performance, user-centered experiences through agile project methods and clean code.",
+    coreCompetencies: "My Core Competencies",
+    myExperience: "My Experience",
+
+    // Skills
+    unitySkill: "Unity & C# (4+ years)",
+    arVrSkill: "AR/VR Development",
+    hololensSkill: "Microsoft HoloLens",
+    performanceSkill: "Performance Optimization",
+    cleanCodeSkill: "Clean Code",
+    agileSkill: "Agile Methods",
+    zenjectSkill: "Dependency Injection (Zenject)",
+    uniRxSkill: "Reactive Programming (UniRx/UniTask)",
+
+    // Services
+    myServices: "My Services",
+    whatIOffer: "What I Offer",
+    servicesDescription:
+      "Specialized in Unity-based development, I offer tailored solutions with a relaxed and professional approach.",
+    gameDevelopment: "Game Development",
+    gameDevelopmentDesc:
+      "Development of games for PC, mobile, and consoles with Unity. From concept to finished product.",
+    xrDevelopment: "XR Development",
+    xrDevelopmentDesc: "Professional development of AR and VR applications for various platforms and devices.",
+    visualization: "3D Visualization",
+    visualizationDesc:
+      "Creation of interactive 3D visualizations for architecture, product presentation, and marketing.",
+    whyWorkWithMe: "Why Work With Me?",
+    technicalExpertise: "Technical Expertise",
+    technicalExpertiseDesc: "In-depth knowledge of C#, clean code, and performance optimization for Unity projects.",
+    creativeSolutions: "Creative Solutions",
+    creativeSolutionsDesc: "Innovative approaches to complex problems and user-centered development.",
+    relaxedCollaboration: "Relaxed Collaboration",
+    relaxedCollaborationDesc: "Transparent communication, agile methodology, and on-time delivery.",
+
+    // Game Showcase
+    indieGameDev: "Indie Game Development",
+    meowdievalKingdom: "Meowdieval Kingdom",
+    meowdievalDesc: "A cozy 3D idle strategy game set in a medieval cat world.",
+    comingSoon: "New information coming soon!",
+    gameDescription:
+      "We're working diligently on our cozy cat adventure. Stay tuned for updates and news about Meowdieval Kingdom.",
+    signUpForUpdates: "Sign up for updates",
+
+    // Frogitude Definition
+    definition: "Definition",
+    whatIsFrogitude: "What is Frogitude?",
+    frogitudeNoun: "Noun, feminine [the]",
+    frogitudePronunciation: "Pronunciation: [ˈfrɔgɪˌtuːd], also [ˈfroʊ̯gɪˌtjuːd]",
+    frogitudePronunciationUK: "/ˈfrɒɡɪˌtjuːd/",
+    frogitudePronunciationUS: "/ˈfrɑːɡɪˌtuːd/",
+    frogitudeExplanation:
+      "The word Frogitude is a portmanteau created by merging 'frog' (the amphibian known for its leaping ability and adaptability) and 'gratitude' (the quality of being thankful). The term evokes a sense of playful appreciation for life's moments, encouraging one to 'leap' into gratitude with the same energy and flexibility as a frog.",
+    explanation: "Explanation", // Added translation for "explanation"
+    meaning: "Meaning",
+    colloquial: "(colloquial, humorous)",
+    netJargon: "(internet jargon)",
+    frogitudeMeaning1:
+      "a calm, idiosyncratic, and humorous attitude to life that is oriented towards the supposed nature of a frog; a mixture of tranquility, spontaneity, and charming disinterest in social conventions.",
+    frogitudeMeaning2:
+      'An attitude where one goes through life with childlike curiosity, self-irony, and a pinch of chaos; living life with "frog vibes".',
+    origin: "Origin",
+    frogitudeOrigin:
+      'Combination of "frog" and "gratitude"; describes the grateful, relaxed attitude of a frog that enjoys life to the fullest.',
+    examples: "Examples",
+    frogitudeExample1:
+      "Since she quit her job, she's been living with real frogitude – barefoot in the garden and completely relaxed.",
+    frogitudeExample2: "He has such frogitude, nothing disturbs his peace.",
+    frogitudeInUnity: "Frogitude in Unity Development",
+    frogitudeInUnityDescription:
+      "For us, Frogitude means a relaxed but professional approach to Unity development. We combine technical expertise with a calm working method that leaves room for creativity and innovation. Like a frog on its lily pad, we are calm and focused, but always ready to spontaneously respond to new challenges. At the same time, we are grateful for every project and value the collaboration with our clients.",
+
+    // Pricing
+    transparentPricing: "Transparent Pricing",
+    choosePricingModel: "Choose the right model for your project or contact me for a custom offer.",
+    hourlyRate: "Hourly Rate",
+    projectBased: "Project Based",
+    recommended: "Recommended",
+    savings: "Savings",
+    perHour: "/hour",
+    perMonth: "/month",
+    startInquiry: "Start Inquiry",
+    openToAlternativeModels: "Open to Alternative Models",
+    uniqueProjectDescription:
+      "Every project is unique. I am open to different collaboration models and am happy to create a customized offer that is tailored exactly to your requirements.",
+    requestCustomOffer: "Request Custom Offer",
+    getCustomOffer: "Get a customized offer for your project",
+
+    // Pricing Plans
+    standard: "Standard",
+    unityCSharpDev: "Unity & C# Development",
+    "2d3dGameDev": "2D/3D Game Development",
+    prototyping: "Prototyping",
+    existingProjectOptimization: "Optimization of Existing Projects",
+    performanceOptimization: "Performance Optimization",
+    unlimitedRevisions: "Unlimited Revisions (Bonus)",
+
+    mixedReality: "Mixed Reality",
+    arVrDevelopment: "AR/VR Development",
+    allFromStandard: "Everything from Standard",
+    arVrDev: "AR/VR Development",
+    hololensQuestDev: "HoloLens/Quest Development",
+    "3dInteractions": "3D Interactions",
+    xrOptimization: "XR Optimization",
+
+    multiplayer: "Multiplayer",
+    networkMultiplayer: "Network & Multiplayer",
+    multiplayerImplementation: "Multiplayer Implementation",
+    networkArchitecture: "Network Architecture",
+    serverClientCommunication: "Server-Client Communication",
+    lobbySystems: "Lobby Systems",
+
+    partTime: "Part Time",
+    hoursPerMonth: "{hours} hours per month",
+    weeklyUpdates: "Weekly Updates",
+    directCommunication: "Direct Communication Channel",
+    flexibleScheduling: "Flexible Scheduling",
+
+    fullTime: "Full Time",
+    dailyUpdates: "Daily Updates",
+    fullAvailability: "Full Availability",
+    prioritizedProcessing: "Prioritized Processing",
+
+    project: "Project",
+    individualProjectBasis: "Individual Project Basis",
+    individual: "Individual",
+    customSolution: "Custom Solution",
+    fixedProjectPrice: "Fixed Project Price",
+    clearMilestones: "Clear Milestones",
+    detailedProjectPlanning: "Detailed Project Planning",
+    aftercare: "Aftercare",
+
+    // Footer
+    footerTagline: "Unity Development with Serenity and Expertise",
+    navigation: "Navigation",
+    legal: "Legal",
+    imprint: "Imprint",
+    privacy: "Privacy Policy",
+    terms: "Terms & Conditions",
+    allRightsReserved: "All rights reserved.",
+    cookieSettings: "Cookie Settings",
+    accessibility: "Accessibility",
+    theme: "Theme",
+    scrollToTop: "Scroll to Top",
+
+    // Companies
+    workExperience: "Work Experience",
+    superswipeGames: "superswipe.games",
+    mercedesBenz: "Mercedes Benz",
+    fridie: "FRIDIE",
+    mercedesBenzTechMotion: "Mercedes-Benz Tech Motion GmbH",
+    technologyAndStrategy: "Technology & Strategy Group",
+    bosch: "Bosch",
+
+    // Roles
+    unityDeveloper: "Unity Developer",
+    arEngineer: "Augmented Reality Engineer",
+    consultant: "Consultant",
+    softwareEngineer: "Software Engineer",
+
+    // Contact
+    contactMe: "Contact",
+    letsTalk: "Let's Talk",
+    contactDescription: "Do you have a project or idea? Contact me for a no-obligation conversation.",
+    projectRequest: "Project Request",
+    name: "Name",
+    email: "Email",
+    subject: "Subject",
+    message: "Message",
+    yourName: "Your Name",
+    yourEmail: "Your Email",
+    messageSubject: "Subject of your inquiry",
+    messageDescription: "Describe your project or inquiry",
+    sendRequest: "Send Request",
+    sending: "Sending...",
+    messageSent: "Message Sent!",
+    thankYou: "Thank you for your inquiry. I will get back to you as soon as possible.",
+    contactInfo: "Contact Information",
+    phone: "Phone",
+    location: "Location",
+    availability: "Availability",
+    availableForProjects: "Available for new projects",
+    locationInfo: "Based in Erding, I am available for projects throughout Germany and internationally.",
+    emailMeAt: "Email me at",
+    sendEmail: "Send Email",
+  },
+}
+
+export const useLanguage = () => useContext(LanguageContext)
+
+interface LanguageProviderProps {
+  children: ReactNode
+}
+
+export const LanguageProvider = ({ children }: LanguageProviderProps) => {
+  const [language, setLanguage] = useState<Language>("de")
+
+  useEffect(() => {
+    // Check if there's a saved language preference
+    const savedLanguage = localStorage.getItem("language") as Language
+    if (savedLanguage && (savedLanguage === "de" || savedLanguage === "en")) {
+      setLanguage(savedLanguage)
+    } else {
+      // Detect browser language
+      const browserLanguage = navigator.language.split("-")[0]
+      if (browserLanguage === "en") {
+        setLanguage("en")
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    // Save language preference when it changes
+    localStorage.setItem("language", language)
+  }, [language])
+
+  const t = (key: string, params?: TranslationParams): string => {
+    const currentTranslations = translations[language] || translations.de
+    let translation = currentTranslations[key as keyof typeof translations['de']] || key
+
+    if (params) {
+      Object.entries(params).forEach(([paramKey, paramValue]) => {
+        translation = translation.replace(`{${paramKey}}`, String(paramValue))
+      })
+    }
+
+    return translation
+  }
+
+  return <LanguageContext.Provider value={{ language, setLanguage, t }}>{children}</LanguageContext.Provider>
+}

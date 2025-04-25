@@ -1,9 +1,34 @@
+"use client"
+
 import Link from "next/link"
 import { Github, Linkedin, Mail } from "lucide-react"
 import Image from "next/image"
+import { useLanguage } from "@/context/language-context"
+import { useEffect } from "react"
 
 export default function EnhancedFooter() {
   const currentYear = new Date().getFullYear()
+  const { t } = useLanguage()
+
+  // Script-based animation
+  useEffect(() => {
+    const bubbles = document.querySelectorAll(".footer-bubble")
+    bubbles.forEach((bubble, index) => {
+      const duration = 3 + Math.random() * 4
+      const delay = index * 0.2
+
+      const animation = (bubble as HTMLElement).animate(
+        [{ transform: "translateY(0)" }, { transform: "translateY(-15px)" }, { transform: "translateY(0)" }],
+        {
+          duration: duration * 1000,
+          delay: delay * 1000,
+          iterations: Number.POSITIVE_INFINITY,
+          direction: "alternate",
+          easing: "ease-in-out",
+        },
+      )
+    })
+  }, [])
 
   return (
     <footer className="bg-gray-800 dark:bg-gray-900 text-white py-12 relative overflow-hidden">
@@ -22,11 +47,10 @@ export default function EnhancedFooter() {
       {[...Array(5)].map((_, i) => (
         <div
           key={i}
-          className="absolute w-4 h-4 rounded-full border border-teal-300 opacity-30"
+          className="footer-bubble absolute w-4 h-4 rounded-full border border-teal-300 opacity-30"
           style={{
             bottom: `${Math.random() * 40}%`,
             left: `${20 + Math.random() * 60}%`,
-            animation: `float ${3 + Math.random() * 4}s ease-in-out infinite alternate`,
           }}
         ></div>
       ))}
@@ -40,7 +64,7 @@ export default function EnhancedFooter() {
               </div>
               <h2 className="text-2xl font-bold">Frogitude</h2>
             </div>
-            <p className="text-gray-300 dark:text-teal-300 mt-2">Unity-Entwicklung mit Gelassenheit und Expertise</p>
+            <p className="text-gray-300 dark:text-teal-300 mt-2">{t("footerTagline")}</p>
 
             <div className="flex space-x-4 mt-4">
               <a
@@ -72,26 +96,26 @@ export default function EnhancedFooter() {
           </div>
 
           <div className="md:col-span-1">
-            <h3 className="text-lg font-semibold mb-4 text-white">Navigation</h3>
+            <h3 className="text-lg font-semibold mb-4 text-white">{t("navigation")}</h3>
             <ul className="space-y-2">
               <li>
                 <Link href="#services" className="text-gray-300 dark:text-teal-300 hover:text-white transition-colors">
-                  Dienstleistungen
+                  {t("services")}
                 </Link>
               </li>
               <li>
                 <Link href="#pricing" className="text-gray-300 dark:text-teal-300 hover:text-white transition-colors">
-                  Preise
+                  {t("pricing")}
                 </Link>
               </li>
               <li>
                 <Link href="#game" className="text-gray-300 dark:text-teal-300 hover:text-white transition-colors">
-                  Meowdieval Kingdom
+                  {t("meowdieval")}
                 </Link>
               </li>
               <li>
                 <Link href="#about" className="text-gray-300 dark:text-teal-300 hover:text-white transition-colors">
-                  Über mich
+                  {t("about")}
                 </Link>
               </li>
               <li>
@@ -99,18 +123,18 @@ export default function EnhancedFooter() {
                   href="#about-frogitude"
                   className="text-gray-300 dark:text-teal-300 hover:text-white transition-colors"
                 >
-                  Was ist Frogitude?
+                  {t("whatIsFrogitude")}
                 </Link>
               </li>
             </ul>
           </div>
 
           <div className="md:col-span-1">
-            <h3 className="text-lg font-semibold mb-4 text-white">Rechtliches</h3>
+            <h3 className="text-lg font-semibold mb-4 text-white">{t("legal")}</h3>
             <ul className="space-y-2">
               <li>
                 <Link href="/impressum" className="text-gray-300 dark:text-teal-300 hover:text-white transition-colors">
-                  Impressum
+                  {t("imprint")}
                 </Link>
               </li>
               <li>
@@ -118,19 +142,19 @@ export default function EnhancedFooter() {
                   href="/datenschutz"
                   className="text-gray-300 dark:text-teal-300 hover:text-white transition-colors"
                 >
-                  Datenschutz
+                  {t("privacy")}
                 </Link>
               </li>
               <li>
                 <Link href="/agb" className="text-gray-300 dark:text-teal-300 hover:text-white transition-colors">
-                  AGB
+                  {t("terms")}
                 </Link>
               </li>
             </ul>
           </div>
 
           <div className="md:col-span-1">
-            <h3 className="text-lg font-semibold mb-4 text-white">Kontakt</h3>
+            <h3 className="text-lg font-semibold mb-4 text-white">{t("contact")}</h3>
             <address className="not-italic">
               <p className="text-gray-300 dark:text-teal-300">Fred Newton</p>
               <p className="text-gray-300 dark:text-teal-300">Erding, Deutschland</p>
@@ -152,7 +176,7 @@ export default function EnhancedFooter() {
 
         <div className="mt-12 pt-8 border-t border-gray-700 dark:border-teal-900/30 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 dark:text-teal-400/70 text-sm">
-            © {currentYear} Frogitude. Alle Rechte vorbehalten.
+            © {currentYear} Frogitude. {t("allRightsReserved")}
           </p>
 
           <div className="mt-4 md:mt-0 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm">
@@ -166,13 +190,13 @@ export default function EnhancedFooter() {
               href="#"
               className="text-gray-400 dark:text-teal-400/70 hover:text-white transition-colors flex items-center gap-1"
             >
-              Cookie-Einstellungen
+              {t("cookieSettings")}
             </a>
             <a
               href="#"
               className="text-gray-400 dark:text-teal-400/70 hover:text-white transition-colors flex items-center gap-1"
             >
-              Barrierefreiheit
+              {t("accessibility")}
             </a>
           </div>
         </div>

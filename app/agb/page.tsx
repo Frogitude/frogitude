@@ -22,9 +22,7 @@ export default function AGB() {
             Zurück zur Startseite
           </Link>
 
-          <h1 className="text-3xl font-bold mb-8 text-forest-green dark:text-white">
-            Allgemeine Geschäftsbedingungen
-          </h1>
+          <h1 className="text-3xl font-bold mb-8 text-forest-green dark:text-white">Allgemeine Geschäftsbedingungen</h1>
 
           <div className="prose prose-green dark:prose-invert max-w-none">
             <p>AGB-Inhalte hier einfügen...</p>

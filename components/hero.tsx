@@ -5,9 +5,11 @@ import { Button } from "@/components/ui/button"
 import { ArrowRight, ChevronDown } from "lucide-react"
 import { motion } from "framer-motion"
 import Image from "next/image"
+import { useLanguage } from "@/context/language-context"
 
 export default function Hero() {
   const [mounted, setMounted] = useState(false)
+  const { t } = useLanguage()
 
   useEffect(() => {
     setMounted(true)
@@ -17,6 +19,22 @@ export default function Hero() {
 
   return (
     <section className="relative bg-mint-50 dark:bg-forest-green-800 overflow-hidden min-h-screen flex items-center">
+      {/* Background video */}
+      <div className="absolute inset-0 w-full h-full z-0">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
+          poster="/images/hero-poster.jpg"
+        >
+          <source src="/videos/hero-background.mp4" type="video/mp4" />
+        </video>
+        {/* Video overlay filter */}
+        <div className="absolute inset-0 bg-mint-50/80 dark:bg-forest-green-800/90 backdrop-blur-sm"></div>
+      </div>
+
       {/* Decorative elements */}
       <div className="absolute top-0 left-0 w-64 h-64 bg-orange-200 dark:bg-orange-900/30 rounded-full -translate-x-1/2 -translate-y-1/2 opacity-50"></div>
       <div className="absolute bottom-0 right-0 w-80 h-80 bg-teal-200 dark:bg-teal-900/30 rounded-full translate-x-1/3 translate-y-1/3 opacity-50"></div>
@@ -59,7 +77,7 @@ export default function Hero() {
               transition={{ delay: 0.2, duration: 0.5 }}
               className="inline-block bg-teal-100 dark:bg-teal-900/50 text-teal-800 dark:text-teal-300 px-4 py-1 rounded-full text-sm font-medium mb-4"
             >
-              Unity Development Studio
+              {t("unityDevStudio")}
             </motion.div>
 
             <motion.h1
@@ -68,14 +86,14 @@ export default function Hero() {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3, duration: 0.8 }}
             >
-              Unity Development
+              {t("unityDevelopment")}
               <motion.span
                 className="block text-teal-600 dark:text-teal-400"
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.5, duration: 0.5 }}
               >
-                mit Frogitude
+                {t("withFrogitude")}
               </motion.span>
             </motion.h1>
 
@@ -85,8 +103,7 @@ export default function Hero() {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.7, duration: 0.5 }}
             >
-              Entspannte und professionelle Unity-Entwicklung für Games, XR und 3D-Visualisierungen. Mit der richtigen
-              Balance aus Kreativität und Technik.
+              {t("heroDescription")}
             </motion.p>
 
             <motion.div
@@ -100,7 +117,7 @@ export default function Hero() {
                 className="bg-teal-600 hover:bg-teal-700 text-white rounded-full px-6 transition-all hover:scale-105"
                 onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
               >
-                Projekt anfragen
+                {t("requestProject")}
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
               <Button
@@ -109,7 +126,7 @@ export default function Hero() {
                 className="border-forest-green dark:border-white text-forest-green dark:text-white hover:bg-forest-green/10 dark:hover:bg-white/10 rounded-full px-6 transition-all hover:scale-105"
                 onClick={() => document.getElementById("services")?.scrollIntoView({ behavior: "smooth" })}
               >
-                Dienstleistungen entdecken
+                {t("discoverServices")}
               </Button>
             </motion.div>
           </motion.div>
@@ -121,7 +138,7 @@ export default function Hero() {
             className="md:w-1/2 flex justify-center"
           >
             <div className="relative w-full max-w-md">
-                <motion.div
+              <motion.div
                 className="relative aspect-square scale-125"
                 animate={{
                   y: [0, -15, 0],
@@ -132,14 +149,14 @@ export default function Hero() {
                   repeatType: "reverse",
                   ease: "easeInOut",
                 }}
-                >
+              >
                 <Image
                   src="/images/small-frog.png"
                   alt="Ein entspannter Frosch mit Unity-Logo"
                   fill
                   className="object-contain"
                 />
-                </motion.div>
+              </motion.div>
               <motion.div
                 className="absolute bottom-4 right-4 bg-mint-100 dark:bg-teal-900 rounded-full p-3 shadow-lg"
                 whileHover={{ rotate: 10, scale: 1.1 }}

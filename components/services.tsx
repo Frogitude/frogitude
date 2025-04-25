@@ -3,27 +3,29 @@
 import { motion } from "framer-motion"
 import { Gamepad2, Glasses, CuboidIcon as Cube } from "lucide-react"
 import Image from "next/image"
+import { useLanguage } from "@/context/language-context"
 
 export default function Services() {
+  const { t } = useLanguage()
+
   const services = [
     {
       icon: <Gamepad2 className="h-10 w-10 text-teal-600 dark:text-teal-400" />,
-      title: "Game Development",
-      description:
-        "Entwicklung von Spielen für PC, Mobile und Konsolen mit Unity. Von der Konzeption bis zum fertigen Produkt.",
-      image: "/images/service-game.png",
+      title: t("gameDevelopment"),
+      description: t("gameDevelopmentDesc"),
+      image: "/images/broomstickBarry.gif",
     },
     {
       icon: <Glasses className="h-10 w-10 text-teal-600 dark:text-teal-400" />,
-      title: "XR Development",
-      description: "Professionelle Entwicklung von AR- und VR-Anwendungen für verschiedene Plattformen und Endgeräte.",
-      image: "/images/service-xr.png",
+      title: t("xrDevelopment"),
+      description: t("xrDevelopmentDesc"),
+      image: "/images/womenvr.gif",
     },
     {
       icon: <Cube className="h-10 w-10 text-teal-600 dark:text-teal-400" />,
-      title: "3D Visualisierung",
-      description: "Erstellung interaktiver 3D-Visualisierungen für Architektur, Produktpräsentation und Marketing.",
-      image: "/images/service-3d.png",
+      title: t("visualization"),
+      description: t("visualizationDesc"),
+      image: "/images/ar.gif",
     },
   ]
 
@@ -57,13 +59,10 @@ export default function Services() {
           className="text-center mb-16"
         >
           <div className="inline-block bg-teal-100 dark:bg-teal-900/50 text-teal-800 dark:text-teal-300 px-4 py-1 rounded-full text-sm font-medium mb-4">
-            Meine Dienstleistungen
+            {t("myServices")}
           </div>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-800 dark:text-white">Was ich anbiete</h2>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Spezialisiert auf Unity-basierte Entwicklung biete ich maßgeschneiderte Lösungen mit einer entspannten und
-            professionellen Herangehensweise.
-          </p>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-800 dark:text-white">{t("whatIOffer")}</h2>
+          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">{t("servicesDescription")}</p>
         </motion.div>
 
         <motion.div
@@ -116,7 +115,7 @@ export default function Services() {
 
           <div className="relative z-10">
             <h3 className="text-2xl md:text-3xl font-bold mb-6 text-gray-800 dark:text-white">
-              Warum mit mir zusammenarbeiten?
+              {t("whyWorkWithMe")}
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -128,10 +127,10 @@ export default function Services() {
                 <div className="w-12 h-12 bg-teal-100 dark:bg-teal-900/50 rounded-full flex items-center justify-center mb-4">
                   <span className="text-2xl">🧩</span>
                 </div>
-                <h4 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Technische Expertise</h4>
-                <p className="text-gray-600 dark:text-gray-300">
-                  Fundierte Kenntnisse in C#, Clean Code und Performance-Optimierung für Unity-Projekte.
-                </p>
+                <h4 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">
+                  {t("technicalExpertise")}
+                </h4>
+                <p className="text-gray-600 dark:text-gray-300">{t("technicalExpertiseDesc")}</p>
               </motion.div>
 
               <motion.div
@@ -142,10 +141,10 @@ export default function Services() {
                 <div className="w-12 h-12 bg-teal-100 dark:bg-teal-900/50 rounded-full flex items-center justify-center mb-4">
                   <span className="text-2xl">💡</span>
                 </div>
-                <h4 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Kreative Lösungen</h4>
-                <p className="text-gray-600 dark:text-gray-300">
-                  Innovative Ansätze für komplexe Probleme und benutzerorientierte Entwicklung.
-                </p>
+                <h4 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">
+                  {t("creativeSolutions")}
+                </h4>
+                <p className="text-gray-600 dark:text-gray-300">{t("creativeSolutionsDesc")}</p>
               </motion.div>
 
               <motion.div
@@ -156,10 +155,10 @@ export default function Services() {
                 <div className="w-12 h-12 bg-teal-100 dark:bg-teal-900/50 rounded-full flex items-center justify-center mb-4">
                   <span className="text-2xl">🤝</span>
                 </div>
-                <h4 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Entspannte Zusammenarbeit</h4>
-                <p className="text-gray-600 dark:text-gray-300">
-                  Transparente Kommunikation, agile Arbeitsweise und termingerechte Lieferung.
-                </p>
+                <h4 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">
+                  {t("relaxedCollaboration")}
+                </h4>
+                <p className="text-gray-600 dark:text-gray-300">{t("relaxedCollaborationDesc")}</p>
               </motion.div>
             </div>
           </div>
