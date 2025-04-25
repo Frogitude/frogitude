@@ -7,36 +7,6 @@ import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { useLanguage } from "@/context/language-context"
 
-// Script-based implementation
-const script = {
-  init: () => {
-    // Add any script-based functionality here
-    const animateBubbles = () => {
-      const bubbles = document.querySelectorAll(".footer-bubble")
-      bubbles.forEach((bubble, index) => {
-        const duration = 3 + Math.random() * 4
-        const delay = index * 0.2
-
-        const animation = bubble.animate(
-          [{ transform: "translateY(0)" }, { transform: "translateY(-15px)" }, { transform: "translateY(0)" }],
-          {
-            duration: duration * 1000,
-            delay: delay * 1000,
-            iterations: Number.POSITIVE_INFINITY,
-            direction: "alternate",
-            easing: "ease-in-out",
-          },
-        )
-
-        return () => animation.cancel()
-      })
-    }
-
-    // Run animations
-    animateBubbles()
-  },
-}
-
 export default function Footer() {
   const { t } = useLanguage()
   const legalLinks = [
@@ -44,11 +14,6 @@ export default function Footer() {
     { name: t("privacy"), href: "/datenschutz" },
     { name: t("terms"), href: "/agb" },
   ]
-
-  // Run script on client-side
-  if (typeof window !== "undefined") {
-    setTimeout(() => script.init(), 100)
-  }
 
   return (
     <footer className="bg-forest-green dark:bg-forest-green-800 text-white py-12 relative overflow-hidden" id="footer">
@@ -62,18 +27,6 @@ export default function Footer() {
       <div className="absolute bottom-0 right-20 w-16 h-16">
         <Image src="/images/lily-pad.png" alt="Lily pad" width={64} height={64} className="opacity-20" />
       </div>
-
-      {/* Bubbles */}
-      {[...Array(5)].map((_, i) => (
-        <div
-          key={i}
-          className="footer-bubble absolute w-4 h-4 rounded-full border border-teal-300 dark:border-teal-700 opacity-30"
-          style={{
-            bottom: `${Math.random() * 40}%`,
-            left: `${20 + Math.random() * 60}%`,
-          }}
-        ></div>
-      ))}
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
