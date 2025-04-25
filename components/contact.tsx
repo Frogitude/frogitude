@@ -26,7 +26,7 @@ export default function Contact() {
           {/* Email Me Button */}
           <div className="text-center mt-8 mb-8">
             <a
-              href="mailto:freddakdogan2@gmail.com"
+              href="mailto:info@frogitude.com"
               className="inline-flex items-center px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white rounded-full text-lg font-medium focus:outline-none focus:ring-2 focus:ring-teal-400"
             >
               <Mail className="mr-2 h-5 w-5" />
@@ -42,10 +42,10 @@ export default function Contact() {
               </div>
               <h4 className="font-medium text-gray-700 dark:text-gray-200">{t("email")}</h4>
               <a
-                href="mailto:freddakdogan2@gmail.com"
+                href="mailto:info@frogitude.com"
                 className="text-teal-600 dark:text-teal-400 hover:underline"
               >
-                freddakdogan2@gmail.com
+                info@frogitude.com
               </a>
             </div>
 

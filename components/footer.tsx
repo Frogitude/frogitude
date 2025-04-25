@@ -96,7 +96,7 @@ export default function Footer() {
                 <span className="sr-only">GitHub</span>
               </a>
               <a
-                href="https://www.linkedin.com/"
+                href="https://www.linkedin.com/in/fred-newton-akdogan-b6a775257/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-white/10 hover:bg-white/20 p-2 rounded-full transition-colors"
@@ -105,7 +105,7 @@ export default function Footer() {
                 <span className="sr-only">LinkedIn</span>
               </a>
               <a
-                href="mailto:freddakdogan2@gmail.com"
+                href="mailto:info@frogitude.com"
                 className="bg-white/10 hover:bg-white/20 p-2 rounded-full transition-colors"
               >
                 <Mail className="h-5 w-5 text-white" />

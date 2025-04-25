@@ -104,7 +104,7 @@ export default function About() {
             <div className="inline-block bg-teal-100 dark:bg-teal-900/50 text-teal-800 dark:text-teal-300 px-4 py-1 rounded-full text-sm font-medium mb-4">
               {t("aboutMe")}
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-800 dark:text-white">Fred Newton</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-800 dark:text-white">Fred <i>"Freddy"</i> Newton, Akdogan</h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">{t("aboutMeDescription")}</p>
 
             <div className="mb-8 bg-gray-50 dark:bg-gray-700 p-6 rounded-2xl">

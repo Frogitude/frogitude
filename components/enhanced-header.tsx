@@ -32,8 +32,7 @@ export default function EnhancedHeader() {
       name: t("projects"),
       href: "#",
       dropdown: [
-        { name: t("meowdieval"), href: "#game" },
-        { name: t("portfolio"), href: "#portfolio" },
+        { name: t("meowdieval"), href: "#game" }
       ],
     },
     { name: t("about"), href: "#about" },

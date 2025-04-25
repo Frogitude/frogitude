@@ -77,7 +77,7 @@ export default function EnhancedFooter() {
                 <span className="sr-only">GitHub</span>
               </a>
               <a
-                href="https://www.linkedin.com/"
+                href="https://www.linkedin.com/in/fred-newton-akdogan-b6a775257/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-white hover:text-teal-300 transition-colors p-2 bg-gray-700 dark:bg-teal-900/30 rounded-full hover:bg-teal-900/50"
@@ -86,7 +86,7 @@ export default function EnhancedFooter() {
                 <span className="sr-only">LinkedIn</span>
               </a>
               <a
-                href="mailto:freddakdogan2@gmail.com"
+                href="mailto:info@frogitude.com"
                 className="text-white hover:text-teal-300 transition-colors p-2 bg-gray-700 dark:bg-teal-900/30 rounded-full hover:bg-teal-900/50"
               >
                 <Mail className="h-5 w-5" />
@@ -159,10 +159,10 @@ export default function EnhancedFooter() {
               <p className="text-gray-300 dark:text-teal-300">Fred Newton</p>
               <p className="text-gray-300 dark:text-teal-300">Erding, Deutschland</p>
               <a
-                href="mailto:freddakdogan2@gmail.com"
+                href="mailto:info@frogitude.com"
                 className="text-gray-300 dark:text-teal-300 hover:text-white transition-colors block mt-2"
               >
-                freddakdogan2@gmail.com
+                info@frogitude.com
               </a>
               <a
                 href="tel:+4917662031322"
@@ -178,27 +178,6 @@ export default function EnhancedFooter() {
           <p className="text-gray-400 dark:text-teal-400/70 text-sm">
             © {currentYear} Frogitude. {t("allRightsReserved")}
           </p>
-
-          <div className="mt-4 md:mt-0 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm">
-            <a
-              href="#"
-              className="text-gray-400 dark:text-teal-400/70 hover:text-white transition-colors flex items-center gap-1"
-            >
-              Sitemap
-            </a>
-            <a
-              href="#"
-              className="text-gray-400 dark:text-teal-400/70 hover:text-white transition-colors flex items-center gap-1"
-            >
-              {t("cookieSettings")}
-            </a>
-            <a
-              href="#"
-              className="text-gray-400 dark:text-teal-400/70 hover:text-white transition-colors flex items-center gap-1"
-            >
-              {t("accessibility")}
-            </a>
-          </div>
         </div>
       </div>
     </footer>

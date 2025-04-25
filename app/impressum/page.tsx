@@ -32,7 +32,7 @@ export default function Impressum() {
               <br />
               Frogitude
               <br />
-              Musterstraße 123
+              Franz-Brombach-Str. 8a
               <br />
               85435 Erding
             </p>
@@ -41,7 +41,7 @@ export default function Impressum() {
             <p>
               Telefon: +49 176 62031322
               <br />
-              E-Mail: freddakdogan2@gmail.com
+              E-Mail: info@frogitude.com
             </p>
 
             <h2>Umsatzsteuer-ID</h2>
