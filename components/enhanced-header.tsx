@@ -26,17 +26,16 @@ export default function EnhancedHeader() {
   }
 
   const navItems = [
-    { name: t("services"), href: "#services" },
-    { name: t("pricing"), href: "#pricing" },
+    { name: t("services"), href: "/#services" },
     {
       name: t("projects"),
-      href: "#",
+      href: "/#game",
       dropdown: [
-        { name: t("meowdieval"), href: "#game" }
+        { name: t("meowdieval"), href: "/#game" }
       ],
     },
-    { name: t("about"), href: "#about" },
-    { name: t("contact"), href: "#contact" },
+    { name: t("about"), href: "/#about" },
+    { name: t("contact"), href: "/#contact" },
   ]
 
   const toggleLanguage = () => setLanguage(language === "de" ? "en" : "de")

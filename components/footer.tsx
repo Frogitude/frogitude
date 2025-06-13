@@ -77,12 +77,6 @@ export default function Footer() {
                 {t("services")}
               </Link>
               <Link
-                href="#pricing"
-                className="text-forest-green-200 dark:text-white/70 hover:text-white transition-colors"
-              >
-                {t("pricing")}
-              </Link>
-              <Link
                 href="#game"
                 className="text-forest-green-200 dark:text-white/70 hover:text-white transition-colors"
               >

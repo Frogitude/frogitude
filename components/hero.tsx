@@ -19,22 +19,6 @@ export default function Hero() {
 
   return (
     <section className="relative bg-mint-50 dark:bg-forest-green-800 overflow-hidden min-h-screen flex items-center">
-      {/* Background video */}
-      <div className="absolute inset-0 w-full h-full z-0">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover"
-          poster="/images/hero-poster.jpg"
-        >
-          <source src="/videos/hero-background.mp4" type="video/mp4" />
-        </video>
-        {/* Video overlay filter */}
-        <div className="absolute inset-0 bg-mint-50/80 dark:bg-forest-green-800/90 backdrop-blur-sm"></div>
-      </div>
-
       {/* Decorative elements */}
       <div className="absolute top-0 left-0 w-64 h-64 bg-orange-200 dark:bg-orange-900/30 rounded-full -translate-x-1/2 -translate-y-1/2 opacity-50"></div>
       <div className="absolute bottom-0 right-0 w-80 h-80 bg-teal-200 dark:bg-teal-900/30 rounded-full translate-x-1/3 translate-y-1/3 opacity-50"></div>

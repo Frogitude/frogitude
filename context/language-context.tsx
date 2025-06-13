@@ -97,7 +97,7 @@ const translations = {
     frogitudePronunciationUK: "/ˈfrɒɡɪˌtjuːd/",
     frogitudePronunciationUS: "/ˈfrɑːɡɪˌtuːd/",
     frogitudeExplanation:
-      "Das Wort Frogitude ist ein Portmanteau, das aus den Wörtern „frog“ (Frosch) und „gratitude“ (Dankbarkeit) gebildet wurde. Es ruft ein Gefühl spielerischer Wertschätzung für die Momente des Lebens hervor und ermutigt dazu, mit der gleichen Energie und Flexibilität wie ein Frosch in die Dankbarkeit zu springen.",
+      'Das Wort Frogitude ist ein Portmanteau, das aus den Wörtern "frog" (Frosch) und "gratitude" (Dankbarkeit) gebildet wurde. Es ruft ein Gefühl spielerischer Wertschätzung für die Momente des Lebens hervor und ermutigt dazu, mit der gleichen Energie und Flexibilität wie ein Frosch in die Dankbarkeit zu springen.',
     explanation: "Erklärung", // Added translation for "explanation"
     meaning: "Bedeutung",
     colloquial: "(umgangssprachlich, scherzhaft)",
@@ -105,7 +105,7 @@ const translations = {
     frogitudeMeaning1:
       "eine gelassene, eigenwillige und humorvolle Lebenseinstellung, die sich an der vermeintlichen Wesensart eines Frosches orientiert; Mischung aus Ruhe, Spontanität und charmantem Desinteresse an gesellschaftlichen Konventionen.",
     frogitudeMeaning2:
-      "Haltung, bei der man mit kindlicher Neugier, Selbstironie und einer Prise Chaos durchs Leben geht; das Leben mit „Frosch-Vibes“ leben.",
+      'Haltung, bei der man mit kindlicher Neugier, Selbstironie und einer Prise Chaos durchs Leben geht; das Leben mit "Frosch-Vibes" leben.',
     origin: "Herkunft",
     frogitudeOrigin:
       'Kombination aus dem englischen "frog" (Frosch) und "gratitude" (Dankbarkeit); beschreibt die dankbare, gelassene Lebenseinstellung eines Frosches, der das Leben in vollen Zügen genießt.',
@@ -231,6 +231,36 @@ const translations = {
     locationInfo: "Mit Sitz in Erding bin ich für Projekte in ganz Deutschland und international verfügbar.",
     emailMeAt: "Schreiben Sie mir eine E-Mail an",
     sendEmail: "E-Mail senden",
+
+    // --- LEGAL PAGES ---
+    // Impressum
+    imprintTitle: "Impressum",
+    imprintOwner: "Inhaber: Fred Newton Akdogan",
+    imprintCompany: "Firmenname: Softwareentwicklung Fred Newton Akdogan",
+    imprintAddress: "Franz-Brombach-Str. 8a, 85435 Erding",
+    imprintContact: "E-Mail: info@frogitude.com | Telefon: +49 176 62031322",
+    imprintTaxId: "Steuernummer: 114/200/31825",
+    imprintResponsible: "Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV: Fred Newton Akdogan, Franz-Brombach-Str. 8a, 85435 Erding",
+    imprintDispute: "Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: https://ec.europa.eu/consumers/odr/. Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.",
+    imprintLiability: "Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.",
+
+    // Datenschutz
+    privacyTitle: "Datenschutzerklärung",
+    privacyIntro: "Der Schutz Ihrer persönlichen Daten ist uns ein besonderes Anliegen. Wir verarbeiten Ihre Daten daher ausschließlich auf Grundlage der gesetzlichen Bestimmungen (DSGVO, TMG).",
+    privacyDataController: "Verantwortlicher: Fred Newton Akdogan, Franz-Brombach-Str. 8a, 85435 Erding, info@frogitude.com",
+    privacyDataCollection: "Beim Besuch dieser Website werden automatisch Informationen allgemeiner Natur erfasst (z.B. IP-Adresse, verwendeter Browser, Betriebssystem). Diese Daten lassen keine direkten Rückschlüsse auf Ihre Person zu und dienen ausschließlich der technischen Sicherheit und Verbesserung des Angebots.",
+    privacyRights: "Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung, Datenübertragbarkeit und Widerspruch. Wenn Sie glauben, dass die Verarbeitung Ihrer Daten gegen das Datenschutzrecht verstößt, können Sie sich bei der Aufsichtsbehörde beschweren.",
+    privacyContact: "Für Fragen zum Datenschutz erreichen Sie uns unter info@frogitude.com.",
+
+    // AGB
+    termsTitle: "Allgemeine Geschäftsbedingungen (AGB)",
+    termsIntro: "Diese Allgemeinen Geschäftsbedingungen (AGB) gelten für alle Verträge zwischen Softwareentwicklung Fred Newton Akdogan (nachfolgend 'Auftragnehmer') und ihren Kunden (nachfolgend 'Auftraggeber').",
+    termsScope: "1. Geltungsbereich: Die AGB gelten für alle Leistungen und Angebote des Auftragnehmers.",
+    termsConclusion: "2. Vertragsschluss: Ein Vertrag kommt durch schriftliche Bestätigung des Angebots zustande.",
+    termsServices: "3. Leistungen: Der Umfang der Leistungen ergibt sich aus dem jeweiligen Angebot. Änderungen bedürfen der Schriftform.",
+    termsPayment: "4. Vergütung: Die Vergütung richtet sich nach dem vereinbarten Angebot. Zahlungen sind innerhalb von 14 Tagen nach Rechnungsstellung fällig.",
+    termsLiability: "5. Haftung: Der Auftragnehmer haftet nur für Vorsatz und grobe Fahrlässigkeit. Für Datenverluste wird nur gehaftet, wenn der Auftraggeber regelmäßige Datensicherungen durchgeführt hat.",
+    termsFinal: "6. Schlussbestimmungen: Es gilt deutsches Recht. Gerichtsstand ist Erding.",
   },
   en: {
     // Navigation
@@ -439,6 +469,36 @@ const translations = {
     locationInfo: "Based in Erding, I am available for projects throughout Germany and internationally.",
     emailMeAt: "Email me at",
     sendEmail: "Send Email",
+
+    // --- LEGAL PAGES ENGLISH ---
+    // Imprint
+    imprintTitle: "Imprint",
+    imprintOwner: "Owner: Fred Newton Akdogan",
+    imprintCompany: "Company: Softwareentwicklung Fred Newton Akdogan",
+    imprintAddress: "Franz-Brombach-Str. 8a, 85435 Erding, Germany",
+    imprintContact: "Email: info@frogitude.com | Phone: +49 176 62031322",
+    imprintTaxId: "Tax Number: 114/200/31825",
+    imprintResponsible: "Responsible for content according to § 55 Abs. 2 RStV: Fred Newton Akdogan, Franz-Brombach-Str. 8a, 85435 Erding, Germany",
+    imprintDispute: "The European Commission provides a platform for online dispute resolution (ODR): https://ec.europa.eu/consumers/odr/. We are not willing or obliged to participate in dispute resolution proceedings before a consumer arbitration board.",
+    imprintLiability: "As a service provider, we are responsible for our own content on these pages in accordance with general laws (§ 7 Abs.1 TMG). However, according to §§ 8 to 10 TMG, we are not obliged to monitor transmitted or stored third-party information or to investigate circumstances that indicate illegal activity.",
+
+    // Privacy Policy
+    privacyTitle: "Privacy Policy",
+    privacyIntro: "The protection of your personal data is very important to us. We process your data exclusively on the basis of the legal regulations (GDPR, TMG).",
+    privacyDataController: "Controller: Fred Newton Akdogan, Franz-Brombach-Str. 8a, 85435 Erding, info@frogitude.com",
+    privacyDataCollection: "When you visit this website, general information is automatically collected (e.g. IP address, browser used, operating system). This data does not allow any direct conclusions to be drawn about your person and is used exclusively for technical security and to improve the offer.",
+    privacyRights: "You have the right to information, correction, deletion, restriction, data portability and objection. If you believe that the processing of your data violates data protection law, you can complain to the supervisory authority.",
+    privacyContact: "If you have any questions about data protection, please contact us at info@frogitude.com.",
+
+    // Terms & Conditions
+    termsTitle: "Terms & Conditions",
+    termsIntro: "These Terms & Conditions apply to all contracts between Softwareentwicklung Fred Newton Akdogan (hereinafter 'Contractor') and its clients (hereinafter 'Client').",
+    termsScope: "1. Scope: These terms apply to all services and offers of the Contractor.",
+    termsConclusion: "2. Conclusion of contract: A contract is concluded by written confirmation of the offer.",
+    termsServices: "3. Services: The scope of services results from the respective offer. Changes require written form.",
+    termsPayment: "4. Payment: The remuneration is based on the agreed offer. Payments are due within 14 days of invoicing.",
+    termsLiability: "5. Liability: The Contractor is only liable for intent and gross negligence. Liability for data loss only applies if the Client has carried out regular data backups.",
+    termsFinal: "6. Final provisions: German law applies. Place of jurisdiction is Erding.",
   },
 }
 

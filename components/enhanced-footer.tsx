@@ -104,11 +104,6 @@ export default function EnhancedFooter() {
                 </Link>
               </li>
               <li>
-                <Link href="#pricing" className="text-gray-300 dark:text-teal-300 hover:text-white transition-colors">
-                  {t("pricing")}
-                </Link>
-              </li>
-              <li>
                 <Link href="#game" className="text-gray-300 dark:text-teal-300 hover:text-white transition-colors">
                   {t("meowdieval")}
                 </Link>

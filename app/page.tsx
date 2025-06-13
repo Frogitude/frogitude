@@ -1,7 +1,7 @@
 import EnhancedHeader from "@/components/enhanced-header"
 import Hero from "@/components/hero"
 import Services from "@/components/services"
-import Pricing from "@/components/pricing"
+// import Pricing from "@/components/pricing"
 import GameShowcase from "@/components/game-showcase"
 import About from "@/components/about"
 import Contact from "@/components/contact"
@@ -14,7 +14,7 @@ export default function Home() {
       <EnhancedHeader />
       <Hero />
       <Services />
-      <Pricing />
+      {/* <Pricing /> */}
       <GameShowcase />
       <About />
       <FrogitudeDefinition />

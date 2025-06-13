@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import { motion } from "framer-motion"
-import { CheckCircle2 } from "lucide-react"
+import { CheckCircle2, Briefcase, Car, Building2, Users, Settings } from "lucide-react"
 import { useLanguage } from "@/context/language-context"
 
 export default function About() {
@@ -25,30 +25,35 @@ export default function About() {
       logo: "/images/superswipelogo.png",
       period: "03/2025 - current",
       role: t("unityDeveloper"),
+      icon: <Users className="h-7 w-7 text-teal-600 dark:text-teal-400" />,
     },
     {
       name: t("mercedesBenzTechMotion"),
       logo: "/images/mercedes_benz_tech_motion_logo.jpeg",
       period: "10/2021 - 10/2024",
       role: t("arEngineer"),
+      icon: <Car className="h-7 w-7 text-teal-600 dark:text-teal-400" />,
     },
     {
       name: t("technologyAndStrategy"),
       logo: "/images/technology-and-strategy-1622792748.jpg",
       period: "10/2021 - 10/2024",
       role: t("consultant"),
+      icon: <Briefcase className="h-7 w-7 text-teal-600 dark:text-teal-400" />,
     },
     {
       name: t("fridie"),
       logo: "/images/FRIDIE_black_wordmark.svg",
       period: "02/2021 - 09/2021",
       role: t("unityDeveloper"),
+      icon: <Settings className="h-7 w-7 text-teal-600 dark:text-teal-400" />,
     },
     {
       name: t("bosch"),
       logo: "/images/bosch_logo.jpeg",
       period: "01/2020 - 01/2021",
       role: t("softwareEngineer"),
+      icon: <Building2 className="h-7 w-7 text-teal-600 dark:text-teal-400" />,
     },
   ]
 
@@ -129,13 +134,14 @@ export default function About() {
                     transition={{ type: "spring", stiffness: 300 }}
                     className="bg-white dark:bg-gray-700 p-4 rounded-xl shadow-md flex flex-col items-center text-center"
                   >
-                    <div className="w-20 h-20 bg-gray-50 dark:bg-gray-800 rounded-full p-3 mb-4 flex items-center justify-center overflow-hidden">
+                    <div className="w-24 h-24 bg-white dark:bg-gray-900 rounded-2xl mb-4 flex items-center justify-center border border-gray-200 dark:border-gray-700 shadow-lg overflow-hidden">
                       <Image
                         src={company.logo || "/placeholder.svg"}
                         alt={`${company.name} logo`}
-                        width={120}
-                        height={120}
-                        className="object-cover"
+                        width={96}
+                        height={96}
+                        className="object-contain w-20 h-20"
+                        style={{ background: 'white' }}
                       />
                     </div>
                     <h4 className="font-semibold text-gray-800 dark:text-white">{company.name}</h4>
