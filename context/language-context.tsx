@@ -33,20 +33,20 @@ const translations = {
     contact: "Kontakt",
     requestProject: "Projekt anfragen",
 
-    // Hero
-    unityDevStudio: "Unity Development Studio",
-    unityDevelopment: "Unity Development",
-    withFrogitude: "mit Frogitude",
+    // Hero (SEO-optimiert)
+    unityDevStudio: "Unity Entwicklung, XR & 3D Visualisierung – Freelancer aus Deutschland",
+    unityDevelopment: "Unity Entwicklung, XR & 3D Visualisierung",
+    withFrogitude: "mit Frogitude – Ihr Freelancer für Games, AR/VR & Softwareentwicklung",
     heroDescription:
-      "Entspannte und professionelle Unity-Entwicklung für Games, XR und 3D-Visualisierungen. Mit der richtigen Balance aus Kreativität und Technik.",
-    discoverServices: "Dienstleistungen entdecken",
+      "Ich bin Fred Newton Akdogan, erfahrener Unity Entwickler und Freelancer aus Erding, Deutschland. Ich biete professionelle Unity-Entwicklung, AR/VR-Lösungen, 3D-Visualisierung und Game Development für Unternehmen, Startups und Agenturen. Spezialisiert auf C#, HoloLens, Mobile, PC und individuelle Softwarelösungen.",
+    discoverServices: "Unity & XR Dienstleistungen entdecken",
 
-    // About
-    aboutMe: "Über mich",
+    // About (SEO-optimiert)
+    aboutMe: "Über mich – Unity Entwickler & XR Freelancer aus Deutschland",
     aboutMeDescription:
-      "Ich bin ein deutscher Unity-Entwickler mit über 4 Jahren Berufserfahrung in Unity & C#, spezialisiert auf innovative XR-Lösungen für iOS, HoloLens und Automotive-Anwendungen. Mein Fokus liegt auf performanten, benutzerzentrierten Erlebnissen durch agile Projektmethoden und Clean Code.",
-    coreCompetencies: "Meine Kernkompetenzen",
-    myExperience: "Meine Erfahrung",
+      "Ich bin Fred Newton Akdogan, erfahrener Unity Entwickler und Freelancer aus Erding, Deutschland. Mit über 4 Jahren Berufserfahrung in Unity & C# biete ich professionelle Unity Entwicklung, AR/VR-Lösungen, 3D Visualisierung und Game Development für Unternehmen, Startups und Agenturen. Spezialisiert auf HoloLens, Mobile, PC, Clean Code und individuelle Softwarelösungen. Ihr Partner für innovative XR-Projekte und performante Anwendungen.",
+    coreCompetencies: "Kernkompetenzen: Unity, XR, 3D, C#, HoloLens, Prototyping, Clean Code",
+    myExperience: "Erfahrung & Referenzen als Unity Freelancer",
 
     // Skills
     unitySkill: "Unity & C# (4+ Jahre)",
@@ -58,20 +58,20 @@ const translations = {
     zenjectSkill: "Dependency Injection (Zenject)",
     uniRxSkill: "Reactive Programming (UniRx/UniTask)",
 
-    // Services
-    myServices: "Meine Dienstleistungen",
-    whatIOffer: "Was ich anbiete",
+    // Services (SEO-optimiert)
+    myServices: "Unity & XR Dienstleistungen",
+    whatIOffer: "Was ich als Unity Entwickler anbiete",
     servicesDescription:
-      "Spezialisiert auf Unity-basierte Entwicklung biete ich maßgeschneiderte Lösungen mit einer entspannten und professionellen Herangehensweise.",
-    gameDevelopment: "Game Development",
+      "Unity Entwicklung für Unternehmen, Startups und Agenturen: AR/VR-Lösungen, 3D-Visualisierung, Game Development, Prototyping und individuelle Softwareentwicklung. Fokus auf Performance, Benutzerfreundlichkeit und innovative Technologien.",
+    gameDevelopment: "Game Development mit Unity",
     gameDevelopmentDesc:
-      "Entwicklung von Spielen für PC, Mobile und Konsolen mit Unity. Von der Konzeption bis zum fertigen Produkt.",
-    xrDevelopment: "XR Development",
+      "Entwicklung von Spielen für PC, Mobile und Konsolen mit Unity. Von der Konzeption bis zum fertigen Produkt. Erfahrung mit Indie Games, Mobile Games und Multiplayer-Lösungen.",
+    xrDevelopment: "AR/VR Entwicklung & XR Solutions",
     xrDevelopmentDesc:
-      "Professionelle Entwicklung von AR- und VR-Anwendungen für verschiedene Plattformen und Endgeräte.",
-    visualization: "3D Visualisierung",
+      "Professionelle Entwicklung von Augmented Reality (AR) und Virtual Reality (VR) Anwendungen für verschiedene Plattformen: HoloLens, Mobile, WebXR und mehr. Fokus auf innovative Nutzererlebnisse.",
+    visualization: "3D Visualisierung & Simulation",
     visualizationDesc:
-      "Erstellung interaktiver 3D-Visualisierungen für Architektur, Produktpräsentation und Marketing.",
+      "Erstellung interaktiver 3D-Visualisierungen für Architektur, Produktpräsentation, Marketing und Simulation. Maßgeschneiderte Lösungen für Unternehmen und Agenturen.",
     whyWorkWithMe: "Warum mit mir zusammenarbeiten?",
     technicalExpertise: "Technische Expertise",
     technicalExpertiseDesc: "Fundierte Kenntnisse in C#, Clean Code und Performance-Optimierung für Unity-Projekte.",
@@ -178,14 +178,14 @@ const translations = {
     detailedProjectPlanning: "Detaillierte Projektplanung",
     aftercare: "Nachbetreuung",
 
-    // Footer
-    footerTagline: "Unity-Entwicklung mit Gelassenheit und Expertise",
-    navigation: "Navigation",
-    legal: "Rechtliches",
-    imprint: "Impressum",
-    privacy: "Datenschutz",
-    terms: "AGB",
-    allRightsReserved: "Alle Rechte vorbehalten.",
+    // Footer (SEO-optimiert)
+    footerTagline: "Unity Entwicklung, XR & 3D Visualisierung – Freelancer für Games, AR/VR & Softwareentwicklung in Deutschland",
+    navigation: "Navigation & Leistungen",
+    legal: "Rechtliches & Informationen",
+    imprint: "Impressum – Unity Freelancer Deutschland",
+    privacy: "Datenschutz – Softwareentwicklung & Web",
+    terms: "AGB – Unity Entwicklung & XR Services",
+    allRightsReserved: "Alle Rechte vorbehalten. Unity Entwicklung & XR Freelancer Fred Newton Akdogan.",
     cookieSettings: "Cookie-Einstellungen",
     accessibility: "Barrierefreiheit",
     theme: "Theme",
@@ -273,20 +273,20 @@ const translations = {
     contact: "Contact",
     requestProject: "Request Project",
 
-    // Hero
-    unityDevStudio: "Unity Development Studio",
-    unityDevelopment: "Unity Development",
-    withFrogitude: "with Frogitude",
+    // Hero (SEO-optimized)
+    unityDevStudio: "Unity Development, XR & 3D Visualization – Freelancer in Germany",
+    unityDevelopment: "Unity Development, XR & 3D Visualization",
+    withFrogitude: "with Frogitude – Your Freelancer for Games, AR/VR & Software Development",
     heroDescription:
-      "Relaxed and professional Unity development for games, XR, and 3D visualizations. With the right balance of creativity and technical expertise.",
-    discoverServices: "Discover Services",
+      "I am Fred Newton Akdogan, an experienced Unity developer and freelancer based in Erding, Germany. I offer professional Unity development, AR/VR solutions, 3D visualization, and game development for companies, startups, and agencies. Specialized in HoloLens, mobile, PC, clean code, and custom software solutions. Your partner for innovative XR projects and high-performance applications.",
+    discoverServices: "Discover Unity & XR Services",
 
-    // About
-    aboutMe: "About Me",
+    // About (SEO-optimized)
+    aboutMe: "About Me – Unity Developer & XR Freelancer in Germany",
     aboutMeDescription:
-      "I am a German Unity developer with over 4 years of professional experience in Unity & C#, specializing in innovative XR solutions for iOS, HoloLens, and automotive applications. My focus is on high-performance, user-centered experiences through agile project methods and clean code.",
-    coreCompetencies: "My Core Competencies",
-    myExperience: "My Experience",
+      "I am Fred Newton Akdogan, an experienced Unity developer and freelancer based in Erding, Germany. With over 4 years of professional experience in Unity & C#, I offer professional Unity development, AR/VR solutions, 3D visualization, and game development for companies, startups, and agencies. Specialized in HoloLens, mobile, PC, clean code, and custom software solutions. Your partner for innovative XR projects and high-performance applications.",
+    coreCompetencies: "Core Competencies: Unity, XR, 3D, C#, HoloLens, Prototyping, Clean Code",
+    myExperience: "Experience & References as a Unity Freelancer",
 
     // Skills
     unitySkill: "Unity & C# (4+ years)",
@@ -298,19 +298,20 @@ const translations = {
     zenjectSkill: "Dependency Injection (Zenject)",
     uniRxSkill: "Reactive Programming (UniRx/UniTask)",
 
-    // Services
-    myServices: "My Services",
-    whatIOffer: "What I Offer",
+    // Services (SEO-optimized)
+    myServices: "Unity & XR Services",
+    whatIOffer: "What I Offer as a Unity Developer",
     servicesDescription:
-      "Specialized in Unity-based development, I offer tailored solutions with a relaxed and professional approach.",
-    gameDevelopment: "Game Development",
+      "Unity development for companies, startups, and agencies: AR/VR solutions, 3D visualization, game development, prototyping, and custom software development. Focused on performance, usability, and innovative technologies.",
+    gameDevelopment: "Game Development with Unity",
     gameDevelopmentDesc:
-      "Development of games for PC, mobile, and consoles with Unity. From concept to finished product.",
-    xrDevelopment: "XR Development",
-    xrDevelopmentDesc: "Professional development of AR and VR applications for various platforms and devices.",
-    visualization: "3D Visualization",
+      "Development of games for PC, mobile, and consoles with Unity. From concept to finished product. Experience with indie games, mobile games, and multiplayer solutions.",
+    xrDevelopment: "AR/VR Development & XR Solutions",
+    xrDevelopmentDesc:
+      "Professional development of Augmented Reality (AR) and Virtual Reality (VR) applications for various platforms: HoloLens, mobile, WebXR, and more. Focused on innovative user experiences.",
+    visualization: "3D Visualization & Simulation",
     visualizationDesc:
-      "Creation of interactive 3D visualizations for architecture, product presentation, and marketing.",
+      "Creation of interactive 3D visualizations for architecture, product presentation, marketing, and simulation. Tailored solutions for companies and agencies.",
     whyWorkWithMe: "Why Work With Me?",
     technicalExpertise: "Technical Expertise",
     technicalExpertiseDesc: "In-depth knowledge of C#, clean code, and performance optimization for Unity projects.",
@@ -416,14 +417,14 @@ const translations = {
     detailedProjectPlanning: "Detailed Project Planning",
     aftercare: "Aftercare",
 
-    // Footer
-    footerTagline: "Unity Development with Serenity and Expertise",
-    navigation: "Navigation",
-    legal: "Legal",
-    imprint: "Imprint",
-    privacy: "Privacy Policy",
-    terms: "Terms & Conditions",
-    allRightsReserved: "All rights reserved.",
+    // Footer (SEO-optimized)
+    footerTagline: "Unity Development, XR & 3D Visualization – Freelancer for Games, AR/VR & Software Development in Germany",
+    navigation: "Navigation & Services",
+    legal: "Legal & Information",
+    imprint: "Imprint – Unity Freelancer Germany",
+    privacy: "Privacy Policy – Software Development & Web",
+    terms: "Terms & Conditions – Unity Development & XR Services",
+    allRightsReserved: "All rights reserved. Unity Development & XR Freelancer Fred Newton Akdogan.",
     cookieSettings: "Cookie Settings",
     accessibility: "Accessibility",
     theme: "Theme",

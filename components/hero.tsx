@@ -136,7 +136,7 @@ export default function Hero() {
               >
                 <Image
                   src="/images/small-frog.png"
-                  alt="Ein entspannter Frosch mit Unity-Logo"
+                  alt="Unity Entwickler Frosch Maskottchen – XR, Games, 3D Visualisierung, Freelancer Deutschland"
                   fill
                   className="object-contain"
                 />
@@ -148,7 +148,7 @@ export default function Hero() {
               >
                 <Image
                   src="/images/unity-logo.png"
-                  alt="Unity Logo"
+                  alt="Unity Logo – Softwareentwicklung, XR, Games, Deutschland"
                   width={60}
                   height={60}
                   className="object-contain"
