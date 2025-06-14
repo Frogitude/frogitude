@@ -67,9 +67,23 @@ export default function GameShowcase() {
           className="max-w-3xl mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden"
         >
           <div className="p-8 text-center">
-            <div className="w-16 h-16 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-3xl">🐱</span>
-            </div>
+            <motion.div
+              className="w-32 h-32 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center mx-auto mb-4"
+              animate={{ y: [0, -20, 0] }}
+              transition={{ duration: 2, repeat: Infinity, repeatType: "loop", ease: "easeInOut" }}
+            >
+              <Image
+                src="/images/MEOWK_icon.png"
+                alt="Meowdieval Kingdom Icon"
+                width={192}
+                height={192}
+                className="object-contain w-32 h-32"
+                priority
+              />
+            </motion.div>
+            <p className="text-base text-orange-700 dark:text-orange-300 mb-2 font-medium">
+              {t("meowdievalInfo")}
+            </p>
             <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-4">{t("comingSoon")}</h3>
             <p className="text-gray-600 dark:text-gray-300 mb-6">{t("gameDescription")}</p>
           </div>

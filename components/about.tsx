@@ -110,6 +110,39 @@ export default function About() {
               {t("aboutMe")}
             </div>
             <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-800 dark:text-white">Fred <i>"Freddy"</i> Newton, Akdogan</h2>
+            {/* Social Links */}
+            <div className="flex gap-4 mb-4">
+              <a
+                href="https://freddynewton.github.io"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-teal-700 dark:text-teal-300 hover:underline"
+                title="Portfolio"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2Zm0 2c1.657 0 3.156.672 4.243 1.757A5.978 5.978 0 0 1 20 12c0 1.657-.672 3.156-1.757 4.243A5.978 5.978 0 0 1 12 20a5.978 5.978 0 0 1-4.243-1.757A5.978 5.978 0 0 1 4 12c0-1.657.672-3.156 1.757-4.243A5.978 5.978 0 0 1 12 4Zm0 2a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm0 2a2 2 0 1 1 0 4 2 2 0 0 1 0-4Z"/></svg>
+                Portfolio
+              </a>
+              <a
+                href="https://github.com/freddynewton"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-teal-700 dark:text-teal-300 hover:underline"
+                title="GitHub"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.867 8.166 6.839 9.489.5.092.682-.217.682-.483 0-.237-.009-.868-.013-1.703-2.782.604-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.004.07 1.532 1.032 1.532 1.032.892 1.529 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.339-2.22-.253-4.555-1.112-4.555-4.951 0-1.093.39-1.987 1.029-2.686-.103-.253-.446-1.272.098-2.65 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.294 2.748-1.025 2.748-1.025.546 1.378.202 2.397.1 2.65.64.699 1.028 1.593 1.028 2.686 0 3.848-2.337 4.695-4.565 4.944.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.749 0 .268.18.579.688.481C19.135 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10Z"/></svg>
+                GitHub
+              </a>
+              <a
+                href="https://www.linkedin.com/in/fred-newton-akdogan-b6a775257/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-teal-700 dark:text-teal-300 hover:underline"
+                title="LinkedIn"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11 19h-3v-9h3v9zm-1.5-10.28c-.97 0-1.75-.79-1.75-1.75s.78-1.75 1.75-1.75 1.75.79 1.75 1.75-.78 1.75-1.75 1.75zm13.5 10.28h-3v-4.5c0-1.08-.02-2.47-1.5-2.47-1.5 0-1.73 1.17-1.73 2.39v4.58h-3v-9h2.89v1.23h.04c.4-.75 1.38-1.54 2.84-1.54 3.04 0 3.6 2 3.6 4.59v4.72z"/></svg>
+                LinkedIn
+              </a>
+            </div>
             <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">{t("aboutMeDescription")}</p>
 
             <div className="mb-8 bg-gray-50 dark:bg-gray-700 p-6 rounded-2xl">

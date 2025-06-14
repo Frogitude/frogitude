@@ -44,12 +44,12 @@ const translations = {
     // About (SEO-optimiert)
     aboutMe: "Über mich – Unity Entwickler & XR Freelancer aus Deutschland",
     aboutMeDescription:
-      "Ich bin Fred Newton Akdogan, erfahrener Unity Entwickler und Freelancer aus Erding, Deutschland. Mit über 4 Jahren Berufserfahrung in Unity & C# biete ich professionelle Unity Entwicklung, AR/VR-Lösungen, 3D Visualisierung und Game Development für Unternehmen, Startups und Agenturen. Spezialisiert auf HoloLens, Mobile, PC, Clean Code und individuelle Softwarelösungen. Ihr Partner für innovative XR-Projekte und performante Anwendungen.",
+      "Ich bin Fred Newton Akdogan, erfahrener Unity Entwickler und Freelancer aus Erding, Deutschland. Mit über {years} Jahren Berufserfahrung in Unity & C# biete ich professionelle Unity Entwicklung, AR/VR-Lösungen, 3D Visualisierung und Game Development für Unternehmen, Startups und Agenturen. Spezialisiert auf HoloLens, Mobile, PC, Clean Code und individuelle Softwarelösungen. Ihr Partner für innovative XR-Projekte und performante Anwendungen.",
     coreCompetencies: "Kernkompetenzen: Unity, XR, 3D, C#, HoloLens, Prototyping, Clean Code",
     myExperience: "Erfahrung & Referenzen als Unity Freelancer",
 
     // Skills
-    unitySkill: "Unity & C# (4+ Jahre)",
+    unitySkill: "Unity & C# ({years}+ Jahre)",
     arVrSkill: "AR/VR-Entwicklung",
     hololensSkill: "Microsoft HoloLens",
     performanceSkill: "Performance-Optimierung",
@@ -84,6 +84,7 @@ const translations = {
     indieGameDev: "Indie Game Development",
     meowdievalKingdom: "Meowdieval Kingdom",
     meowdievalDesc: "Ein gemütliches 3D-Idle-Strategiespiel im mittelalterlichen Katzensetting.",
+    meowdievalInfo: "Ein gemütlicher Mittelalter-Königreich-Simulator – baue, erkunde und entspanne mit Katzen!",
     comingSoon: "Neue Informationen folgen bald!",
     gameDescription:
       "Wir arbeiten fleißig an unserem gemütlichen Katzenabenteuer. Bleiben Sie dran für Updates und Neuigkeiten zu Meowdieval Kingdom.",
@@ -284,12 +285,12 @@ const translations = {
     // About (SEO-optimized)
     aboutMe: "About Me – Unity Developer & XR Freelancer in Germany",
     aboutMeDescription:
-      "I am Fred Newton Akdogan, an experienced Unity developer and freelancer based in Erding, Germany. With over 4 years of professional experience in Unity & C#, I offer professional Unity development, AR/VR solutions, 3D visualization, and game development for companies, startups, and agencies. Specialized in HoloLens, mobile, PC, clean code, and custom software solutions. Your partner for innovative XR projects and high-performance applications.",
+      "I am Fred Newton Akdogan, an experienced Unity developer and freelancer based in Erding, Germany. With over {years} years of professional experience in Unity & C#, I offer professional Unity development, AR/VR solutions, 3D visualization, and game development for companies, startups, and agencies. Specialized in HoloLens, mobile, PC, clean code, and custom software solutions. Your partner for innovative XR projects and high-performance applications.",
     coreCompetencies: "Core Competencies: Unity, XR, 3D, C#, HoloLens, Prototyping, Clean Code",
     myExperience: "Experience & References as a Unity Freelancer",
 
     // Skills
-    unitySkill: "Unity & C# (4+ years)",
+    unitySkill: "Unity & C# ({years}+ years)",
     arVrSkill: "AR/VR Development",
     hololensSkill: "Microsoft HoloLens",
     performanceSkill: "Performance Optimization",
@@ -324,6 +325,7 @@ const translations = {
     indieGameDev: "Indie Game Development",
     meowdievalKingdom: "Meowdieval Kingdom",
     meowdievalDesc: "A cozy 3D idle strategy game set in a medieval cat world.",
+    meowdievalInfo: "A cozy medieval kingdom simulator – build, explore, and relax with cats!",
     comingSoon: "New information coming soon!",
     gameDescription:
       "We're working diligently on our cozy cat adventure. Stay tuned for updates and news about Meowdieval Kingdom.",
@@ -531,9 +533,20 @@ export const LanguageProvider = ({ children }: LanguageProviderProps) => {
     localStorage.setItem("language", language)
   }, [language])
 
+  const getYearsOfExperience = () => {
+    const startYear = 2021;
+    const currentYear = new Date().getFullYear();
+    return currentYear - startYear + 1;
+  }
+
   const t = (key: string, params?: TranslationParams): string => {
     const currentTranslations = translations[language] || translations.de
     let translation = currentTranslations[key as keyof typeof translations['de']] || key
+
+    // Always inject years of experience if the key is aboutMeDescription or unitySkill
+    if ((key === "aboutMeDescription" || key === "unitySkill") && !params?.years) {
+      params = { ...params, years: getYearsOfExperience() }
+    }
 
     if (params) {
       Object.entries(params).forEach(([paramKey, paramValue]) => {
