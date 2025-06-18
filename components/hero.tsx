@@ -7,6 +7,45 @@ import { motion } from "framer-motion"
 import Image from "next/image"
 import { useLanguage } from "@/context/language-context"
 
+const techLogos = [
+  {
+    src: "/images/unity-logo.png",
+    alt: "Unity Logo",
+    className: "bottom-4 right-4",
+    size: 60,
+  },
+  {
+    src: "/images/blender-logo.png",
+    alt: "Blender Logo",
+    className: "top-4 left-4",
+    size: 55,
+  },
+  {
+    src: "/images/godot-logo.png",
+    alt: "Godot Logo",
+    className: "top-10 right-0",
+    size: 50,
+  },
+  {
+    src: "/images/csharp-logo.png",
+    alt: "C# Logo",
+    className: "top-1/2 -translate-y-1/2 left-0",
+    size: 45,
+  },
+  {
+    src: "/images/python-logo.png",
+    alt: "Python Logo",
+    className: "bottom-10 left-0",
+    size: 45,
+  },
+  {
+    src: "/images/aseprite-logo.png",
+    alt: "Aseprite Logo",
+    className: "bottom-1/2 translate-y-1/2 right-0",
+    size: 50,
+  },
+]
+
 export default function Hero() {
   const [mounted, setMounted] = useState(false)
   const { t } = useLanguage()
@@ -141,19 +180,26 @@ export default function Hero() {
                   className="object-contain"
                 />
               </motion.div>
-              <motion.div
-                className="absolute bottom-4 right-4 bg-mint-100 dark:bg-teal-900 rounded-full p-3 shadow-lg"
-                whileHover={{ rotate: 10, scale: 1.1 }}
-                transition={{ type: "spring", stiffness: 400, damping: 10 }}
-              >
-                <Image
-                  src="/images/unity-logo.png"
-                  alt="Unity Logo – Softwareentwicklung, XR, Games, Deutschland"
-                  width={60}
-                  height={60}
-                  className="object-contain"
-                />
-              </motion.div>
+              {techLogos.map((logo, index) => (
+                <motion.div
+                  key={index}
+                  className={`absolute bg-mint-100 dark:bg-teal-900 rounded-full p-3 shadow-lg ${logo.className}`}
+                  whileHover={{ scale: 1.25, rotate: 5 }}
+                  whileTap={{ scale: 1.1 }}
+                  transition={{ type: "spring", stiffness: 250, damping: 10 }}
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  style={{ transitionDelay: `${0.5 + index * 0.1}s` }}
+                >
+                  <Image
+                    src={logo.src}
+                    alt={logo.alt}
+                    width={logo.size}
+                    height={logo.size}
+                    className="object-contain"
+                  />
+                </motion.div>
+              ))}
             </div>
           </motion.div>
         </div>
