@@ -7,6 +7,7 @@ import About from "@/components/about"
 import Contact from "@/components/contact"
 import FrogitudeDefinition from "@/components/frogitude-definition"
 import EnhancedFooter from "@/components/enhanced-footer"
+import FAQ from "@/components/faq"
 
 export default function Home() {
   return (
@@ -17,6 +18,7 @@ export default function Home() {
       {/* <Pricing /> */}
       <GameShowcase />
       <About />
+      <FAQ />
       <FrogitudeDefinition />
       <Contact />
       <EnhancedFooter />
