@@ -103,18 +103,19 @@ export default function Hero({ id, content }) {
             <Magnetic>
               <Button
                 onClick={() => scrollToSection('projects')}
-                className="px-8 py-4 text-xl font-semibold bg-emerald-600 text-white hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-400/70 border border-emerald-300/30 rounded-xl shadow-lg shadow-emerald-900/20"
+                className="bg-gradient-to-r from-emerald-700 via-lime-600 to-lime-500 text-white px-8 py-4 rounded-full font-extrabold text-2xl shadow-lg shadow-emerald-900 transition-all duration-300 transform hover:scale-105"
+                style={{ position: 'relative', opacity: 1, background: 'linear-gradient(90deg, #059669 0%, #65a30d 50%, #84cc16 100%)' }}
               >
-                {content.button1}
+                {content.button1 || 'CTA1'}
               </Button>
             </Magnetic>
             <Magnetic>
               <Button
-                variant="plain"
                 onClick={() => scrollToSection('contact')}
-                className="px-8 py-4 text-xl font-semibold bg-slate-900 text-white hover:bg-slate-800 border border-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 rounded-xl shadow-lg shadow-black/30"
+                className="bg-gradient-to-r from-emerald-700 via-lime-600 to-lime-500 text-white px-8 py-4 rounded-full font-extrabold text-2xl shadow-lg shadow-emerald-900 transition-all duration-300 transform hover:scale-105"
+                style={{ position: 'relative', opacity: 1, background: 'linear-gradient(90deg, #059669 0%, #65a30d 50%, #84cc16 100%)' }}
               >
-                {content.button2}
+                {content.button2 || 'CTA2'}
               </Button>
             </Magnetic>
           </motion.div>
