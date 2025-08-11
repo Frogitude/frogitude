@@ -21,8 +21,8 @@ export default function Contact({ id, content }) {
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8 items-stretch">
           {/* Email only */}
           <div className="glass-effect rounded-3xl p-8 border border-border-primary hover:shadow-lg flex flex-col justify-center">
-            <h3 className="text-2xl md:text-3xl font-bold text-text-primary mb-4">{content.options?.email || 'E-Mail senden'}</h3>
-            <p className="text-text-secondary/95 mb-6">Schreib mir direkt per E‑Mail. Ich melde mich zeitnah zurück.</p>
+            <h3 className="text-2xl md:text-3xl font-bold text-text-primary mb-4">{content.options?.email || 'Email'}</h3>
+            <p className="text-text-secondary/95 mb-6">{content.emailBlurb || 'Write me directly via email. I will get back to you shortly.'}</p>
             <a
               href="mailto:info@frogitude.com"
               className="inline-flex items-center gap-3 px-6 py-4 rounded-xl bg-slate-900 text-white hover:bg-slate-800 transition-colors shadow-lg w-fit"

@@ -1,8 +1,12 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Play, Pause, ChevronDown } from 'lucide-react';
+import { useAppContext } from './AppContext';
+import { content } from './content';
 
 export default function WhatIsFrogitude({ id }) {
+  const { language } = useAppContext();
+  const t = content[language]?.frogitude || {};
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isOpen, setIsOpen] = useState(true);
@@ -57,7 +61,7 @@ export default function WhatIsFrogitude({ id }) {
             aria-controls="frogitude-content"
           >
             <h2 className="text-4xl md:text-5xl font-bold text-text-primary">
-              <span className="text-gradient">What is Frogitude?</span>
+              <span className="text-gradient">{t.title || 'What is Frogitude?'}</span>
             </h2>
             <ChevronDown className={`w-6 h-6 text-text-secondary transition-transform ${isOpen ? 'rotate-180' : ''}`} />
           </button>
@@ -72,50 +76,44 @@ export default function WhatIsFrogitude({ id }) {
             {/* Section visual */}
             <img
               src="/images/frogitude-hero.png"
-              alt="Frogitude illustration"
+              alt={t.imageAlt || 'Frogitude illustration'}
               className="w-full h-56 md:h-72 object-cover rounded-2xl mb-6"
               onError={(e) => { e.currentTarget.style.display = 'none'; }}
             />
 
             <div className="space-y-6 text-text-secondary/95 leading-relaxed text-lg">
             <div>
-              <h3 className="text-2xl font-semibold text-text-primary mb-2">Meaning</h3>
+              <h3 className="text-2xl font-semibold text-text-primary mb-2">{t.meaningTitle || 'Meaning'}</h3>
               <ul className="list-disc list-inside space-y-2">
-                <li>
-                  (colloquial, humorous) a calm, idiosyncratic, and humorous attitude to life that is oriented towards the supposed nature of a frog; a mixture of tranquility, spontaneity, and charming disinterest in social conventions.
-                </li>
-                <li>
-                  (internet jargon) An attitude where one goes through life with childlike curiosity, self-irony, and a pinch of chaos; living life with "frog vibes".
-                </li>
+                {(t.meaningList || []).map((line, i) => (
+                  <li key={i}>{line}</li>
+                ))}
               </ul>
             </div>
 
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
               <div>
                 <h4 className="font-semibold text-text-primary">Frogitude</h4>
-                <p className="text-sm text-text-secondary">Noun, feminine [the]</p>
+                <p className="text-sm text-text-secondary">{t.nounLabel || 'Noun, feminine [the]'}</p>
               </div>
               <div className="text-sm md:text-base text-text-secondary/90">
-                <span className="mr-6">UK: /ˈfrɒɡɪˌtjuːd/</span>
-                <span>US: /ˈfrɑːɡɪˌtuːd/</span>
+                <span className="mr-6">{t.ipaUk || 'UK: /ˈfrɒɡɪˌtjuːd/'}</span>
+                <span>{t.ipaUs || 'US: /ˈfrɑːɡɪˌtuːd/'}</span>
               </div>
             </div>
 
             <div>
-              <h3 className="text-2xl font-semibold text-text-primary mb-2">Explanation</h3>
-              <p>
-                The word Frogitude is a portmanteau created by merging 'frog' (the amphibian known for its leaping ability and adaptability) and 'gratitude' (the quality of being thankful). The term evokes a sense of playful appreciation for life's moments, encouraging one to 'leap' into gratitude with the same energy and flexibility as a frog.
-              </p>
-              <p className="mt-3">
-                Combination of "frog" and "gratitude"; describes the grateful, relaxed attitude of a frog that enjoys life to the fullest.
-              </p>
+              <h3 className="text-2xl font-semibold text-text-primary mb-2">{t.explainTitle || 'Explanation'}</h3>
+              {(t.explainParas || []).map((p, i) => (
+                <p key={i} className={i > 0 ? 'mt-3' : undefined}>{p}</p>
+              ))}
             </div>
 
             <div>
-              <h4 className="text-xl font-semibold text-text-primary mb-2">Examples</h4>
+              <h4 className="text-xl font-semibold text-text-primary mb-2">{t.examplesTitle || 'Examples'}</h4>
               <ul className="space-y-2 pl-4">
-                <li className="italic">– Since she quit her job, she's been living with real frogitude – barefoot in the garden and completely relaxed.</li>
-                <li className="italic">– He has such frogitude, nothing disturbs his peace.</li>
+                <li className="italic">{t.example1 || '– Since she quit her job, she’s been living with real frogitude — barefoot in the garden and completely relaxed.'}</li>
+                <li className="italic">{t.example2 || '– He has such frogitude; nothing disturbs his peace.'}</li>
               </ul>
             </div>
 
@@ -128,17 +126,15 @@ export default function WhatIsFrogitude({ id }) {
                   onClick={toggleAudio}
                   className={`inline-flex items-center gap-2 px-5 py-3 rounded-xl border glass-effect border-border-primary hover:border-accent-lime hover:shadow-lg text-text-primary/90 ${isPlaying ? 'ring-2 ring-accent-lime/60' : ''}`}
                   aria-pressed={isPlaying}
-                  aria-label={isPlaying ? 'Pause audio' : 'Play audio'}
+                  aria-label={isPlaying ? (t.audioPause || 'Pause') + ' audio' : (t.audioPlay || 'Play') + ' audio'}
                 >
                   {isPlaying ? <Pause className="w-5 h-5 text-accent-lime" /> : <Play className="w-5 h-5 text-accent-lime" />}
-                  <span>{isPlaying ? 'Pause' : 'Play'} Frogitude pronunciation</span>
+                  <span>{(isPlaying ? (t.audioPause || 'Pause') : (t.audioPlay || 'Play')) + ' ' + (t.audioCta || 'Frogitude pronunciation')}</span>
                 </button>
               </div>
               <div className="pt-4">
-                <h3 className="text-2xl font-semibold text-text-primary mb-2">Frogitude in Unity Development</h3>
-                <p>
-                  For us, Frogitude means a relaxed but professional approach to Unity development. We combine technical expertise with a calm working method that leaves room for creativity and innovation. Like a frog on its lily pad, we are calm and focused, but always ready to spontaneously respond to new challenges. At the same time, we are grateful for every project and value the collaboration with our clients.
-                </p>
+                <h3 className="text-2xl font-semibold text-text-primary mb-2">{t.unityTitle || 'Frogitude in Unity Development'}</h3>
+                <p>{t.unityText}</p>
               </div>
             </div>
           </motion.div>
