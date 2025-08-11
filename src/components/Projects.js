@@ -2,8 +2,12 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Briefcase, Building, Gamepad2 } from 'lucide-react';
 import { applyTilt } from '@/lib/tilt';
+import { useAppContext } from './AppContext';
+import { content as translations } from './content';
 
 export default function Projects({ id, content }) {
+  const { language } = useAppContext();
+  const t = translations[language];
   const [selectedProject, setSelectedProject] = useState(0);
   const listRef = useRef(null);
   const detailsRef = useRef(null);
@@ -31,21 +35,10 @@ export default function Projects({ id, content }) {
     };
   }, [selectedProject]);
 
-  const projects = [
+  const baseProjects = [
     {
       id: 'frogitude',
-      title: 'Frogitude',
-      subtitle: 'Freelance Unity & C# Solutions',
-      role: 'Gründer & Freelance Unity Entwickler',
-      company: 'Erding, Germany',
-      duration: 'Mai 2021 - Heute',
-      description: 'Als Gründer von Frogitude biete ich maßgeschneiderte Unity- und C#-Lösungen an. Ich unterstütze Kunden bei der Verwirklichung ihrer Visionen in der Spieleentwicklung und darüber hinaus, von Konzept bis zur Fertigstellung.',
-      highlights: [
-        'Entwicklung von Spielen für PC, Mobile & Konsole',
-        'Immersive AR/VR-Erlebnisse für HoloLens & Quest',
-        'Interaktive 3D-Visualisierungen',
-        'Code-Optimierung und agile Methoden'
-      ],
+      // titles and descriptions come from translations
       technologies: ['Unity', 'C#', 'AR/VR', 'Game Design', 'Blender'],
   images: ['/images/small-frog.png'],
   logo: '/images/small-frog.png',
@@ -54,17 +47,7 @@ export default function Projects({ id, content }) {
     },
     {
       id: 'meowdieval',
-      title: 'Meowdieval Kingdom',
-      subtitle: 'Lead Game Development',
-      role: 'Lead Unity Entwickler',
-      company: 'Remote / International',
-      duration: '2024 - Heute',
-      description: 'Leitung der Entwicklung eines stylischen, charmanten Projekts. Verantwortlich für Gameplay-Architektur, Feature-Umsetzung und Teamkoordination über mehrere Zeitzonen.',
-      highlights: [
-        'Leitung eines internationalen Teams (5+ Mitglieder)',
-        'Gameplay-Architektur, Prototyping und Iteration',
-        'Art/Tech-Abstimmung und Pipeline-Optimierungen'
-      ],
+      // localized fields from translations
   technologies: ['Unity', 'C#', 'Aseprite', 'Blender', 'Git'],
   images: ['/images/MEOWK_icon.png', '/images/meowdieval-kingdom.jpg'],
       logo: '/images/MEOWK_icon-green.png',
@@ -73,17 +56,7 @@ export default function Projects({ id, content }) {
     },
     {
       id: 'itchio',
-      title: 'Itch.io — Broomstick Barry',
-      subtitle: 'Indie Game Prototype',
-      role: 'Solo Dev / Prototype',
-      company: 'Itch.io',
-      duration: '2025',
-      description: 'A small, whimsical prototype exploring movement and arcade-feel. Built with Unity, tuned for game feel and moment-to-moment fun.',
-      highlights: [
-        'Fast iteration with Unity',
-        'Arcade-feel prototyping',
-        'Juicy movement and feedback'
-      ],
+      // localized fields from translations
       technologies: ['Unity', 'C#', 'Game Feel'],
       images: ['/images/broomstickBarry.gif'],
       logo: '/images/broomstickBarry.gif',
@@ -95,18 +68,7 @@ export default function Projects({ id, content }) {
     },
     {
       id: 'superswipe',
-      title: 'superswipe.games',
-      subtitle: 'Mobile Game Development',
-      role: 'Unity Game Entwickler',
-      company: 'Erding, Germany',
-      duration: 'Mär 2023 - Heute',
-      description: 'Entwicklung von Mobile Games unter Nutzung von Unity Cloud Services. Implementierung interaktiver Gameplay-Features und Optimierung der Spielperformance in Zusammenarbeit mit funktionsübergreifenden Teams.',
-      highlights: [
-        'Nutzung von Unity Cloud Services',
-        'Implementierung interaktiver Gameplay-Features',
-        'Zusammenarbeit in funktionsübergreifenden Teams',
-        'Testing und Debugging für reibungsloses Gameplay'
-      ],
+      // localized fields from translations
       technologies: ['Unity', 'Unity Cloud Services', 'Mobile Games', 'C#'],
   images: ['/images/superswipelogo.png'],
   logo: '/images/superswipelogo.png',
@@ -121,24 +83,30 @@ export default function Projects({ id, content }) {
     },
     {
       id: 'mercedes',
-      title: 'Mercedes Benz Tech Motion',
-      subtitle: 'Virtual Engineer',
-      role: 'Virtual Engineer',
-      company: 'Stuttgart, Germany',
-      duration: 'Okt 2021 - Okt 2022',
-      description: 'Leitung der Implementierung und Optimierung von XR-Lösungen. Management technischer Projekte, Anforderungsanalyse und Überwachung agiler Entwicklungspraktiken zur Leistungssteigerung auf HoloLens und iOS.',
-      highlights: [
-        'Implementierung von Lokalisierungslösungen für XR',
-        'Performance-Steigerung auf HoloLens & iOS',
-        'Wartung von MRTK 3.0 für HoloLens-Anwendungen',
-        'Optimiertes Modell-Tracking mit VisionLib SDK'
-      ],
+      // localized fields from translations
       technologies: ['Unity', 'HoloLens', 'iOS', 'MRTK 3.0', 'VisionLib SDK', 'Agile'],
       images: ['/images/mercedes_benz_tech_motion_logo.jpeg'],
       featured: false,
       icon: Building
     }
   ];
+
+  // Merge localized fields from content.projects.items
+  const projects = baseProjects.map((p) => {
+    const loc = t.projects?.items?.[p.id] || {};
+    return {
+      ...p,
+      title: loc.title || p.title || p.id,
+      subtitle: loc.subtitle || p.subtitle || '',
+      role: loc.role || p.role,
+      company: loc.company || p.company,
+      duration: loc.duration || p.duration,
+      description: loc.description || p.description || '',
+      highlights: loc.highlights || p.highlights || [],
+      technologies: p.technologies || loc.technologies || [],
+      links: loc.links || p.links,
+    };
+  });
 
   const currentProject = projects[selectedProject];
   const isSuperswipe = currentProject?.id === 'superswipe';
@@ -244,7 +212,7 @@ export default function Projects({ id, content }) {
                 {/* Embedded Discord only for Meowdieval */}
                 {currentProject.id === 'meowdieval' && (
                   <div className="pt-4">
-                    <h4 className="text-lg font-semibold text-text-primary mb-2">Join auf Discord</h4>
+                    <h4 className="text-lg font-semibold text-text-primary mb-2">{content.joinTitle || 'Join on Discord'}</h4>
                     {DISCORD_SERVER_ID ? (
                       <div className="w-full rounded-xl overflow-hidden border border-border-primary">
                         <iframe
@@ -259,7 +227,7 @@ export default function Projects({ id, content }) {
                       </div>
                     ) : (
                       <a href={DISCORD_INVITE} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900 text-white hover:bg-slate-800 shadow">
-                        Discord beitreten
+                        {content.joinButton || 'Join Discord'}
                       </a>
                     )}
                   </div>
