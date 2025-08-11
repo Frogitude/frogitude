@@ -23,7 +23,7 @@ jobs:
       - name: Build (sanity check)
         run: npm run build
 
-      - name: Deploy to Cloudflare Pages
+  - name: Deploy to Cloudflare Pages
         uses: cloudflare/pages-action@v1
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
