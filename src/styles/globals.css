@@ -1,0 +1,174 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-bg-primary-light: #f0fdf4;
+  --color-bg-secondary-light: #dcfce7;
+  --color-text-primary-light: #1f2937;
+  --color-text-secondary-light: #4b5563;
+  --color-border-primary-light: #d1d5db;
+  --color-accent-lime-light: #65a30d;
+  --color-accent-emerald-light: #059669;
+  --color-glow-light: rgba(132, 204, 22, 0.15);
+  --color-glow-secondary-light: rgba(52, 211, 153, 0.1);
+  --color-glass-bg-light: rgba(255, 255, 255, 0.5);
+  --color-glass-border-light: rgba(0, 0, 0, 0.1);
+
+  --color-bg-primary-dark: #0f172a;
+  --color-bg-secondary-dark: #1e293b;
+  --color-text-primary-dark: #f1f5f9;
+  --color-text-secondary-dark: #94a3b8;
+  --color-border-primary-dark: #334155;
+  --color-accent-lime-dark: #84cc16;
+  --color-accent-emerald-dark: #34d399;
+  --color-glow-dark: rgba(132, 204, 22, 0.1);
+  --color-glow-secondary-dark: rgba(52, 211, 153, 0.08);
+  --color-glass-bg-dark: rgba(30, 41, 59, 0.5);
+  --color-glass-border-dark: rgba(255, 255, 255, 0.1);
+}
+
+/* Default to light, switch to dark if user prefers (CSS only) */
+:root {
+  --bg-primary: var(--color-bg-primary-light);
+  --bg-secondary: var(--color-bg-secondary-light);
+  --text-primary: var(--color-text-primary-light);
+  --text-secondary: var(--color-text-secondary-light);
+  --border-primary: var(--color-border-primary-light);
+  --accent-lime: var(--color-accent-lime-light);
+  --accent-emerald: var(--color-accent-emerald-light);
+  --color-glow: var(--color-glow-light);
+  --color-glow-secondary: var(--color-glow-secondary-light);
+  --glass-bg: var(--color-glass-bg-light);
+  --glass-border: var(--color-glass-border-light);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-primary: var(--color-bg-primary-dark);
+    --bg-secondary: var(--color-bg-secondary-dark);
+    --text-primary: var(--color-text-primary-dark);
+    --text-secondary: var(--color-text-secondary-dark);
+    --border-primary: var(--color-border-primary-dark);
+    --accent-lime: var(--color-accent-lime-dark);
+    --accent-emerald: var(--color-accent-emerald-dark);
+    --color-glow: var(--color-glow-dark);
+    --color-glow-secondary: var(--color-glow-secondary-dark);
+    --glass-bg: var(--color-glass-bg-dark);
+    --glass-border: var(--color-glass-border-dark);
+  }
+}
+
+/* Optional manual override via data-theme (no JS variables manipulation needed) */
+:root[data-theme='light'] {
+  --bg-primary: var(--color-bg-primary-light);
+  --bg-secondary: var(--color-bg-secondary-light);
+  --text-primary: var(--color-text-primary-light);
+  --text-secondary: var(--color-text-secondary-light);
+  --border-primary: var(--color-border-primary-light);
+  --accent-lime: var(--color-accent-lime-light);
+  --accent-emerald: var(--color-accent-emerald-light);
+  --color-glow: var(--color-glow-light);
+  --color-glow-secondary: var(--color-glow-secondary-light);
+  --glass-bg: var(--color-glass-bg-light);
+  --glass-border: var(--color-glass-border-light);
+}
+
+:root[data-theme='dark'] {
+  --bg-primary: var(--color-bg-primary-dark);
+  --bg-secondary: var(--color-bg-secondary-dark);
+  --text-primary: var(--color-text-primary-dark);
+  --text-secondary: var(--color-text-secondary-dark);
+  --border-primary: var(--color-border-primary-dark);
+  --accent-lime: var(--color-accent-lime-dark);
+  --accent-emerald: var(--color-accent-emerald-dark);
+  --color-glow: var(--color-glow-dark);
+  --color-glow-secondary: var(--color-glow-secondary-dark);
+  --glass-bg: var(--color-glass-bg-dark);
+  --glass-border: var(--color-glass-border-dark);
+}
+
+* { scroll-behavior: smooth; }
+
+body {
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell,
+    Noto Sans, Helvetica Neue, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.glass-effect { 
+  background: color-mix(in oklab, var(--glass-bg) 92%, black 8%);
+  border: 1px solid color-mix(in oklab, var(--glass-border) 75%, var(--accent-lime) 25%);
+  backdrop-filter: saturate(180%) blur(10px);
+}
+
+/* Global interactive hover feedback */
+/* Apply smooth transitions to common interactive or card-like elements */
+:where(a, button, .glass-effect, .card, .chip, .tag, .stat, .panel, .list-item, .nav-link, img, input, textarea, select) {
+  transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease, background-color 200ms ease, color 200ms ease, opacity 200ms ease;
+}
+
+/* Subtle lift + glow on hover everywhere */
+:where(a, button, .glass-effect, .card, .chip, .tag, .stat, .panel, .list-item, .nav-link, img, input, textarea, select):hover:not([aria-disabled="true"]) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px var(--color-glow);
+  border-color: var(--accent-lime);
+}
+
+/* Slightly stronger feedback for .glass-effect items */
+.glass-effect:hover {
+  background: color-mix(in oklab, var(--glass-bg) 92%, var(--accent-emerald) 8%);
+}
+
+/* Accessibility: honor reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  :where(a, button, .glass-effect, .card, .chip, .tag, .stat, .panel, .list-item, .nav-link, img, input, textarea, select) {
+    transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
+  }
+  :where(a, button, .glass-effect, .card, .chip, .tag, .stat, .panel, .list-item, .nav-link, img, input, textarea, select):hover:not([aria-disabled="true"]) {
+    transform: none;
+  }
+}
+
+#navbar.scrolled {
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border-primary);
+  box-shadow: 0 10px 30px -10px rgba(0,0,0,0.35);
+}
+
+/* Light mode: when navbar is scrolled (dark bg), switch to dark-palette variables for readability */
+html.light #navbar.scrolled,
+:root[data-theme='light'] #navbar.scrolled {
+  --text-primary: var(--color-text-primary-dark);
+  --text-secondary: var(--color-text-secondary-dark);
+  --border-primary: var(--color-border-primary-dark);
+  --accent-lime: var(--color-accent-lime-dark);
+  --accent-emerald: var(--color-accent-emerald-dark);
+}
+
+@media (prefers-color-scheme: light) {
+  #navbar.scrolled {
+    --text-primary: var(--color-text-primary-dark);
+    --text-secondary: var(--color-text-secondary-dark);
+    --border-primary: var(--color-border-primary-dark);
+    --accent-lime: var(--color-accent-lime-dark);
+    --accent-emerald: var(--color-accent-emerald-dark);
+  }
+}
+
+.text-gradient {
+  background: linear-gradient(90deg, var(--accent-emerald), var(--accent-lime));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Keyframes for FROGITUDE shimmer */
+@keyframes frog-shimmer {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}

@@ -1,0 +1,46 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Install deps",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"install"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Dev server",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"run",
+				"dev"
+			],
+			"isBackground": true,
+			"group": "build"
+		},
+		{
+			"label": "Install new deps",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"install"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Dev server 3001",
+			"type": "shell",
+			"command": "node_modules/.bin/next",
+			"args": [
+				"dev",
+				"-p",
+				"3001"
+			],
+			"isBackground": true,
+			"group": "build"
+		}
+	]
+}
