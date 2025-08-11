@@ -1,0 +1,31 @@
+# llm.txt — Preferences for AI crawlers and LLMs
+# This file communicates how this site prefers its content to be used by AI crawlers.
+# It complements robots.txt but is not an official standard. Many crawlers will still
+# respect robots.txt directives. Adjust as needed.
+
+# Global preference
+User-agent: *
+Allow: /
+
+# Explicit allowances for common AI/LLM crawlers
+User-agent: GPTBot
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+# Helpful references
+Sitemap: https://frogitude.com/sitemap.xml
+Policy: https://frogitude.com/privacy-policy
