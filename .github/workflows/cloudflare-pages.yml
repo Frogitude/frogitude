@@ -1,6 +1,8 @@
 name: Deploy Site
 
-on: push
+on:
+  push:
+    branches: [ main ]
 
 jobs:
   deploy:
@@ -21,11 +23,12 @@ jobs:
       - name: Build (sanity check)
         run: npm run build
 
-      - name: Cloudflare pages build
-        uses: Cyb3r-Jak3/actions-cloudflare-pages@v2.0.0
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
         with:
-          account: ${{ secrets.CLOUDFLARE_ZONE }}
-          project: ${{ secrets.CLOUDFLARE_PROJECT }}
-          email: ${{ secrets.CLOUDFLARE_EMAIL }}
-          global_token: ${{ secrets.CLOUDFLARE_KEY }}
-          api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: ${{ secrets.CLOUDFLARE_PROJECT }}
+          directory: out
+          branch: main
+          wranglerVersion: '3'
