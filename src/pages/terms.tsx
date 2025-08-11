@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import React from 'react';
+import { withBasePath } from '@/lib/basePath';
 
 export default function Terms() {
   return (
@@ -12,11 +13,11 @@ export default function Terms() {
       <header className="py-8 border-b border-border-primary/60">
         <div className="container mx-auto px-6 max-w-4xl flex items-center justify-between">
           <a href="/" className="flex items-center gap-3 group">
-            <img src="/images/small-frog.png" alt="Frogitude" className="w-8 h-8" />
+            <img src={withBasePath('/images/small-frog.png')} alt="Frogitude" className="w-8 h-8" />
             <span className="font-bold tracking-wide group-hover:text-accent-lime transition-colors">FROGITUDE</span>
           </a>
           <nav className="text-sm">
-            <a href="/" className="text-text-secondary hover:text-accent-lime transition-colors">Home</a>
+            <a href={withBasePath('/')} className="text-text-secondary hover:text-accent-lime transition-colors">Home</a>
           </nav>
         </div>
       </header>
@@ -38,8 +39,8 @@ export default function Terms() {
             </ol>
 
             <div className="text-sm text-text-secondary/80 mt-6">
-              Also see: <a href="/impressum" className="underline hover:text-accent-lime">Imprint</a> ·{' '}
-              <a href="/privacy-policy" className="underline hover:text-accent-lime">Privacy Policy</a>
+              Also see: <a href={withBasePath('/impressum')} className="underline hover:text-accent-lime">Imprint</a> ·{' '}
+              <a href={withBasePath('/privacy-policy')} className="underline hover:text-accent-lime">Privacy Policy</a>
             </div>
           </div>
         </div>
@@ -47,7 +48,7 @@ export default function Terms() {
 
       <footer className="py-10 border-t border-border-primary/60 text-center">
         <div className="container mx-auto px-6 max-w-4xl text-text-secondary text-sm">
-          © {new Date().getFullYear()} Frogitude — <a href="/" className="underline hover:text-accent-lime">Home</a>
+          © {new Date().getFullYear()} Frogitude — <a href={withBasePath('/')} className="underline hover:text-accent-lime">Home</a>
         </div>
       </footer>
     </div>

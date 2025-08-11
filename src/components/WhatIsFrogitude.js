@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Play, Pause, ChevronDown } from 'lucide-react';
 import { useAppContext } from './AppContext';
 import { content } from './content';
+import { withBasePath } from '@/lib/basePath';
 
 export default function WhatIsFrogitude({ id }) {
   const { language } = useAppContext();
@@ -75,7 +76,7 @@ export default function WhatIsFrogitude({ id }) {
           >
             {/* Section visual */}
             <img
-              src="/images/frogitude-hero.png"
+              src={withBasePath('/images/frogitude-hero.png')}
               alt={t.imageAlt || 'Frogitude illustration'}
               className="w-full h-56 md:h-72 object-cover rounded-2xl mb-6"
               onError={(e) => { e.currentTarget.style.display = 'none'; }}

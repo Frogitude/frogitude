@@ -3,9 +3,10 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import Magnetic from '@/components/ui/Magnetic';
 import { gsap } from '@/lib/gsap';
+import { withBasePath } from '@/lib/basePath';
 import { useIsomorphicLayoutEffect } from '@/lib/hooks';
 
-const LOGO_URL = '/images/small-frog.png';
+const LOGO_URL = withBasePath('/images/small-frog.png');
 
 export default function Hero({ id, content }) {
   const logoRef = useRef(null);

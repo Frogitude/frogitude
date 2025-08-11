@@ -17,8 +17,9 @@ import AnimatedBackground from '@/components/AnimatedBackground';
 import ScrollWaves from '@/components/ScrollWaves';
 import ClickBurst from '@/components/ClickBurst';
 import { Youtube, Instagram, Linkedin, Github, Twitter, MessageSquare } from 'lucide-react';
+import { withBasePath } from '@/lib/basePath';
 
-const LOGO_URL = '/images/small-frog.png';
+const LOGO_URL = withBasePath('/images/small-frog.png');
 
 type IconType = React.ComponentType<{ className?: string }>;
 
@@ -57,7 +58,7 @@ function PageContent() {
       <Head>
         <title>Frogitude — Unity Game & XR Developer</title>
         <meta name="description" content="Unity Game & XR Developer — Frogitude (Fred Newton Akdogan)" />
-        <link rel="icon" href="/images/small-frog.png" />
+  <link rel="icon" href={withBasePath('/images/small-frog.png')} />
       </Head>
       <AnimatedBackground />
       {/* playful effects */}
@@ -99,9 +100,9 @@ function PageContent() {
             </div>
             <div className="text-sm text-text-secondary/60 space-x-4">
               <span>© {new Date().getFullYear()} Frogitude. All rights reserved.</span>
-              <a href="/impressum" className="underline hover:text-accent-lime">{t.footer?.imprintLabel || 'Impressum'}</a>
-              <a href="/privacy-policy" className="underline hover:text-accent-lime">{t.footer?.privacyLabel || 'Privacy Policy'}</a>
-              <a href="/terms" className="underline hover:text-accent-lime">{t.footer?.termsLabel || 'Terms & Conditions'}</a>
+              <a href={withBasePath('/impressum')} className="underline hover:text-accent-lime">{t.footer?.imprintLabel || 'Impressum'}</a>
+              <a href={withBasePath('/privacy-policy')} className="underline hover:text-accent-lime">{t.footer?.privacyLabel || 'Privacy Policy'}</a>
+              <a href={withBasePath('/terms')} className="underline hover:text-accent-lime">{t.footer?.termsLabel || 'Terms & Conditions'}</a>
               <span className="block mt-2 sm:mt-0 sm:inline">{t.footer?.techStackLine}</span>
             </div>
           </div>

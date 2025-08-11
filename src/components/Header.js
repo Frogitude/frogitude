@@ -4,8 +4,9 @@ import { Sun, Moon, Languages } from 'lucide-react';
 import { useAppContext } from './AppContext';
 import { gsap } from '@/lib/gsap';
 import { content } from './content';
+import { withBasePath } from '@/lib/basePath';
 
-const LOGO_URL = '/images/small-frog.png';
+const LOGO_URL = withBasePath('/images/small-frog.png');
 
 export default function Header() {
   const { theme, toggleTheme, language, toggleLanguage } = useAppContext();

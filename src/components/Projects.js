@@ -4,6 +4,7 @@ import { Briefcase, Building, Gamepad2 } from 'lucide-react';
 import { applyTilt } from '@/lib/tilt';
 import { useAppContext } from './AppContext';
 import { content as translations } from './content';
+import { withBasePath } from '@/lib/basePath';
 
 export default function Projects({ id, content }) {
   const { language } = useAppContext();
@@ -40,8 +41,8 @@ export default function Projects({ id, content }) {
       id: 'frogitude',
       // titles and descriptions come from translations
       technologies: ['Unity', 'C#', 'AR/VR', 'Game Design', 'Blender'],
-  images: ['/images/small-frog.png'],
-  logo: '/images/small-frog.png',
+  images: ['/images/small-frog.png'].map(withBasePath),
+  logo: withBasePath('/images/small-frog.png'),
       featured: true,
       icon: Briefcase
     },
@@ -49,8 +50,8 @@ export default function Projects({ id, content }) {
       id: 'meowdieval',
       // localized fields from translations
   technologies: ['Unity', 'C#', 'Aseprite', 'Blender', 'Git'],
-  images: ['/images/MEOWK_icon.png', '/images/meowdieval-kingdom.jpg'],
-      logo: '/images/MEOWK_icon-green.png',
+  images: ['/images/MEOWK_icon.png', '/images/meowdieval-kingdom.jpg'].map(withBasePath),
+    logo: withBasePath('/images/MEOWK_icon-green.png'),
       featured: false,
       icon: Gamepad2
     },
@@ -58,8 +59,8 @@ export default function Projects({ id, content }) {
       id: 'itchio',
       // localized fields from translations
       technologies: ['Unity', 'C#', 'Game Feel'],
-      images: ['/images/broomstickBarry.gif'],
-      logo: '/images/broomstickBarry.gif',
+  images: ['/images/broomstickBarry.gif'].map(withBasePath),
+  logo: withBasePath('/images/broomstickBarry.gif'),
       links: [
         { label: 'itch.io profile', href: 'https://freddynewton.itch.io/' }
       ],
@@ -70,8 +71,8 @@ export default function Projects({ id, content }) {
       id: 'superswipe',
       // localized fields from translations
       technologies: ['Unity', 'Unity Cloud Services', 'Mobile Games', 'C#'],
-  images: ['/images/superswipelogo.png'],
-  logo: '/images/superswipelogo.png',
+  images: ['/images/superswipelogo.png'].map(withBasePath),
+  logo: withBasePath('/images/superswipelogo.png'),
       links: [
         { label: 'SumoVolley', href: 'https://sumovolley.com/' },
         { label: 'superswipe.games', href: 'https://superswipe.games/' },
@@ -85,7 +86,7 @@ export default function Projects({ id, content }) {
       id: 'mercedes',
       // localized fields from translations
       technologies: ['Unity', 'HoloLens', 'iOS', 'MRTK 3.0', 'VisionLib SDK', 'Agile'],
-      images: ['/images/mercedes_benz_tech_motion_logo.jpeg'],
+  images: ['/images/mercedes_benz_tech_motion_logo.jpeg'].map(withBasePath),
       featured: false,
       icon: Building
     }
