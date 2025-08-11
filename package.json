@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "next dev -p 3000",
   "build": "next build",
-  "export": "next build && next export",
-  "pages": "set NEXT_PUBLIC_BASE_PATH=/frogitude && npm run export",
+  "export": "next build",
+  "pages": "set NEXT_PUBLIC_BASE_PATH=/frogitude && npm run build",
     "start": "next start -p 3000"
   },
   "dependencies": {

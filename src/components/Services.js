@@ -1,11 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Cube, Scan, Smartphone, Layers, Headset, GraduationCap, BookOpen, Package, Map, Code, Square, Globe, Megaphone } from 'lucide-react';
+import { Scan, Smartphone, Layers, Headset, GraduationCap, BookOpen, Package, Map, Code, Square, Globe, Megaphone } from 'lucide-react';
 import { useAppContext } from './AppContext';
 import { content } from './content';
 
 const iconMap = {
-  xr: Cube,
+  xr: Layers,
   ar: Scan,
   webar: Smartphone,
   immersive_web: Globe,
