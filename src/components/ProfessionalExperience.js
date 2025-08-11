@@ -198,47 +198,102 @@ const experienceData = {
   ],
 };
 
-const ExperienceItem = ({ item, index }) => (
-  <motion.div
-  className="flex items-start gap-7"
-    data-exp-item
-  >
-  <div className="flex flex-col items-center">
-    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full glass-effect flex items-center justify-center hover:shadow-lg overflow-hidden" data-avatar>
-        {item.logo ? (
-      <img src={item.logo} alt={`${item.company} logo`} className="w-12 h-12 sm:w-14 sm:h-14 object-contain" />
-        ) : (
-      <item.icon className="w-8 h-8 sm:w-9 sm:h-9 text-accent-lime" />
+const ExperienceItem = ({ item, index }) => {
+  // SSR-safe: Default to mobile rendering if window is undefined (first render)
+  let isMobile = false;
+  if (typeof window === 'undefined') {
+    // On server, render as mobile (no animation)
+    isMobile = true;
+  } else {
+    isMobile = window.innerWidth < 768;
+  }
+  if (isMobile) {
+    return (
+      <div className="flex items-start gap-7" data-exp-item>
+        <div className="flex flex-col items-center">
+          <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full glass-effect flex items-center justify-center hover:shadow-lg overflow-hidden" data-avatar>
+            {item.logo ? (
+              <img src={item.logo} alt={`${item.company} logo`} className="w-12 h-12 sm:w-14 sm:h-14 object-contain" />
+            ) : (
+              <item.icon className="w-8 h-8 sm:w-9 sm:h-9 text-accent-lime" />
+            )}
+          </div>
+          <div className="w-[3px] flex-grow bg-border-primary/50 my-5" />
+        </div>
+        <div className="flex-1 pb-10 glass-effect rounded-2xl p-5 sm:p-7 shadow-lg hover:shadow-xl">
+          <h3 className="text-xl md:text-3xl font-bold text-text-primary">{item.role}</h3>
+          <p className="text-xl font-semibold text-accent-emerald mb-2">{item.company}</p>
+          <div className="flex flex-wrap items-center gap-3 text-sm md:text-lg text-text-secondary/90 mb-4">
+            <span>{item.location}</span>
+            <span>&bull;</span>
+            <span>{item.duration}</span>
+          </div>
+          <p className="text-text-secondary/95 leading-relaxed text-sm md:text-lg mb-3">{item.description}</p>
+          {Array.isArray(item.highlights) && item.highlights.length > 0 && (
+            <ul className="list-disc list-inside text-text-secondary/95 text-sm md:text-lg mb-3 space-y-1.5">
+              {item.highlights.map((h) => (
+                <li key={h}>{h}</li>
+              ))}
+            </ul>
+          )}
+          {Array.isArray(item.technologies) && item.technologies.length > 0 && (
+            <div className="flex flex-wrap gap-2 pt-1">
+              {item.technologies.map((t) => (
+                <span key={t} className="px-2.5 py-1 text-xs md:text-base rounded-full glass-effect border border-border-primary shadow-sm text-text-primary/95">{t}</span>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+  // Desktop: animated
+  return (
+    <motion.div
+      className="flex items-start gap-7"
+      data-exp-item
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      viewport={{ once: true, amount: 0.2 }}
+    >
+      <div className="flex flex-col items-center">
+        <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full glass-effect flex items-center justify-center hover:shadow-lg overflow-hidden" data-avatar>
+          {item.logo ? (
+            <img src={item.logo} alt={`${item.company} logo`} className="w-12 h-12 sm:w-14 sm:h-14 object-contain" />
+          ) : (
+            <item.icon className="w-8 h-8 sm:w-9 sm:h-9 text-accent-lime" />
+          )}
+        </div>
+        <div className="w-[3px] flex-grow bg-border-primary/50 my-5" />
+      </div>
+      <div className="flex-1 pb-10 glass-effect rounded-2xl p-5 sm:p-7 shadow-lg hover:shadow-xl">
+        <h3 className="text-xl md:text-3xl font-bold text-text-primary">{item.role}</h3>
+        <p className="text-xl font-semibold text-accent-emerald mb-2">{item.company}</p>
+        <div className="flex flex-wrap items-center gap-3 text-sm md:text-lg text-text-secondary/90 mb-4">
+          <span>{item.location}</span>
+          <span>&bull;</span>
+          <span>{item.duration}</span>
+        </div>
+        <p className="text-text-secondary/95 leading-relaxed text-sm md:text-lg mb-3">{item.description}</p>
+        {Array.isArray(item.highlights) && item.highlights.length > 0 && (
+          <ul className="list-disc list-inside text-text-secondary/95 text-sm md:text-lg mb-3 space-y-1.5">
+            {item.highlights.map((h) => (
+              <li key={h}>{h}</li>
+            ))}
+          </ul>
+        )}
+        {Array.isArray(item.technologies) && item.technologies.length > 0 && (
+          <div className="flex flex-wrap gap-2 pt-1">
+            {item.technologies.map((t) => (
+              <span key={t} className="px-2.5 py-1 text-xs md:text-base rounded-full glass-effect border border-border-primary shadow-sm text-text-primary/95">{t}</span>
+            ))}
+          </div>
         )}
       </div>
-    <div className="w-[3px] flex-grow bg-border-primary/50 my-5" />
-    </div>
-  <div className="flex-1 pb-10 glass-effect rounded-2xl p-5 sm:p-7 shadow-lg hover:shadow-xl">
-    <h3 className="text-xl md:text-3xl font-bold text-text-primary">{item.role}</h3>
-    <p className="text-xl font-semibold text-accent-emerald mb-2">{item.company}</p>
-    <div className="flex flex-wrap items-center gap-3 text-sm md:text-lg text-text-secondary/90 mb-4">
-        <span>{item.location}</span>
-        <span>&bull;</span>
-        <span>{item.duration}</span>
-      </div>
-    <p className="text-text-secondary/95 leading-relaxed text-sm md:text-lg mb-3">{item.description}</p>
-      {Array.isArray(item.highlights) && item.highlights.length > 0 && (
-    <ul className="list-disc list-inside text-text-secondary/95 text-sm md:text-lg mb-3 space-y-1.5">
-          {item.highlights.map((h) => (
-            <li key={h}>{h}</li>
-          ))}
-        </ul>
-      )}
-      {Array.isArray(item.technologies) && item.technologies.length > 0 && (
-    <div className="flex flex-wrap gap-2 pt-1">
-          {item.technologies.map((t) => (
-      <span key={t} className="px-2.5 py-1 text-xs md:text-base rounded-full glass-effect border border-border-primary shadow-sm text-text-primary/95">{t}</span>
-          ))}
-        </div>
-      )}
-    </div>
-  </motion.div>
-);
+    </motion.div>
+  );
+};
 
 export default function ProfessionalExperience({ id, content }) {
   const { language } = useAppContext();

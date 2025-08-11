@@ -66,8 +66,8 @@ export default function Header() {
             <button onClick={() => scrollToSection('contact')} className="hidden sm:block bg-gradient-to-r from-emerald-500 to-lime-600 hover:from-emerald-600 hover:to-lime-700 text-white px-6 py-2 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">
               {t.nav.hire}
             </button>
-            <button onClick={toggleLanguage} className="p-2 rounded-full hover:bg-bg-secondary transition-colors text-text-secondary hover:text-text-primary" aria-label="Toggle language">
-              <Languages className="w-5 h-5" />
+            <button onClick={toggleLanguage} className="p-2 rounded-full hover:bg-bg-secondary transition-colors text-text-secondary hover:text-text-primary text-2xl" aria-label="Toggle language">
+              {language === 'de' ? '🇩🇪' : '🇬🇧'}
             </button>
             <button onClick={toggleTheme} className="p-2 rounded-full hover:bg-bg-secondary transition-colors text-text-secondary hover:text-text-primary" aria-label="Toggle theme">
               {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
