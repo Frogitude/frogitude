@@ -15,7 +15,14 @@ export default function GitContributions({ username = 'freddynewton' }: { userna
 
   useEffect(() => {
     const ctrl = new AbortController();
-    fetch(`/api/github-contributions?username=${encodeURIComponent(username)}`, { signal: ctrl.signal })
+    // In local Next dev, Pages Functions don't exist at /api; use deployed origin if provided
+    const origin =
+      (typeof window !== 'undefined' &&
+        (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'))
+        ? (process.env.NEXT_PUBLIC_PAGES_ORIGIN || '')
+        : '';
+    const url = `${origin}/api/github-contributions?username=${encodeURIComponent(username)}`;
+    fetch(url, { signal: ctrl.signal })
       .then((r) => r.json())
       .then((j) => {
         if (j?.error) setErr(String(j.error)); else setCal(j);
