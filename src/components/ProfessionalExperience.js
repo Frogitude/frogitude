@@ -5,6 +5,7 @@ import { useAppContext } from './AppContext';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
 import { useIsomorphicLayoutEffect } from '@/lib/hooks';
 import { withBasePath } from '@/lib/basePath';
+import { yearsForList } from '@/lib/years';
 
 const companyLogoMap = {
   'Frogitude': '/images/small-frog.png',
@@ -201,7 +202,7 @@ const experienceData = {
 
 // Small helper component: when active, randomly pops a few lily pads
 // around the centered item with a quick pop-in/out animation.
-const FloatingPads = ({ active }) => {
+const FloatingPads = ({ active, intensity = 0 }) => {
   const [pads, setPads] = useState([]);
   const idRef = useRef(0);
   const intervalRef = useRef(null);
@@ -219,21 +220,23 @@ const FloatingPads = ({ active }) => {
     const spawn = () => {
       const id = idRef.current++;
       const angle = Math.random() * Math.PI * 2;
-      const r = 40 + Math.random() * 90; // px radius from center
+      const r = 36 + Math.random() * (80 + intensity * 20); // px radius from center, grows with intensity
       const x = Math.cos(angle) * r;
       const y = Math.sin(angle) * r;
-      const size = 16 + Math.floor(Math.random() * 10); // 16–26px
+      const size = 14 + Math.floor(Math.random() * (10 + intensity * 2)); // px, grows with intensity
       setPads((prev) => [...prev, { id, x, y, size }]);
       // Remove after a short lifetime
       setTimeout(() => {
         setPads((prev) => prev.filter((p) => p.id !== id));
-      }, 1600);
+      }, 1500 + Math.floor(intensity * 150));
     };
 
     // burst a few quickly, then keep sprinkling while focused
-    const initial = 3 + Math.floor(Math.random() * 2);
+    const initial = 3 + Math.floor(Math.random() * 2) + Math.round(intensity * 0.6);
     for (let i = 0; i < initial; i++) setTimeout(spawn, i * 120);
-    intervalRef.current = setInterval(spawn, 320);
+    const baseInterval = 360;
+    const interval = Math.max(180, baseInterval - Math.floor(intensity * 60));
+    intervalRef.current = setInterval(spawn, interval);
 
     return () => {
       if (intervalRef.current) {
@@ -773,6 +776,7 @@ export default function ProfessionalExperience({ id, content }) {
             const t = experienceList.length > 1 ? idx / (experienceList.length - 1) : 0;
             const y = 50 + Math.sin(2 * Math.PI * t) * amplitude;
             const isFocused = focusedIndex === idx;
+            const yrsIntensity = Math.min(1, yearsForList(item.technologies) / 5); // normalize 0..1 around 5y
       return (
               <div
                 key={idx}
@@ -791,7 +795,8 @@ export default function ProfessionalExperience({ id, content }) {
                   <img
                     src={withBasePath('/images/lily-pad.png')}
                     alt=""
-                    className={`w-6 h-6 mb-2 mx-auto transition-transform drop-shadow ${isFocused ? 'scale-150' : 'group-hover:scale-110'}`}
+                    className={`w-6 h-6 mb-2 mx-auto transition-transform drop-shadow ${isFocused ? '' : 'group-hover:scale-110'}`}
+                    style={{ transform: isFocused ? `scale(${1.35 + yrsIntensity * 0.25})` : undefined }}
                   />
                   {/* card (expands when focused or on hover) */}
                   <motion.div layout className={`glass-effect rounded-xl p-4 shadow-lg ${isFocused ? 'ring-2 ring-accent-lime min-w-[24rem] max-w-md' : 'min-w-[16rem] max-w-sm'}`}
@@ -833,7 +838,7 @@ export default function ProfessionalExperience({ id, content }) {
         </motion.div>
                 </div>
                 {/* Floating pads overlay (beneath content) */}
-                <FloatingPads active={isFocused} />
+                <FloatingPads active={isFocused} intensity={yrsIntensity * 5} />
               </div>
             );
           })}
