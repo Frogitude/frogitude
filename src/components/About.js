@@ -1,6 +1,7 @@
 import React, { useMemo, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useAppContext } from './AppContext';
+import GitContributions from './GitContributions';
 import { Youtube, Instagram, Linkedin, Github, Twitter, MessageSquare, Briefcase } from 'lucide-react';
 
 const PROFILE_PIC_URL = '/images/ggbavaria2.jpg';
@@ -35,6 +36,7 @@ const techStack = [
   { name: 'GitLab', logo: '/placeholder-logo.svg' },
   { name: 'Jira', logo: '/placeholder-logo.svg' },
   { name: 'Confluence', logo: '/placeholder-logo.svg' },
+  { name: 'Cloudflare', logo: '/placeholder-logo.svg' },
 
   // Art & DCC
   { name: 'Blender', logo: '/images/blender-logo.png' },
@@ -76,7 +78,7 @@ export default function About({ id, content }) {
     { title: 'Game Dev', items: ['Unity', 'C#', 'Clean Code', 'Design Patterns', 'Dependency Injection', 'Procedural Generation', 'Game AI', 'Godot', 'Unreal Engine', 'C++', 'GDScript'] },
     { title: 'XR', items: ['OpenXR', 'WebXR', 'MRTK', 'HoloLens', 'Quest', 'VisionLib', 'Meta'] },
     { title: 'Software', items: ['TypeScript', 'JavaScript', 'Python', 'React', 'Next.js', 'Node.js', 'GSAP', 'WebGL'] },
-    { title: 'Tools', items: ['Git / GitHub', 'Jira', 'Unity Cloud'] },
+  { title: 'Tools', items: ['Git / GitHub', 'Jira', 'Unity Cloud', 'Cloudflare'] },
     { title: 'Art', items: ['Blender', 'Aseprite', 'Gimp'] },
   ]), []);
 
@@ -382,6 +384,11 @@ export default function About({ id, content }) {
                   <span className="text-sm md:text-base">{label}</span>
                 </a>
               ))}
+            </div>
+            {/* GitHub Contributions */}
+            <div className="pt-4">
+              {/* username inferred from GitHub link */}
+              <GitContributions username="freddynewton" />
             </div>
           </motion.div>
         </div>

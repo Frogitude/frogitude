@@ -35,6 +35,7 @@ Leistungen (Auszug):
 - Unity Game Development: PC, Mobile, Konsole — Gameplay, Architektur, Polish.
 - XR (AR/VR/MR): HoloLens, Quest; Interaktive 3D‑Visualisierungen; Immersive Web/Playable Ads.
 - Prozesse: Sauberer Code, agile Iteration, transparente Kommunikation, kleine Pilotprojekte möglich.
+ - Infra/AI: Cloudflare Pages & Workers (Functions, Workers AI) für Hosting und serverlose AI‑Backends.
 
 Ausgewählte Erfahrungen/Projekte:
 - Mercedes Benz Tech Motion — XR‑Lösungen, Performance‑Optimierung (HoloLens & iOS), MRTK 3.0, VisionLib SDK.
@@ -57,6 +58,7 @@ Services (highlights):
 - Unity Game Development: PC, mobile, console — gameplay, architecture, polish.
 - XR (AR/VR/MR): HoloLens, Quest; interactive 3D; immersive web/playable ads.
 - Process: Clean code, agile iteration, transparent communication, pilots welcome.
+ - Infra/AI: Cloudflare Pages & Workers (Functions, Workers AI) for hosting and serverless AI backends.
 
 Selected experience/projects:
 - Mercedes Benz Tech Motion — XR solutions, performance tuning (HoloLens & iOS), MRTK 3.0, VisionLib SDK.
