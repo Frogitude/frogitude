@@ -12,7 +12,7 @@ export default function Contact({ id, content }) {
           transition={{ duration: 0.5 }}
           className="text-center mb-12"
         >
-          <h2 className="text-5xl md:text-6xl font-bold text-text-primary mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-text-primary mb-6 leading-tight break-words">
             <span className="text-gradient">{content.title}</span>
           </h2>
           <p className="text-text-secondary/95 max-w-3xl mx-auto text-lg md:text-xl leading-relaxed">{content.description}</p>

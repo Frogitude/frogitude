@@ -65,12 +65,15 @@ export default function GitContributions({ username = 'freddynewton' }: { userna
     const el = containerRef.current;
     if (!el) return;
     const ro = new ResizeObserver(() => {
-      const w = el.clientWidth; // content width available
-      // Use smaller gaps on very small widths
-      const g = w < 420 ? 2 : 3;
+      const w = el.getBoundingClientRect().width; // precise content width
+      const columns = plannedColumns || 53;
+      // Dynamic gap based on density; smaller gap on very tight widths
+      const density = w / columns;
+      const g = density < 6 ? 1 : (w < 420 ? 2 : 3);
+      const totalGap = g * (columns - 1);
+      // Safety -1 to avoid rounding overflow
+      const c = Math.max(2, Math.min(12, Math.floor((w - totalGap - 1) / columns)));
       setGap(g);
-      const columns = plannedColumns;
-      const c = Math.max(3, Math.min(12, Math.floor((w - g * (columns - 1)) / columns)));
       setCell(c);
     });
     ro.observe(el);
@@ -102,7 +105,7 @@ export default function GitContributions({ username = 'freddynewton' }: { userna
         <div className="font-semibold text-text-primary text-sm sm:text-base">{t('title')}</div>
         <div className="text-text-secondary text-xs sm:text-sm">{t('lastYear')}: {cal.totalContributions}</div>
       </div>
-      <div className="w-full" ref={containerRef}>
+  <div className="w-full min-w-0" ref={containerRef}>
         <div
           className="grid w-full"
           style={{
@@ -116,14 +119,18 @@ export default function GitContributions({ username = 'freddynewton' }: { userna
         >
           {weeksToShow.map((w, x) => (
             <React.Fragment key={x}>
-              {w.contributionDays.map((d, y) => (
-                <div
-                  key={`${x}-${y}`}
-                  title={`${d.date}: ${d.contributionCount} ${language === 'de' ? 'Beiträge' : 'contributions'}`}
-                  className="rounded-[2px]"
-                  style={{ backgroundColor: d.color || 'var(--border-primary)' }}
-                />
-              ))}
+              {w.contributionDays.map((d, y) => {
+                const bg = d.color && d.color !== '#ebedf0' ? d.color : 'var(--border-primary)';
+                const outline = d.contributionCount === 0 ? '1px solid var(--border-primary)' : 'none';
+                return (
+                  <div
+                    key={`${x}-${y}`}
+                    title={`${d.date}: ${d.contributionCount} ${language === 'de' ? 'Beiträge' : 'contributions'}`}
+                    className="rounded-[2px]"
+                    style={{ backgroundColor: bg, border: outline }}
+                  />
+                );
+              })}
             </React.Fragment>
           ))}
         </div>

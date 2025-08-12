@@ -397,7 +397,7 @@ export default function ProfessionalExperience({ id, content }) {
     const ctx = gsap.context(() => {
       ScrollTrigger.matchMedia({
         // Mobile & tablet: vertical timeline
-        '(max-width: 767px)': () => {
+    '(max-width: 767px)': () => {
           if (!containerRef.current) return;
           const items = containerRef.current.querySelectorAll('[data-exp-item]');
           // Mobile: no animations at all — ensure fully visible and reset any inline transforms
@@ -411,46 +411,11 @@ export default function ProfessionalExperience({ id, content }) {
               const arect = avatar.getBoundingClientRect();
               const centerX = arect.left - crect.left + arect.width / 2;
               container.style.setProperty('--timeline-x', `${centerX}px`);
-            // Ensure triggers recalc after layout measurement
-            ScrollTrigger.refresh();
+      // If any other triggers exist on the page, recalc after layout measurement
+      ScrollTrigger.refresh();
             };
             measureSpine();
             window.addEventListener('resize', measureSpine);
-          // Pin the vertical list within its wrapper for a sticky effect
-          const wrapper = vWrapperRef.current;
-          if (wrapper && containerRef.current) {
-            const pinOffset = 100; // px from top to account for header
-            const getEnd = () => {
-              const listH = containerRef.current.scrollHeight || 0;
-              const vh = window.innerHeight || 0;
-              // Scroll length while pinned
-              const d = Math.max(0, listH - vh + 200);
-              return `+=${d}`;
-            };
-            ScrollTrigger.create({
-              trigger: wrapper,
-              start: `top top+=${pinOffset}`,
-              end: getEnd,
-              pin: containerRef.current,
-              pinSpacing: true,
-              anticipatePin: 1,
-              invalidateOnRefresh: true,
-            });
-            // Progress bar synced to the same duration
-            if (progressRef.current) {
-              gsap.fromTo(progressRef.current, { scaleY: 0 }, {
-                scaleY: 1,
-                ease: 'none',
-                scrollTrigger: {
-                  trigger: wrapper,
-                  start: `top top+=${pinOffset}`,
-                  end: getEnd,
-                  scrub: true,
-                  invalidateOnRefresh: true,
-                },
-              });
-            }
-          }
             // Cleanup handler
             return () => {
               window.removeEventListener('resize', measureSpine);
@@ -864,8 +829,8 @@ export default function ProfessionalExperience({ id, content }) {
         </div>
 
     {/* Mobile: vertical timeline pinned with ScrollTrigger */}
-    <div className="md:hidden relative" ref={vWrapperRef}>
-      <div className="relative max-w-3xl mx-auto space-y-16 z-10 mt-6" ref={containerRef}>
+  <div className="md:hidden relative" ref={vWrapperRef} style={{ touchAction: 'pan-y' }}>
+  <div className="relative max-w-3xl mx-auto space-y-16 z-10 mt-6" ref={containerRef} style={{ touchAction: 'pan-y' }}>
           <div className="absolute top-0 bottom-0 w-1 bg-border-primary/40 pointer-events-none" style={{ left: 'calc(var(--timeline-x, 2.5rem) - 2px)' }} />
           <div ref={progressRef} className="absolute top-0 bottom-0 w-1 bg-accent-lime origin-top scale-y-0 pointer-events-none" style={{ left: 'calc(var(--timeline-x, 2.5rem) - 2px)' }} />
           {experienceList.map((item, idx) => (
