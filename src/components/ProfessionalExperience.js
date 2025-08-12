@@ -327,22 +327,9 @@ export default function ProfessionalExperience({ id, content }) {
         // Mobile & tablet: vertical timeline
         '(max-width: 767px)': () => {
           if (!containerRef.current) return;
-      const items = containerRef.current.querySelectorAll('[data-exp-item]');
-          items.forEach((el, i) => {
-            gsap.from(el, {
-              opacity: 0,
-              y: 32,
-              duration: 0.5,
-              ease: 'power2.out',
-              delay: i * 0.05,
-              scrollTrigger: {
-                trigger: el,
-        // Pixel-based early start: when the item's top is 500px above the viewport bottom
-        start: 'top bottom-=500',
-                once: true,
-              },
-            });
-          });
+          const items = containerRef.current.querySelectorAll('[data-exp-item]');
+          // Mobile: no animations at all — ensure fully visible and reset any inline transforms
+          gsap.set(items, { opacity: 1, y: 0, clearProps: 'transform,opacity' });
             // Measure avatar center to place the vertical spine precisely under the icons
             const measureSpine = () => {
               const container = containerRef.current;
