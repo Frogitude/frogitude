@@ -18,15 +18,21 @@ export default function Header() {
     { name: t.nav.skills, id: 'skills' },
     { name: (t.nav && t.nav.services) || 'Services', id: 'services' },
     { name: t.nav.projects, id: 'projects' },
-    { name: (t.nav && t.nav.faq) || 'FAQ', id: 'faq' },
-    { name: t.nav.contact, id: 'contact' },
   ];
 
   const scrollToSection = (sectionId) => {
     if (typeof document === 'undefined') return;
     const el = document.getElementById(sectionId);
     if (!el) return;
-    gsap.to(window, { duration: 0.8, scrollTo: { y: el, offsetY: 80 }, ease: 'power2.out' });
+    const header = document.getElementById('navbar');
+    const offset = header ? header.offsetHeight + 10 : 80;
+    const top = el.getBoundingClientRect().top + window.scrollY - offset;
+    // Force instant jump regardless of global scroll-behavior
+    try {
+      window.scrollTo({ top, behavior: 'auto' });
+    } catch {
+      window.scrollTo(0, top);
+    }
   };
   const [open, setOpen] = useState(false);
   const handleNav = (id) => {
@@ -42,7 +48,7 @@ export default function Header() {
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="container mx-auto px-6 py-4">
+  <div className="container mx-auto px-6 py-4" style={{ touchAction: 'pan-y' }}>
         <div className="flex justify-between items-center">
           <button onClick={() => scrollToSection('hero')} className="flex items-center gap-2 text-xl md:text-2xl font-bold cursor-pointer" data-image-glow>
             <img src={LOGO_URL} alt="Frogitude Logo" className="w-9 h-9 md:w-10 md:h-10 shrink-0" />
@@ -63,7 +69,7 @@ export default function Header() {
           </div>
 
           <div className="flex items-center gap-3">
-            <button onClick={() => scrollToSection('contact')} className="hidden sm:block bg-gradient-to-r from-emerald-500 to-lime-600 hover:from-emerald-600 hover:to-lime-700 text-white px-6 py-2 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">
+            <button onClick={() => scrollToSection('contact')} className="hidden sm:block btn-gradient px-6 py-2 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">
               {t.nav.hire}
             </button>
             <button
@@ -72,7 +78,7 @@ export default function Header() {
               aria-label="Toggle language"
             >
               <span
-                className="inline-flex items-center justify-center h-full text-xl leading-[1] align-middle"
+                className="inline-flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 text-xl leading-[1] align-middle"
                 role="img"
                 aria-hidden="true"
               >
@@ -83,8 +89,13 @@ export default function Header() {
               onClick={toggleTheme}
               className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-full hover:bg-bg-secondary transition-colors text-text-secondary hover:text-text-primary"
               aria-label="Toggle theme"
+              suppressHydrationWarning
             >
-              {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+              {theme === 'dark' ? (
+                <Sun className="w-5 h-5" data-darkreader-ignore style={{ color: 'currentColor' }} />
+              ) : (
+                <Moon className="w-5 h-5" data-darkreader-ignore style={{ color: 'currentColor' }} />
+              )}
             </button>
             {/* Mobile burger */}
             <button

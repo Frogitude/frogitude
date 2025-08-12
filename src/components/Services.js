@@ -31,6 +31,35 @@ export default function Services({ id }) {
     title: val.title,
     blurb: val.blurb,
   }));
+
+  // Category mapping for filters
+  const categoryMap = {
+    // Games
+    unity_dev: ['games'],
+    mobile_games: ['games'],
+    porting_opt: ['games'],
+    // XR
+    xr: ['xr'],
+    ar: ['xr'],
+    vr: ['xr'],
+    mr_enterprise: ['xr'],
+    app_dev: ['xr'],
+    training: ['xr', 'consulting'],
+    product_demo: ['xr'],
+    tours: ['xr'],
+    workshops: ['xr', 'consulting'],
+    // Web & Ads
+    webar: ['web'],
+    immersive_web: ['web'],
+    interactive_ads: ['web'],
+  };
+  const [filter, setFilter] = React.useState('all'); // 'all' | 'games' | 'xr' | 'consulting' | 'web'
+
+  const filtered = items.filter((it) => {
+    if (filter === 'all') return true;
+    const cats = categoryMap[it.key] || [];
+    return cats.includes(filter);
+  });
   return (
     <section id={id} className="py-20 bg-bg-secondary/40">
       <div className="container mx-auto px-6">
@@ -47,10 +76,30 @@ export default function Services({ id }) {
           <p className="text-text-secondary mt-3 max-w-3xl mx-auto">
             {t.services?.subtitle}
           </p>
+          {/* Filter buttons */}
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
+            {[
+              { id: 'all', label: t.services?.filters?.all || 'All' },
+              { id: 'games', label: t.services?.filters?.games || 'Games' },
+              { id: 'xr', label: t.services?.filters?.xr || 'XR' },
+              { id: 'consulting', label: t.services?.filters?.consulting || 'Consulting' },
+              { id: 'web', label: t.services?.filters?.web || 'Web & Ads' },
+            ].map((b) => (
+              <button
+                key={b.id}
+                onClick={() => setFilter(b.id)}
+                className={`px-4 py-2 rounded-full border transition-colors ${
+                  filter === b.id ? 'bg-accent-lime text-white border-accent-lime' : 'glass-effect text-text-secondary'
+                }`}
+              >
+                {b.label}
+              </button>
+            ))}
+          </div>
         </motion.div>
 
   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {items.map(({ icon: Icon, title, blurb, key }) => (
+      {filtered.map(({ icon: Icon, title, blurb, key }) => (
             <motion.article
         key={key}
               initial={{ opacity: 0, y: 20 }}
@@ -69,13 +118,6 @@ export default function Services({ id }) {
                 </div>
               </div>
             </motion.article>
-          ))}
-        </div>
-
-        {/* SEO/Keywords as subtle tags (optional) */}
-        <div className="mt-8 flex flex-wrap gap-2 text-xs text-text-secondary/70">
-          {['Augmented Reality Tracking', 'Virtual Reality Agentur', 'Unity Spieleentwicklung', 'Mobile Games', 'Immersive Web', 'Interaktive Ads', 'Playable Ads', 'Portierung & Optimierung'].map((tag) => (
-            <span key={tag} className="px-3 py-1 rounded-full glass-effect border border-border-primary">{tag}</span>
           ))}
         </div>
       </div>

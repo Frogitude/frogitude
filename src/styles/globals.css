@@ -3,6 +3,8 @@
 @tailwind utilities;
 
 :root {
+  /* Hint browser UI elements for consistent contrast */
+  color-scheme: light dark;
   --color-bg-primary-light: #f0fdf4;
   --color-bg-secondary-light: #dcfce7;
   --color-text-primary-light: #1f2937;
@@ -88,7 +90,8 @@
   --glass-border: var(--color-glass-border-dark);
 }
 
-* { scroll-behavior: smooth; }
+/* Use programmatic smooth scroll only where needed; default to instant jumps */
+* { scroll-behavior: auto; }
 
 /* Ensure the root app wrapper spans the full viewport width without causing horizontal scroll */
 html, body, #__next {
@@ -112,10 +115,18 @@ body {
   overflow-x: hidden;
 }
 
-.glass-effect { 
-  background: color-mix(in oklab, var(--glass-bg) 92%, black 8%);
-  border: 1px solid color-mix(in oklab, var(--glass-border) 75%, var(--accent-lime) 25%);
+/* Edge may lack color-mix with oklab: provide fallback, then override if supported */
+.glass-effect {
+  /* Theme-aware fallback using variables */
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
   backdrop-filter: saturate(180%) blur(10px);
+}
+@supports (background: color-mix(in oklab, white 50%, black 50%)) {
+  .glass-effect {
+    background: color-mix(in oklab, var(--glass-bg) 92%, black 8%);
+    border: 1px solid color-mix(in oklab, var(--glass-border) 75%, var(--accent-lime) 25%);
+  }
 }
 
 /* Global interactive hover feedback */
@@ -152,7 +163,12 @@ img:hover:not([aria-disabled="true"]) {
 
 /* Slightly stronger feedback for .glass-effect items */
 .glass-effect:hover {
-  background: color-mix(in oklab, var(--glass-bg) 92%, var(--accent-emerald) 8%);
+  background: var(--glass-bg);
+}
+@supports (background: color-mix(in oklab, white 50%, black 50%)) {
+  .glass-effect:hover {
+    background: color-mix(in oklab, var(--glass-bg) 92%, var(--accent-emerald) 8%);
+  }
 }
 
 /* Opt-out: disable global hover glow inside elements marked with [data-no-glow] */
@@ -177,6 +193,9 @@ img:hover:not([aria-disabled="true"]) {
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--border-primary);
   box-shadow: 0 10px 30px -10px rgba(0,0,0,0.35);
+  /* Ensure text color variables are dark-on-dark for readability in all browsers */
+  --text-primary: var(--color-text-primary-dark);
+  --text-secondary: var(--color-text-secondary-dark);
 }
 
 /* Light mode: when navbar is scrolled (dark bg), switch to dark-palette variables for readability */
@@ -200,10 +219,13 @@ html.light #navbar.scrolled,
 }
 
 .text-gradient {
-  background: linear-gradient(90deg, var(--accent-emerald), var(--accent-lime));
-  -webkit-background-clip: text;
+  /* Cross-browser gradient text */
+  display: inline-block;
+  background-image: linear-gradient(90deg, var(--accent-emerald), var(--accent-lime));
   background-clip: text;
+  -webkit-background-clip: text;
   color: transparent;
+  -webkit-text-fill-color: transparent; /* Safari/old Edge */
 }
 
 /* Keyframes for FROGITUDE shimmer */
@@ -212,6 +234,14 @@ html.light #navbar.scrolled,
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
+
+/* Reusable button gradient with fallback */
+.btn-gradient {
+  background-color: #10b981; /* fallback */
+  background-image: linear-gradient(90deg, #059669 0%, #65a30d 50%, #84cc16 100%);
+  color: #fff;
+}
+.btn-gradient:hover { filter: brightness(0.97); }
 
 /* Mind map: stable dash animations for SVG lines (avoid rerender resets) */
 @keyframes mm-dash-80 { to { stroke-dashoffset: -80; } }

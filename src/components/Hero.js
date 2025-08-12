@@ -64,16 +64,8 @@ export default function Hero({ id, content }) {
           >
             <img ref={logoRef} src={LOGO_URL} alt="Frogitude Logo" className="w-40 h-40 mb-4" />
             <h1
-              className="text-7xl md:text-9xl font-black leading-none px-[25px] md:px-0"
-              style={{
-                backgroundImage: 'linear-gradient(90deg, rgba(236, 253, 245, 0.9), rgba(163, 230, 53, 0.95), rgba(236, 253, 245, 0.9))',
-                backgroundSize: '200% 100%',
-                WebkitBackgroundClip: 'text',
-                backgroundClip: 'text',
-                color: 'transparent',
-                textShadow: '0 2px 20px rgba(132,204,22,0.25)',
-                animation: 'frog-shimmer 5s linear infinite',
-              }}
+              className="text-7xl md:text-9xl font-black leading-none px-[25px] md:px-0 text-gradient"
+              style={{ backgroundSize: '200% 100%', textShadow: '0 2px 20px rgba(132,204,22,0.25)', animation: 'frog-shimmer 5s linear infinite' }}
             >
               FROGITUDE
             </h1>
@@ -103,8 +95,8 @@ export default function Hero({ id, content }) {
             <Magnetic>
               <Button
                 onClick={() => scrollToSection('projects')}
-                className="bg-gradient-to-r from-emerald-700 via-lime-600 to-lime-500 text-white px-8 py-4 rounded-full font-extrabold text-2xl shadow-lg shadow-emerald-900 transition-all duration-300 transform hover:scale-105"
-                style={{ position: 'relative', opacity: 1, background: 'linear-gradient(90deg, #059669 0%, #65a30d 50%, #84cc16 100%)' }}
+                className="btn-gradient px-8 py-4 rounded-full font-extrabold text-2xl shadow-lg shadow-emerald-900 transition-all duration-300 transform hover:scale-105"
+                style={{ position: 'relative', opacity: 1 }}
               >
                 {content.button1 || 'CTA1'}
               </Button>
@@ -112,8 +104,8 @@ export default function Hero({ id, content }) {
             <Magnetic>
               <Button
                 onClick={() => scrollToSection('contact')}
-                className="bg-gradient-to-r from-emerald-700 via-lime-600 to-lime-500 text-white px-8 py-4 rounded-full font-extrabold text-2xl shadow-lg shadow-emerald-900 transition-all duration-300 transform hover:scale-105"
-                style={{ position: 'relative', opacity: 1, background: 'linear-gradient(90deg, #059669 0%, #65a30d 50%, #84cc16 100%)' }}
+                className="btn-gradient px-8 py-4 rounded-full font-extrabold text-2xl shadow-lg shadow-emerald-900 transition-all duration-300 transform hover:scale-105"
+                style={{ position: 'relative', opacity: 1 }}
               >
                 {content.button2 || 'CTA2'}
               </Button>

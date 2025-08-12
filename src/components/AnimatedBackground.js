@@ -1,6 +1,7 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 
 export default function AnimatedBackground() {
+  const [mounted, setMounted] = useState(false);
   const canvasRef = useRef(null);
   // Global speed factor for background animation (1 = baseline). Increase for faster, <1 for slower.
   const SPEED = 250;
@@ -8,6 +9,11 @@ export default function AnimatedBackground() {
 
   // Canvas particle field with lines + mouse/scroll
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -135,11 +141,13 @@ export default function AnimatedBackground() {
       canvas.removeEventListener('mousemove', onMouseMove);
       canvas.removeEventListener('mouseleave', onMouseLeave);
     };
-  }, []);
+  }, [mounted]);
+
+  if (!mounted) return null;
 
   return (
-    <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-      <div className="absolute inset-0" style={{ backgroundColor: 'var(--bg-primary)' }} />
+    <div className="fixed inset-0 overflow-hidden pointer-events-none z-0" suppressHydrationWarning>
+      <div className="absolute inset-0 bg-bg-primary" />
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
     </div>
   );

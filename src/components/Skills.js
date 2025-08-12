@@ -18,6 +18,7 @@ const skillsData = {
     { subject: 'Shader Programming', level: 70 },
     { subject: 'Multiplayer', level: 70 },
     { subject: 'REST API', level: 75 },
+  { subject: 'Dependency Injection', level: 85 },
     { subject: 'MRTK', level: 80 },
   ],
   xr_dev: [
@@ -25,15 +26,20 @@ const skillsData = {
     { subject: 'HoloLens', level: 85 },
     { subject: 'MRTK', level: 85 },
     { subject: 'VisionLib', level: 80 },
+  { subject: 'Meta Quest', level: 80 },
     { subject: 'WebXR', level: 70 },
   ],
   software_eng: [
     { subject: 'Architecture', level: 90 },
     { subject: 'Clean Code', level: 95 },
-    { subject: 'Dep. Injection', level: 85 },
+  { subject: 'Dependency Injection', level: 85 },
     { subject: 'Testing', level: 80 },
     { subject: 'Python', level: 70 },
     { subject: 'JS/HTML/CSS', level: 75 },
+  { subject: 'Cloudflare', level: 60 },
+  { subject: 'React', level: 70 },
+  { subject: 'TypeScript', level: 70 },
+  { subject: 'Next.js', level: 70 },
   ],
   management: [
     { subject: 'Agile/Scrum', level: 90 },
@@ -49,9 +55,15 @@ const skillCategories = {
   software_eng: { icon: Code }, management: { icon: Users },
 };
 
-const SkillRadarChart = ({ data, valueKey = 'level', max = 6 }) => (
+const SkillRadarChart = ({ data, valueKey = 'level', max = 6, tickFontSize = 12, outer = '70%', margin = { top: 40, right: 40, bottom: 48, left: 40 } }) => (
   <ResponsiveContainer width="100%" height={400}>
-    <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
+    <RadarChart
+      cx="50%"
+      cy="50%"
+  outerRadius={outer}
+  margin={margin}
+      data={data}
+    >
       <defs>
         <linearGradient id="skill-gradient" x1="0" y1="0" x2="0" y2="1">
           <stop offset="5%" stopColor="var(--accent-lime)" stopOpacity={0.8}/>
@@ -59,7 +71,7 @@ const SkillRadarChart = ({ data, valueKey = 'level', max = 6 }) => (
         </linearGradient>
       </defs>
       <PolarGrid stroke="var(--border-primary)" />
-      <PolarAngleAxis dataKey="label" tick={{ fill: 'var(--text-secondary)', fontSize: 12 }} />
+  <PolarAngleAxis dataKey="label" tick={{ fill: 'var(--text-secondary)', fontSize: tickFontSize }} />
       <PolarRadiusAxis angle={90} domain={[0, max]} tickCount={Math.max(3, Math.min(6, Math.ceil(max))) }
         axisLine={false}
         tickFormatter={(v) => `${v}y`}
@@ -88,7 +100,20 @@ export default function Skills({ id, content }) {
     .map((s) => {
       const yRaw = yearsFor(s.subject);
       const y = Math.min(SCALE_MAX_YEARS, yRaw);
-      return { subject: s.subject, years: y, label: yRaw > 0 ? `${s.subject} ${yRaw.toFixed(1)}y` : s.subject };
+      // shorter label for the polar axis; keep full in bars
+      const short = s.subject.length > 12 ? s.subject.replace(/\b(Engine|Programming|Optimization|Architecture|Testing|Comm\.|Cloud Services)\b/g, (m) => {
+        const map = {
+          'Engine': 'Eng.',
+          'Programming': 'Prog.',
+          'Optimization': 'Opt.',
+          'Architecture': 'Arch.',
+          'Testing': 'Test',
+          'Comm.': 'Comm.',
+          'Cloud Services': 'Cloud'
+        };
+        return map[m] || m;
+      }) : s.subject;
+      return { subject: s.subject, years: y, label: yRaw > 0 ? `${short} ${yRaw.toFixed(1)}y` : short };
     })
     .filter((s) => s.years > 0);
   const maxYears = SCALE_MAX_YEARS;
@@ -145,17 +170,16 @@ export default function Skills({ id, content }) {
           })}
         </div>
 
-  <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-center glass-effect rounded-3xl p-8 shadow-2xl hover:shadow-emerald-500/10">
-          <div>
-            <SkillRadarChart data={yearSkills} valueKey="years" max={SCALE_MAX_YEARS} />
-            {/* compact legend */}
-            <div className="mt-4 flex flex-wrap gap-2">
-              {yearSkills.map((s) => (
-                <span key={s.subject} className="px-2 py-1 text-xs rounded-full glass-effect border border-border-primary text-text-secondary">
-                  {s.subject}: {s.label.split(' ').slice(-1)[0]}
-                </span>
-              ))}
-            </div>
+        <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-center glass-effect rounded-3xl p-8 shadow-2xl hover:shadow-emerald-500/10 overflow-visible">
+          <div className="overflow-visible -mx-2 sm:mx-0">
+            <SkillRadarChart
+              data={yearSkills}
+              valueKey="years"
+              max={SCALE_MAX_YEARS}
+              tickFontSize={10}
+              outer="62%"
+              margin={{ top: 40, right: 24, bottom: 56, left: 24 }}
+            />
           </div>
           <div className="space-y-4" ref={containerRef}>
             {yearSkills.map((skill) => {

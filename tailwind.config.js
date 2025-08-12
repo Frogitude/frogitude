@@ -1,5 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  // Make Tailwind's `dark:` variant respond to our HTML data attribute
+  // e.g. <html data-theme="dark">
+  darkMode: ['class', 'html[data-theme="dark"]'],
   content: [
     './src/pages/**/*.{js,jsx,ts,tsx}',
     './src/components/**/*.{js,jsx,ts,tsx}',

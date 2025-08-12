@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useAppContext } from './AppContext';
 import GitContributions from './GitContributions';
@@ -97,13 +97,15 @@ export default function About({ id, content }) {
   const draggingRef = useRef({ idx: -1, mode: 'none', startX: 0, startY: 0, nodes: [], center: { x: 50, y: 50 } });
   const [highlightIdx, setHighlightIdx] = useState(-1);
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
-  const mouseTargetRef = useRef({ x: 0, y: 0 });
   const spring = { type: 'spring', stiffness: 260, damping: 20, mass: 0.6 };
+  // View mode: 'tags' (default) or 'map'
+  const [viewMode, setViewMode] = useState('tags');
   // Physics model refs
-  const physRef = useRef({ running: false, raf: 0, calmFrames: 0 });
+  const physRef = useRef({ running: false, raf: 0, calmFrames: 0, lastCommit: 0 });
   const posRef = useRef({ nodes: [], center: { x: 50, y: 50 } });
   const velRef = useRef({ nodes: [], center: { x: 0, y: 0 } });
   const targetRef = useRef({ nodes: [], center: { x: 50, y: 50 } });
+  // Child chips stick to computed positions (no independent dragging)
 
   // Initialize physics refs when groups/nodes change
   React.useEffect(() => {
@@ -128,6 +130,7 @@ export default function About({ id, content }) {
       const tgt = targetRef.current;
       let maxV = 0;
       let maxP = 0;
+  const now = (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
       // Nodes
       for (let i = 0; i < pos.nodes.length; i++) {
         const ax = (tgt.nodes[i].x - pos.nodes[i].x) * k;
@@ -149,10 +152,12 @@ export default function About({ id, content }) {
       maxV = Math.max(maxV, Math.abs(vel.center.x), Math.abs(vel.center.y));
       maxP = Math.max(maxP, Math.abs(tgt.center.x - pos.center.x), Math.abs(tgt.center.y - pos.center.y));
 
-      // Push to state
-      // Avoid excessive renders by batching minimal updates
-      setNodes(pos.nodes.map((n) => ({ x: n.x, y: n.y })));
-      setCenter({ x: pos.center.x, y: pos.center.y });
+      // Push to state at ~30fps to reduce render cost
+      if (now - physRef.current.lastCommit > 33) {
+        physRef.current.lastCommit = now;
+        setNodes(pos.nodes.map((n) => ({ x: n.x, y: n.y })));
+        setCenter({ x: pos.center.x, y: pos.center.y });
+      }
 
       if (maxV < epsV && maxP < epsP) {
         physRef.current.calmFrames += 1;
@@ -160,6 +165,9 @@ export default function About({ id, content }) {
         physRef.current.calmFrames = 0;
       }
       if (physRef.current.calmFrames > 8 && draggingRef.current.mode === 'none') {
+        // Final commit to ensure latest positions are reflected
+        setNodes(pos.nodes.map((n) => ({ x: n.x, y: n.y })));
+        setCenter({ x: pos.center.x, y: pos.center.y });
         physRef.current.running = false;
         physRef.current.raf = 0;
         return;
@@ -170,13 +178,36 @@ export default function About({ id, content }) {
   };
 
   // Color palette per parent group (primary stroke color)
+  // Added a softer "tag" background color for chip styling
   const groupColors = useMemo(() => [
-    { primary: 'rgb(16,185,129)', child: 'rgba(16,185,129,0.7)' },   // emerald
-    { primary: 'rgb(59,130,246)', child: 'rgba(59,130,246,0.7)' },   // blue
-    { primary: 'rgb(245,158,11)', child: 'rgba(245,158,11,0.8)' },   // amber
-    { primary: 'rgb(139,92,246)', child: 'rgba(139,92,246,0.75)' },  // violet
-    { primary: 'rgb(239,68,68)', child: 'rgba(239,68,68,0.75)' },    // red
+    { primary: 'rgb(16,185,129)', child: 'rgba(16,185,129,0.7)', tag: 'rgba(16,185,129,0.16)' },   // emerald
+    { primary: 'rgb(59,130,246)', child: 'rgba(59,130,246,0.7)', tag: 'rgba(59,130,246,0.16)' },   // blue
+    { primary: 'rgb(245,158,11)', child: 'rgba(245,158,11,0.8)', tag: 'rgba(245,158,11,0.18)' },   // amber
+    { primary: 'rgb(139,92,246)', child: 'rgba(139,92,246,0.75)', tag: 'rgba(139,92,246,0.16)' },  // violet
+    { primary: 'rgb(239,68,68)', child: 'rgba(239,68,68,0.75)', tag: 'rgba(239,68,68,0.16)' },    // red
   ], []);
+
+  // Detect desktop to control map availability and toggle visibility on mobile
+  const [isDesktop, setIsDesktop] = useState(false);
+  useEffect(() => {
+    const mq = typeof window !== 'undefined' && window.matchMedia ? window.matchMedia('(min-width: 768px)') : null;
+    const update = () => setIsDesktop(!!(mq && mq.matches));
+    update();
+    if (mq) {
+      if (mq.addEventListener) mq.addEventListener('change', update);
+      else if (mq.addListener) mq.addListener(update);
+    }
+    return () => {
+      if (mq) {
+        if (mq.removeEventListener) mq.removeEventListener('change', update);
+        else if (mq.removeListener) mq.removeListener(update);
+      }
+    };
+  }, []);
+  // Ensure mobile always shows tags view
+  useEffect(() => {
+    if (!isDesktop && viewMode === 'map') setViewMode('tags');
+  }, [isDesktop, viewMode]);
 
   const clamp = (val, min, max) => Math.max(min, Math.min(max, val));
 
@@ -253,25 +284,11 @@ export default function About({ id, content }) {
   const onMouseMoveContainer = (e) => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
-    mouseTargetRef.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+    // Update directly on pointer move; avoids a continuous RAF loop
+    setMouse({ x: e.clientX - rect.left, y: e.clientY - rect.top });
   };
 
-  // Slow trailing of mouse glow to make background animation very slow
-  React.useEffect(() => {
-    let raf = 0;
-    const tick = () => {
-      setMouse((prev) => {
-        const tx = mouseTargetRef.current.x;
-        const ty = mouseTargetRef.current.y;
-        const nx = prev.x + (tx - prev.x) * 0.06;
-        const ny = prev.y + (ty - prev.y) * 0.06;
-        return { x: nx, y: ny };
-      });
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+  // Removed continuous RAF-based mouse trailing to avoid constant re-renders
 
   // Compute child node positions as an outward wedge (1-2 arcs) from each group node
   const childPositions = useMemo(() => {
@@ -329,21 +346,23 @@ export default function About({ id, content }) {
   }, [groups, nodes, center]);
   
   return (
-    <section id={id} className="py-16 md:py-20 bg-bg-secondary">
+    <section id={id} className="py-16 md:py-20">
       <div className="container mx-auto px-4 sm:px-6">
+        {/* Glass card wrapper with generous inner padding */}
+        <div className="glass-effect rounded-3xl border border-border-primary/60 p-6 sm:p-8 md:p-10">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           viewport={{ once: true, amount: 0.2 }}
-          className="text-center mb-16"
+          className="text-center mb-10 md:mb-12"
         >
           <h2 className="text-4xl md:text-6xl font-bold text-text-primary mb-6">
             <span className="text-gradient">{content.title}</span>
           </h2>
         </motion.div>
 
-    <div className="grid lg:grid-cols-2 gap-10 md:gap-16 items-center mb-16 md:mb-20">
+    <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center mb-10 md:mb-12">
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -399,14 +418,34 @@ export default function About({ id, content }) {
           transition={{ duration: 0.5, delay: 0.2 }}
           viewport={{ once: true, amount: 0.2 }}
         >
-          <h3 className="text-3xl font-bold text-text-primary text-center mb-10">{content.techStackTitle}</h3>
-          {/* Mind map on md+ (full-bleed) */}
-          <div className="hidden md:block">
-            <div
-              className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] h-[600px]"
-              ref={containerRef}
-              onMouseMove={onMouseMoveContainer}
-            >
+          <h3 className="text-3xl font-bold text-text-primary text-center mb-6">{content.techStackTitle}</h3>
+          {/* View toggle moved under "My Tech Stack" heading (hidden on mobile) */}
+          <div className="hidden md:flex justify-center mb-8">
+            <div className="inline-flex items-center gap-1 bg-bg-secondary/60 border border-border-primary rounded-full p-1 select-none">
+              <button
+                onClick={() => setViewMode('tags')}
+                className={`px-3 py-1.5 text-sm rounded-full transition-colors ${viewMode === 'tags' ? 'bg-bg-primary text-text-primary' : 'text-text-secondary hover:text-text-primary'}`}
+              >
+                Tags
+              </button>
+              <button
+                onClick={() => setViewMode('map')}
+                className={`px-3 py-1.5 text-sm rounded-full transition-colors ${viewMode === 'map' ? 'bg-bg-primary text-text-primary' : 'text-text-secondary hover:text-text-primary'}`}
+              >
+                Mind Map
+              </button>
+            </div>
+          </div>
+          {/* Mind map only on desktop when selected (responsive height) */}
+          {isDesktop && viewMode === 'map' && (
+            <div>
+              <div
+                className="relative w-full h-[420px] md:h-[560px] rounded-3xl overflow-hidden border border-border-primary/60"
+                ref={containerRef}
+                onMouseMove={onMouseMoveContainer}
+                onPointerMove={onMouseMoveContainer}
+                style={{ touchAction: 'none' }}
+              >
               {/* background dot grid */}
               <svg className="absolute inset-0 w-full h-full" aria-hidden="true">
                 <defs>
@@ -436,14 +475,12 @@ export default function About({ id, content }) {
                     </feMerge>
                   </filter>
                 </defs>
-                {/* Center to group lines (endpoints shortened to meet card edges) */}
+                {/* Center to group lines (solid) */}
                 {nodes.map((p, i) => {
                   const active = i === highlightIdx;
                   const color = groupColors[i % groupColors.length].primary;
-                  // Use stable dash pattern and CSS animation classes
-                  const dash = '36 72';
-                  const width = active ? 1.6 : 0.7;
-                  const opacity = active ? 1 : 0.65;
+                  const width = active ? 1.6 : 0.8;
+                  const opacity = active ? 1 : 0.85;
                   // shorten to avoid underlapping the group chip
                   const dx = p.x - center.x;
                   const dy = p.y - center.y;
@@ -455,7 +492,7 @@ export default function About({ id, content }) {
                   const x2 = p.x - (dx / len) * padEnd;
                   const y2 = p.y - (dy / len) * padEnd;
                   return (
-                    <motion.line
+                    <line
                       key={`c-${i}`}
                       x1={x1}
                       y1={y1}
@@ -463,21 +500,20 @@ export default function About({ id, content }) {
                       y2={y2}
                       stroke={color}
                       strokeLinecap="round"
-                      className={active ? 'mm-line-dash-108' : ''}
-                      style={{ strokeDasharray: dash }}
+                      style={{ transition: 'stroke-width 200ms ease, stroke-opacity 200ms ease' }}
                       filter={active ? 'url(#glow)' : undefined}
-                      animate={{ strokeWidth: width, strokeOpacity: opacity }}
+                      strokeWidth={width}
+                      strokeOpacity={opacity}
                     />
                   );
                 })}
-                {/* Group to child lines */}
+                {/* Group to child lines (solid) */}
                 {childPositions.map((list, i) => (
                   list.map((cp, j) => {
                     const active = i === highlightIdx;
                     const color = groupColors[i % groupColors.length].child;
-                    const dash = '24 56';
-                    const width = active ? 0.65 : 0.45;
-                    const opacity = active ? 0.92 : 0.55;
+                    const width = active ? 0.65 : 0.5;
+                    const opacity = active ? 0.92 : 0.8;
                     // shorten so line meets child chip edge
                     const dx = cp.x - nodes[i].x;
                     const dy = cp.y - nodes[i].y;
@@ -489,7 +525,7 @@ export default function About({ id, content }) {
                     const x2 = cp.x - (dx / len) * padEnd;
                     const y2 = cp.y - (dy / len) * padEnd;
                     return (
-                      <motion.line
+                      <line
                         key={`g-${i}-${j}`}
                         x1={x1}
                         y1={y1}
@@ -497,9 +533,9 @@ export default function About({ id, content }) {
                         y2={y2}
                         stroke={color}
                         strokeLinecap="round"
-                        className={active ? 'mm-line-dash-80' : ''}
-                        style={{ strokeDasharray: dash }}
-                        animate={{ strokeWidth: width, strokeOpacity: opacity }}
+                        style={{ transition: 'stroke-width 200ms ease, stroke-opacity 200ms ease' }}
+                        strokeWidth={width}
+                        strokeOpacity={opacity}
                       />
                     );
                   })
@@ -519,13 +555,16 @@ export default function About({ id, content }) {
                 childPositions[i].map((cp, j) => (
                   <motion.div
                     key={`${g.title}-${j}`}
-                    className="absolute -translate-x-1/2 -translate-y-1/2 z-0"
-                    style={{ left: `${cp.x}%`, top: `${cp.y}%` }}
+                    className="absolute -translate-x-1/2 -translate-y-1/2 z-0 select-none"
+                    style={{
+                      left: `${cp.x}%`,
+                      top: `${cp.y}%`,
+                      willChange: 'transform',
+                    }}
                     onMouseEnter={() => setHighlightIdx(i)}
                     onMouseLeave={() => setHighlightIdx(-1)}
                     onFocus={() => setHighlightIdx(i)}
                     onBlur={() => setHighlightIdx(-1)}
-                    whileHover={{ scale: 1.05 }}
                     transition={spring}
                   >
                     {(() => {
@@ -554,13 +593,13 @@ export default function About({ id, content }) {
                 <motion.div
                   key={g.title}
                   className="absolute -translate-x-1/2 -translate-y-1/2 z-10"
-                  style={{ left: `${nodes[i].x}%`, top: `${nodes[i].y}%` }}
+                  style={{ left: `${nodes[i].x}%`, top: `${nodes[i].y}%`, willChange: 'transform' }}
                 >
                   {(() => {
                     const dim = highlightIdx !== -1 && i !== highlightIdx;
                     return (
                       <div
-                        className="rounded-2xl glass-effect border px-4 py-2 w-[180px] text-center shadow-md cursor-grab active:cursor-grabbing select-none"
+                        className="rounded-2xl glass-effect border px-4 py-2 w-[180px] text-center shadow-md select-none"
                         style={{
                           borderColor: groupColors[i % groupColors.length].primary,
                           boxShadow: `inset 0 0 16px ${groupColors[i % groupColors.length].child}`,
@@ -568,7 +607,7 @@ export default function About({ id, content }) {
                           opacity: dim ? 0.55 : 1,
                           transition: 'filter 200ms ease, opacity 200ms ease',
                         }}
-                        onPointerDown={onPointerDown(i)}
+                        // no drag for groups in simplified mode
                         onMouseEnter={() => setHighlightIdx(i)}
                         onMouseLeave={() => setHighlightIdx(-1)}
                         onFocus={() => setHighlightIdx(i)}
@@ -580,22 +619,35 @@ export default function About({ id, content }) {
                   })()}
                 </motion.div>
               ))}
-            </div>
-          </div>
-          {/* Small-screen fallback: simple list */}
-          <div className="md:hidden max-w-3xl mx-auto space-y-4">
-            {groups.map((g) => (
-              <div key={g.title} className="rounded-2xl glass-effect border border-border-primary p-4">
-                <div className="text-text-primary font-semibold mb-2">{g.title}</div>
-                <div className="flex flex-wrap gap-2">
-                  {g.items.map((it) => (
-                    <span key={it} className="px-2 py-1 text-xs rounded-full glass-effect border border-border-primary text-text-primary/90">{it}</span>
-                  ))}
-                </div>
               </div>
-            ))}
-          </div>
+            </div>
+          )}
+          {/* Tags view (default): shown on all screens when selected; on mobile it's the only option */}
+          {viewMode === 'tags' && (
+            <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {groups.map((g, i) => (
+                <div key={g.title} className="rounded-2xl glass-effect border border-border-primary p-4">
+                  <div className="text-text-primary font-semibold mb-2">{g.title}</div>
+                  <div className="flex flex-wrap gap-2">
+                    {g.items.map((it) => (
+                      <span
+                        key={it}
+                        className="px-2 py-1 text-xs rounded-full border text-text-primary/90"
+                        style={{
+                          borderColor: groupColors[i % groupColors.length].primary,
+                          background: groupColors[i % groupColors.length].tag,
+                        }}
+                      >
+                        {it}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </motion.div>
+        </div>
       </div>
     </section>
   );

@@ -14,6 +14,7 @@ export default function GitContributions({ username = 'freddynewton' }: { userna
   const [err, setErr] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [cell, setCell] = useState(10);
+  const [gap, setGap] = useState(3);
   // No breakpoint slicing: always show the full past year
 
   // Columns known even before data to keep hooks stable
@@ -64,26 +65,19 @@ export default function GitContributions({ username = 'freddynewton' }: { userna
     const el = containerRef.current;
     if (!el) return;
     const ro = new ResizeObserver(() => {
-      const pad = 16; // padding estimation
-      const w = el.clientWidth - pad;
-    const gap = 3;
-    const columns = plannedColumns;
-    const c = Math.max(6, Math.min(12, Math.floor((w - gap * (columns - 1)) / columns)));
+      const w = el.clientWidth; // content width available
+      // Use smaller gaps on very small widths
+      const g = w < 420 ? 2 : 3;
+      setGap(g);
+      const columns = plannedColumns;
+      const c = Math.max(3, Math.min(12, Math.floor((w - g * (columns - 1)) / columns)));
       setCell(c);
     });
     ro.observe(el);
     return () => ro.disconnect();
   }, [plannedColumns]);
 
-  // On load/resize, snap scroll to the rightmost (latest weeks first)
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    const raf = requestAnimationFrame(() => {
-      el.scrollLeft = el.scrollWidth;
-    });
-    return () => cancelAnimationFrame(raf);
-  }, [cal, cell, plannedColumns]);
+  // No horizontal scroll: we fit the full heatmap into available width by resizing cells
 
   if (err) {
     return (
@@ -103,18 +97,20 @@ export default function GitContributions({ username = 'freddynewton' }: { userna
   const weeksToShow = cal.weeks;
 
   return (
-    <div className="glass-effect border border-border-primary rounded-2xl p-4">
+    <div className="glass-effect border border-border-primary rounded-2xl p-3 sm:p-4">
       <div className="flex items-center justify-between mb-3">
-        <div className="font-semibold text-text-primary">{t('title')}</div>
-        <div className="text-text-secondary text-sm">{t('lastYear')}: {cal.totalContributions}</div>
+        <div className="font-semibold text-text-primary text-sm sm:text-base">{t('title')}</div>
+        <div className="text-text-secondary text-xs sm:text-sm">{t('lastYear')}: {cal.totalContributions}</div>
       </div>
-  <div className="overflow-x-auto" ref={containerRef}>
+      <div className="w-full" ref={containerRef}>
         <div
-          className="grid gap-[3px]"
+          className="grid w-full"
           style={{
-    gridAutoFlow: 'column',
+            gridAutoFlow: 'column',
             gridTemplateRows: `repeat(7, ${cell}px)`,
-    gridAutoColumns: `${cell}px`
+            gridAutoColumns: `${cell}px`,
+            columnGap: `${gap}px`,
+            rowGap: `${gap}px`,
           }}
           aria-label="GitHub contribution calendar"
         >

@@ -82,8 +82,15 @@ export default function ChatWidget() {
       {!open ? (
         <button
           onClick={() => setOpen(true)}
-          className="rounded-full bg-gradient-to-r from-emerald-600 to-lime-600 text-white px-4 py-3 font-semibold shadow-lg hover:shadow-xl"
+          className="rounded-full btn-gradient px-4 py-3 font-semibold shadow-lg hover:shadow-xl inline-flex items-center gap-2"
         >
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M12 12v.01"/>
+            <path d="M8 12v.01"/>
+            <path d="M16 12v.01"/>
+            <path d="M21 15a4 4 0 0 1-4 4H7l-4 4V7a4 4 0 0 1 4-4h7"/>
+            <path d="M15 3h6v6"/>
+          </svg>
           {language === 'de' ? 'Chat' : 'Chat'}
         </button>
       ) : (
@@ -126,7 +133,7 @@ export default function ChatWidget() {
             <button
               onClick={send}
               disabled={loading}
-              className="rounded-xl bg-gradient-to-r from-emerald-600 to-lime-600 text-white px-4 py-2 font-semibold disabled:opacity-60"
+              className="rounded-xl btn-gradient px-4 py-2 font-semibold disabled:opacity-60"
             >
               {t.send}
             </button>

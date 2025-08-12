@@ -628,6 +628,22 @@ export default function ProfessionalExperience({ id, content }) {
           };
 
           setupHorizontal();
+          // While the horizontal section is pinned, translate horizontal wheel gestures into vertical scroll
+          const forwardWheel = (e) => {
+            const st = stRef.current;
+            if (!st) return;
+            const y = window.scrollY || window.pageYOffset || 0;
+            // Only act while the horizontal pin is active in the viewport range
+            if (y < st.start || y > st.end) return;
+            // Some touchpads emit horizontal deltas (deltaX) when hovering fixed header — convert to vertical
+            if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+              try { e.preventDefault(); } catch {}
+              const factor = 1.0; // 1:1 mapping feels natural on Windows touchpads
+              const top = y + e.deltaX * factor;
+              window.scrollTo({ top });
+            }
+          };
+          window.addEventListener('wheel', forwardWheel, { passive: false });
           // If images load late, rebuild once to get exact widths for centering
           const imgs = Array.from(hContentRef.current.querySelectorAll('img'));
           const onImgLoad = () => ScrollTrigger.refresh();
@@ -669,6 +685,7 @@ export default function ProfessionalExperience({ id, content }) {
           // Cleanup listeners when media query unmatches
           return () => {
             ScrollTrigger.removeEventListener('refresh', onRefresh);
+            window.removeEventListener('wheel', forwardWheel);
           };
         },
       });

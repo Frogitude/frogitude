@@ -1,13 +1,19 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { gsap } from '@/lib/gsap';
 
 // Decorative scroll-reactive sine waves, inspired by hexagoncircle "scroll waves"
 export default function ScrollWaves({ lines = 6, height = 140 }) {
+  const [mounted, setMounted] = useState(false);
   const svgRef = useRef(null);
   const frame = useRef(0);
   const data = useRef({ width: 0, height, drift: 0, amp: 6, ampTarget: 6 });
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
     const svg = svgRef.current;
     if (!svg) return;
     const polylines = Array.from(svg.querySelectorAll('polyline'));
@@ -59,11 +65,13 @@ export default function ScrollWaves({ lines = 6, height = 140 }) {
       window.removeEventListener('resize', resize);
       window.removeEventListener('scroll', onScroll);
     };
-  }, [height, lines]);
+  }, [height, lines, mounted]);
+
+  if (!mounted) return null;
 
   return (
-    <div className="pointer-events-none select-none" aria-hidden>
-      <svg ref={svgRef} className="w-full" style={{ height }} viewBox={`0 0 800 ${height}`} preserveAspectRatio="none">
+    <div className="pointer-events-none select-none" aria-hidden suppressHydrationWarning>
+      <svg ref={svgRef} className="w-full" height={height} viewBox={`0 0 800 ${height}`} preserveAspectRatio="none">
         {Array.from({ length: lines }).map((_, i) => (
           <polyline key={i} fill="none" stroke="var(--accent-lime)" strokeWidth={2} strokeLinejoin="round" />
         ))}

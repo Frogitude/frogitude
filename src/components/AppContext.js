@@ -9,10 +9,15 @@ export const AppProvider = ({ children }) => {
   useEffect(() => {
     const storedTheme = typeof window !== 'undefined' ? (localStorage.getItem('theme') || '') : '';
     const storedLang = typeof window !== 'undefined' ? (localStorage.getItem('language') || '') : '';
-    if (storedTheme) {
-      setTheme(storedTheme);
+    // Initialize theme: stored value or OS preference
+    if (typeof window !== 'undefined') {
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const initialTheme = storedTheme || (prefersDark ? 'dark' : 'light');
+      setTheme(initialTheme);
       if (typeof document !== 'undefined') {
-        document.documentElement.setAttribute('data-theme', storedTheme);
+        const root = document.documentElement;
+        root.setAttribute('data-theme', initialTheme);
+        root.style.colorScheme = initialTheme;
       }
     }
     if (storedLang) {
@@ -27,7 +32,9 @@ export const AppProvider = ({ children }) => {
       localStorage.setItem('theme', newTheme);
     }
     if (typeof document !== 'undefined') {
-      document.documentElement.setAttribute('data-theme', newTheme);
+      const root = document.documentElement;
+      root.setAttribute('data-theme', newTheme);
+      root.style.colorScheme = newTheme;
     }
   };
   

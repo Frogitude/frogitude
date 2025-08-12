@@ -163,6 +163,13 @@ export const content = {
     services: {
       title: 'Unsere Leistungen: XR, Immersive Web & Interaktive Ads',
       subtitle: 'Von AR/VR über immersive Web‑Erlebnisse bis zu Playable Ads – Strategie, Konzept und Umsetzung aus einer Hand.',
+      filters: {
+        all: 'Alle',
+        games: 'Games',
+        xr: 'XR',
+        consulting: 'Consulting',
+        web: 'Web & Ads',
+      },
       items: {
         xr: { title: 'Extended Reality', blurb: 'Extended Reality oder kurz XR bietet grenzenlose Möglichkeiten, den Zuschauer emotional zu involvieren. Mit VR‑Brillen wie z. B. der Oculus Quest oder der Pico gelingt es, die Illusion der virtuellen Welt real erscheinen zu lassen.' },
         ar: { title: 'Augmented Reality', blurb: 'Mit Augmented Reality werden auf dem Smartphone oder Tablet digitale Darstellungen und Zusatzinformationen über die reale Welt projiziert.' },
@@ -385,6 +392,13 @@ export const content = {
     services: {
       title: 'Our Services: XR, Immersive Web & Interactive Ads',
       subtitle: 'From AR/VR to immersive web experiences and playable ads — strategy, concept, and delivery end‑to‑end.',
+      filters: {
+        all: 'All',
+        games: 'Games',
+        xr: 'XR',
+        consulting: 'Consulting',
+        web: 'Web & Ads',
+      },
       items: {
         xr: { title: 'Extended Reality', blurb: 'Extended Reality (XR) unlocks powerful ways to emotionally engage users. With headsets like Oculus Quest or Pico, virtual worlds can feel remarkably real.' },
         ar: { title: 'Augmented Reality', blurb: 'Augmented Reality overlays digital content and information onto the real world via smartphone or tablet.' },
