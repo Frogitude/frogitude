@@ -64,7 +64,7 @@ export default function Hero({ id, content }) {
           >
             <img ref={logoRef} src={LOGO_URL} alt="Frogitude Logo" className="w-40 h-40 mb-4" />
             <h1
-              className="text-7xl md:text-9xl font-black leading-none"
+              className="text-7xl md:text-9xl font-black leading-none px-[25px] md:px-0"
               style={{
                 backgroundImage: 'linear-gradient(90deg, rgba(236, 253, 245, 0.9), rgba(163, 230, 53, 0.95), rgba(236, 253, 245, 0.9))',
                 backgroundSize: '200% 100%',

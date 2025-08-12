@@ -44,8 +44,8 @@ export default function Header() {
     >
       <div className="container mx-auto px-6 py-4">
         <div className="flex justify-between items-center">
-          <button onClick={() => scrollToSection('hero')} className="flex items-center gap-2 text-2xl font-bold cursor-pointer">
-            <img src={LOGO_URL} alt="Frogitude Logo" className="w-10 h-10" />
+          <button onClick={() => scrollToSection('hero')} className="flex items-center gap-2 text-xl md:text-2xl font-bold cursor-pointer">
+            <img src={LOGO_URL} alt="Frogitude Logo" className="w-9 h-9 md:w-10 md:h-10 shrink-0" />
             <span className="text-text-primary">FROGITUDE</span>
           </button>
           
@@ -62,18 +62,35 @@ export default function Header() {
             ))}
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <button onClick={() => scrollToSection('contact')} className="hidden sm:block bg-gradient-to-r from-emerald-500 to-lime-600 hover:from-emerald-600 hover:to-lime-700 text-white px-6 py-2 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">
               {t.nav.hire}
             </button>
-            <button onClick={toggleLanguage} className="p-2 rounded-full hover:bg-bg-secondary transition-colors text-text-secondary hover:text-text-primary text-2xl" aria-label="Toggle language">
-              {language === 'de' ? '🇩🇪' : '🇬🇧'}
+            <button
+              onClick={toggleLanguage}
+              className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-full hover:bg-bg-secondary transition-colors text-text-secondary hover:text-text-primary"
+              aria-label="Toggle language"
+            >
+              <span
+                className="inline-flex items-center justify-center h-full text-xl leading-[1] align-middle"
+                role="img"
+                aria-hidden="true"
+              >
+                {language === 'de' ? '🇩🇪' : '🇬🇧'}
+              </span>
             </button>
-            <button onClick={toggleTheme} className="p-2 rounded-full hover:bg-bg-secondary transition-colors text-text-secondary hover:text-text-primary" aria-label="Toggle theme">
+            <button
+              onClick={toggleTheme}
+              className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-full hover:bg-bg-secondary transition-colors text-text-secondary hover:text-text-primary"
+              aria-label="Toggle theme"
+            >
               {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </button>
             {/* Mobile burger */}
-            <button onClick={() => setOpen((v) => !v)} className="md:hidden p-2 rounded-lg border border-border-primary text-text-secondary hover:text-text-primary">
+            <button
+              onClick={() => setOpen((v) => !v)}
+              className="md:hidden w-9 h-9 flex items-center justify-center rounded-lg border border-border-primary text-text-secondary hover:text-text-primary"
+            >
               <span className="sr-only">{t.nav.menu}</span>
               <div className="w-5 space-y-1.5">
                 <div className={`h-0.5 bg-current transition-transform ${open ? 'translate-y-2 rotate-45' : ''}`}></div>
