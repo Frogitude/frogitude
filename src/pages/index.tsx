@@ -16,6 +16,7 @@ import Services from '@/components/Services';
 import AnimatedBackground from '@/components/AnimatedBackground';
 import ScrollWaves from '@/components/ScrollWaves';
 import ClickBurst from '@/components/ClickBurst';
+import ChatWidget from '@/components/ChatWidget';
 import { Youtube, Instagram, Linkedin, Github, Twitter, MessageSquare } from 'lucide-react';
 import { withBasePath } from '@/lib/basePath';
 
@@ -83,6 +84,7 @@ function PageContent() {
           <Faq id="faq" />
           <WhatIsFrogitude id="frogitude" />
         </main>
+  <ChatWidget />
         
         <footer className="py-12 border-t border-border-primary">
           <div className="container mx-auto px-6 text-center">
