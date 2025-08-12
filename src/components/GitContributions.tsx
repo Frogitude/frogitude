@@ -75,6 +75,16 @@ export default function GitContributions({ username = 'freddynewton' }: { userna
     return () => ro.disconnect();
   }, [plannedColumns]);
 
+  // On load/resize, snap scroll to the rightmost (latest weeks first)
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const raf = requestAnimationFrame(() => {
+      el.scrollLeft = el.scrollWidth;
+    });
+    return () => cancelAnimationFrame(raf);
+  }, [cal, cell, plannedColumns]);
+
   if (err) {
     return (
       <div className="glass-effect border border-border-primary rounded-2xl p-4 text-text-secondary text-sm">
