@@ -44,7 +44,7 @@ export default function Header() {
     >
       <div className="container mx-auto px-6 py-4">
         <div className="flex justify-between items-center">
-          <button onClick={() => scrollToSection('hero')} className="flex items-center gap-2 text-xl md:text-2xl font-bold cursor-pointer">
+          <button onClick={() => scrollToSection('hero')} className="flex items-center gap-2 text-xl md:text-2xl font-bold cursor-pointer" data-image-glow>
             <img src={LOGO_URL} alt="Frogitude Logo" className="w-9 h-9 md:w-10 md:h-10 shrink-0" />
             <span className="text-text-primary">FROGITUDE</span>
           </button>

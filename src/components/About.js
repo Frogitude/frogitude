@@ -440,12 +440,10 @@ export default function About({ id, content }) {
                 {nodes.map((p, i) => {
                   const active = i === highlightIdx;
                   const color = groupColors[i % groupColors.length].primary;
-                  // dash pattern; animate only when active
-                  const dash = active ? '36 72' : '16 64';
-                  const pattern = dash.split(' ').map(Number).reduce((a, b) => a + b, 0) || 100;
+                  // Use stable dash pattern and CSS animation classes
+                  const dash = '36 72';
                   const width = active ? 1.6 : 0.7;
                   const opacity = active ? 1 : 0.65;
-                  const duration = active ? 2.0 : 0.001; // effectively static when not active
                   // shorten to avoid underlapping the group chip
                   const dx = p.x - center.x;
                   const dy = p.y - center.y;
@@ -465,14 +463,10 @@ export default function About({ id, content }) {
                       y2={y2}
                       stroke={color}
                       strokeLinecap="round"
+                      className={active ? 'mm-line-dash-108' : ''}
                       style={{ strokeDasharray: dash }}
                       filter={active ? 'url(#glow)' : undefined}
-                      animate={{
-                        strokeWidth: width,
-                        strokeOpacity: opacity,
-                        strokeDashoffset: active ? [0, -pattern] : 0,
-                      }}
-                      transition={{ duration, ease: 'linear', repeat: active ? Infinity : 0 }}
+                      animate={{ strokeWidth: width, strokeOpacity: opacity }}
                     />
                   );
                 })}
@@ -481,11 +475,9 @@ export default function About({ id, content }) {
                   list.map((cp, j) => {
                     const active = i === highlightIdx;
                     const color = groupColors[i % groupColors.length].child;
-                    const dash = active ? '24 56' : '12 48';
-                    const pattern = dash.split(' ').map(Number).reduce((a, b) => a + b, 0) || 100;
+                    const dash = '24 56';
                     const width = active ? 0.65 : 0.45;
                     const opacity = active ? 0.92 : 0.55;
-                    const duration = active ? 2.2 : 0.001;
                     // shorten so line meets child chip edge
                     const dx = cp.x - nodes[i].x;
                     const dy = cp.y - nodes[i].y;
@@ -505,13 +497,9 @@ export default function About({ id, content }) {
                         y2={y2}
                         stroke={color}
                         strokeLinecap="round"
+                        className={active ? 'mm-line-dash-80' : ''}
                         style={{ strokeDasharray: dash }}
-                        animate={{
-                          strokeWidth: width,
-                          strokeOpacity: opacity,
-                          strokeDashoffset: active ? [0, -pattern] : 0,
-                        }}
-                        transition={{ duration, ease: 'linear', repeat: active ? Infinity : 0 }}
+                        animate={{ strokeWidth: width, strokeOpacity: opacity }}
                       />
                     );
                   })
@@ -540,16 +528,24 @@ export default function About({ id, content }) {
                     whileHover={{ scale: 1.05 }}
                     transition={spring}
                   >
-                    <div
-                      className="px-2.5 py-1.5 text-xs rounded-xl shadow-sm select-none"
-                      style={{
-                        border: `1px solid ${groupColors[i % groupColors.length].primary}`,
-                        background: `linear-gradient(180deg, ${groupColors[i % groupColors.length].child} 0%, rgba(0,0,0,0) 100%)`,
-                        color: 'var(--text-primary)'
-                      }}
-                    >
-                      {g.items[j]}
-                    </div>
+                    {(() => {
+                      const dim = highlightIdx !== -1 && i !== highlightIdx;
+                      return (
+                        <div
+                          className="px-2.5 py-1.5 text-xs rounded-xl shadow-sm select-none"
+                          style={{
+                            border: `1px solid ${groupColors[i % groupColors.length].primary}`,
+                            background: `linear-gradient(180deg, ${groupColors[i % groupColors.length].child} 0%, rgba(0,0,0,0) 100%)`,
+                            color: 'var(--text-primary)',
+                            filter: dim ? 'grayscale(1)' : 'none',
+                            opacity: dim ? 0.5 : 1,
+                            transition: 'filter 200ms ease, opacity 200ms ease',
+                          }}
+                        >
+                          {g.items[j]}
+                        </div>
+                      );
+                    })()}
                   </motion.div>
                 ))
               ))}
@@ -560,17 +556,28 @@ export default function About({ id, content }) {
                   className="absolute -translate-x-1/2 -translate-y-1/2 z-10"
                   style={{ left: `${nodes[i].x}%`, top: `${nodes[i].y}%` }}
                 >
-                  <div
-                    className="rounded-2xl glass-effect border px-4 py-2 w-[180px] text-center shadow-md cursor-grab active:cursor-grabbing select-none"
-                    style={{ borderColor: groupColors[i % groupColors.length].primary, boxShadow: `inset 0 0 16px ${groupColors[i % groupColors.length].child}` }}
-                    onPointerDown={onPointerDown(i)}
-                    onMouseEnter={() => setHighlightIdx(i)}
-                    onMouseLeave={() => setHighlightIdx(-1)}
-                    onFocus={() => setHighlightIdx(i)}
-                    onBlur={() => setHighlightIdx(-1)}
-                  >
-                    <div className="text-text-primary font-semibold">{g.title}</div>
-                  </div>
+                  {(() => {
+                    const dim = highlightIdx !== -1 && i !== highlightIdx;
+                    return (
+                      <div
+                        className="rounded-2xl glass-effect border px-4 py-2 w-[180px] text-center shadow-md cursor-grab active:cursor-grabbing select-none"
+                        style={{
+                          borderColor: groupColors[i % groupColors.length].primary,
+                          boxShadow: `inset 0 0 16px ${groupColors[i % groupColors.length].child}`,
+                          filter: dim ? 'grayscale(1)' : 'none',
+                          opacity: dim ? 0.55 : 1,
+                          transition: 'filter 200ms ease, opacity 200ms ease',
+                        }}
+                        onPointerDown={onPointerDown(i)}
+                        onMouseEnter={() => setHighlightIdx(i)}
+                        onMouseLeave={() => setHighlightIdx(-1)}
+                        onFocus={() => setHighlightIdx(i)}
+                        onBlur={() => setHighlightIdx(-1)}
+                      >
+                        <div className="text-text-primary font-semibold">{g.title}</div>
+                      </div>
+                    );
+                  })()}
                 </motion.div>
               ))}
             </div>

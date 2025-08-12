@@ -121,7 +121,7 @@ body {
 /* Global interactive hover feedback */
 /* Apply smooth transitions to common interactive or card-like elements */
 :where(a, button, .glass-effect, .card, .chip, .tag, .stat, .panel, .list-item, .nav-link, img, input, textarea, select) {
-  transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease, background-color 200ms ease, color 200ms ease, opacity 200ms ease;
+  transition: transform 200ms ease, box-shadow 200ms ease, filter 200ms ease, border-color 200ms ease, background-color 200ms ease, color 200ms ease, opacity 200ms ease;
 }
 
 /* Subtle lift + glow on hover everywhere */
@@ -131,15 +131,41 @@ body {
   border-color: var(--accent-lime);
 }
 
+/* For images with transparency, prefer a shape-following glow using drop-shadow */
+img:hover:not([aria-disabled="true"]) {
+  /* Keep the subtle lift from the global rule */
+  /* Replace rectangular shadow with alpha-aware drop-shadow */
+  box-shadow: none;
+  filter: drop-shadow(0 8px 24px var(--color-glow));
+  /* Avoid unexpected image border color changes */
+  border-color: inherit;
+}
+
+/* Header/Nav brand: remove rectangular shadow on the control, apply image drop-shadow on group hover */
+[data-image-glow]:hover {
+  box-shadow: none;
+  border-color: inherit;
+}
+[data-image-glow]:hover img {
+  filter: drop-shadow(0 8px 24px var(--color-glow));
+}
+
 /* Slightly stronger feedback for .glass-effect items */
 .glass-effect:hover {
   background: color-mix(in oklab, var(--glass-bg) 92%, var(--accent-emerald) 8%);
 }
 
+/* Opt-out: disable global hover glow inside elements marked with [data-no-glow] */
+[data-no-glow] :where(a, button, .glass-effect, .card, .chip, .tag, .stat, .panel, .list-item, .nav-link, img, input, textarea, select):hover {
+  transform: none;
+  box-shadow: none;
+  border-color: inherit;
+}
+
 /* Accessibility: honor reduced motion */
 @media (prefers-reduced-motion: reduce) {
   :where(a, button, .glass-effect, .card, .chip, .tag, .stat, .panel, .list-item, .nav-link, img, input, textarea, select) {
-    transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
+    transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease, box-shadow 150ms ease, filter 150ms ease;
   }
   :where(a, button, .glass-effect, .card, .chip, .tag, .stat, .panel, .list-item, .nav-link, img, input, textarea, select):hover:not([aria-disabled="true"]) {
     transform: none;
@@ -185,4 +211,25 @@ html.light #navbar.scrolled,
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
+}
+
+/* Mind map: stable dash animations for SVG lines (avoid rerender resets) */
+@keyframes mm-dash-80 { to { stroke-dashoffset: -80; } }
+@keyframes mm-dash-108 { to { stroke-dashoffset: -108; } }
+.mm-line-dash-80 { animation: mm-dash-80 2.2s linear infinite; }
+.mm-line-dash-108 { animation: mm-dash-108 2s linear infinite; }
+
+/* Dark-mode readability for specific partner logos (CSS-only) */
+:root[data-theme='dark'] img[src*="superswipelogo"],
+:root[data-theme='dark'] img[src*="FRIDIE_black_wordmark"] {
+  /* Make logos white in dark mode (preserve transparency) */
+  filter: invert(1) brightness(1.15) contrast(1.1) saturate(0);
+}
+
+/* Also respect OS dark when no explicit light theme is set */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) img[src*="superswipelogo"],
+  :root:not([data-theme='light']) img[src*="FRIDIE_black_wordmark"] {
+    filter: invert(1) brightness(1.15) contrast(1.1) saturate(0);
+  }
 }

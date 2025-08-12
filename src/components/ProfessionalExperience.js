@@ -1,9 +1,10 @@
 import React, { useRef, useState, useMemo, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Briefcase, Building, Gamepad2 } from 'lucide-react';
 import { useAppContext } from './AppContext';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
 import { useIsomorphicLayoutEffect } from '@/lib/hooks';
+import { withBasePath } from '@/lib/basePath';
 
 const companyLogoMap = {
   'Frogitude': '/images/small-frog.png',
@@ -198,6 +199,71 @@ const experienceData = {
   ],
 };
 
+// Small helper component: when active, randomly pops a few lily pads
+// around the centered item with a quick pop-in/out animation.
+const FloatingPads = ({ active }) => {
+  const [pads, setPads] = useState([]);
+  const idRef = useRef(0);
+  const intervalRef = useRef(null);
+
+  useEffect(() => {
+    if (!active) {
+      setPads([]);
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+      return;
+    }
+
+    const spawn = () => {
+      const id = idRef.current++;
+      const angle = Math.random() * Math.PI * 2;
+      const r = 40 + Math.random() * 90; // px radius from center
+      const x = Math.cos(angle) * r;
+      const y = Math.sin(angle) * r;
+      const size = 16 + Math.floor(Math.random() * 10); // 16–26px
+      setPads((prev) => [...prev, { id, x, y, size }]);
+      // Remove after a short lifetime
+      setTimeout(() => {
+        setPads((prev) => prev.filter((p) => p.id !== id));
+      }, 1600);
+    };
+
+    // burst a few quickly, then keep sprinkling while focused
+    const initial = 3 + Math.floor(Math.random() * 2);
+    for (let i = 0; i < initial; i++) setTimeout(spawn, i * 120);
+    intervalRef.current = setInterval(spawn, 320);
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    };
+  }, [active]);
+
+  return (
+    <div className="pointer-events-none absolute inset-0 z-0">
+      <AnimatePresence>
+        {pads.map((p) => (
+          <motion.img
+            key={p.id}
+            src={withBasePath('/images/lily-pad.png')}
+            alt=""
+            className="drop-shadow absolute left-1/2 top-1/2"
+            style={{ width: p.size, height: p.size, transform: `translate(calc(-50% + ${p.x}px), calc(-50% + ${p.y}px))` }}
+            initial={{ scale: 0.2, opacity: 0 }}
+            animate={{ scale: 1.05, opacity: 1 }}
+            exit={{ scale: 0.6, opacity: 0 }}
+            transition={{ type: 'spring', stiffness: 280, damping: 20, duration: 0.45 }}
+          />
+        ))}
+      </AnimatePresence>
+    </div>
+  );
+};
+
 const ExperienceItem = ({ item, index }) => {
   // SSR-safe: Default to mobile rendering if window is undefined (first render)
   let isMobile = false;
@@ -299,7 +365,9 @@ export default function ProfessionalExperience({ id, content }) {
   const { language } = useAppContext();
   const experienceList = experienceData[language];
   const sectionRef = useRef(null);
+  const headerRef = useRef(null);
   const containerRef = useRef(null); // mobile vertical
+  const vWrapperRef = useRef(null);  // mobile vertical wrapper for pin duration
   const progressRef = useRef(null);
   const hContainerRef = useRef(null); // desktop horizontal scroller
   const hContentRef = useRef(null);   // desktop horizontal inner track
@@ -310,6 +378,7 @@ export default function ProfessionalExperience({ id, content }) {
   const tlRef = useRef(null);
   const xFromRef = useRef(0);
   const xEndRef = useRef(0);
+  const scrollLenRef = useRef(0);
 
   // Precompute sine points for horizontal SVG path (0..100 viewBox)
   const segments = 64;
@@ -344,22 +413,40 @@ export default function ProfessionalExperience({ id, content }) {
             };
             measureSpine();
             window.addEventListener('resize', measureSpine);
-    if (progressRef.current && containerRef.current) {
-            gsap.fromTo(
-              progressRef.current,
-              { scaleY: 0 },
-              {
+          // Pin the vertical list within its wrapper for a sticky effect
+          const wrapper = vWrapperRef.current;
+          if (wrapper && containerRef.current) {
+            const pinOffset = 100; // px from top to account for header
+            const getEnd = () => {
+              const listH = containerRef.current.scrollHeight || 0;
+              const vh = window.innerHeight || 0;
+              // Scroll length while pinned
+              const d = Math.max(0, listH - vh + 200);
+              return `+=${d}`;
+            };
+            ScrollTrigger.create({
+              trigger: wrapper,
+              start: `top top+=${pinOffset}`,
+              end: getEnd,
+              pin: containerRef.current,
+              pinSpacing: true,
+              anticipatePin: 1,
+              invalidateOnRefresh: true,
+            });
+            // Progress bar synced to the same duration
+            if (progressRef.current) {
+              gsap.fromTo(progressRef.current, { scaleY: 0 }, {
                 scaleY: 1,
                 ease: 'none',
                 scrollTrigger: {
-      // Pixel-based early start for the vertical list itself, accounting for sticky header
-      trigger: containerRef.current,
-      start: 'top bottom-=500',
-      end: 'bottom top+=64',
+                  trigger: wrapper,
+                  start: `top top+=${pinOffset}`,
+                  end: getEnd,
                   scrub: true,
+                  invalidateOnRefresh: true,
                 },
-              }
-            );
+              });
+            }
           }
             // Cleanup handler
             return () => {
@@ -374,58 +461,122 @@ export default function ProfessionalExperience({ id, content }) {
           const pinSection = hContainerRef.current;  // only pin the horizontal container
           const track = hContentRef.current;
 
-          const setupHorizontal = () => {
-            const total = track.scrollWidth;
+          // Helper: compute offsets using current refs (used by setup and refresh)
+          const computeOffsetsGlobal = () => {
+            const t = hContentRef.current;
+            const pin = hContainerRef.current;
+            if (!(t && pin)) return { xFrom: 0, xEnd: 0, scrollLen: 0 };
+            gsap.set(t, { x: 0 });
+            const total = t.scrollWidth;
             const vw = window.innerWidth;
             const dist = Math.max(0, total - vw);
+            const sectionRect = pin.getBoundingClientRect();
+            const centerX = sectionRect.width / 2;
+            const itemsNow = Array.from(t.querySelectorAll('[data-exp-item-horizontal]'));
+            let xFrom = 0;
+            let xEnd = -dist;
+            if (itemsNow.length > 0) {
+              const firstRect = itemsNow[0].getBoundingClientRect();
+              const lastRect = itemsNow[itemsNow.length - 1].getBoundingClientRect();
+              const firstCenter = firstRect.left - sectionRect.left + firstRect.width / 2;
+              const lastCenter = lastRect.left - sectionRect.left + lastRect.width / 2;
+              xFrom = centerX - firstCenter;
+              xEnd = centerX - lastCenter;
+            }
+            // Ensure leftward movement on scroll-down
+            if (xEnd - xFrom >= 0) {
+              const distOverflow = Math.max(0, total - vw);
+              const mag = Math.max(Math.abs(xEnd - xFrom), distOverflow);
+              xEnd = xFrom - mag;
+            }
+            let scrollLen = Math.abs(xEnd - xFrom);
+            if (!scrollLen || scrollLen < 8) {
+              xFrom = 0;
+              xEnd = -dist;
+              scrollLen = Math.max(0, dist);
+            }
+            return { xFrom, xEnd, scrollLen };
+          };
+
+          const setupHorizontal = () => {
+            const items = Array.from(track.querySelectorAll('[data-exp-item-horizontal]'));
             gsap.killTweensOf(track);
             // Kill any previous triggers bound to this section to avoid duplicates on refresh
             ScrollTrigger.getAll().forEach((t) => {
               if (t.vars && (t.vars.trigger === sectionTrigger || t.vars.pin === pinSection)) t.kill();
             });
 
-            // Compute a start offset so the very first item begins near the right edge
-            const items = Array.from(track.querySelectorAll('[data-exp-item-horizontal]'));
-            // Compute transforms so first item is centered at start, last item centered at end
-            // Ensure measurement at neutral position
-            gsap.set(track, { x: 0 });
-            const sectionRect = pinSection.getBoundingClientRect();
-            const centerX = sectionRect.width / 2;
-            let xFrom = 0;
-            let xEnd = -dist;
-            if (items.length > 0) {
-              const firstRect = items[0].getBoundingClientRect();
-              const lastRect = items[items.length - 1].getBoundingClientRect();
-              // measure centers relative to the pinned container, not the page
-              const firstCenter = firstRect.left - sectionRect.left + firstRect.width / 2;
-              const lastCenter = lastRect.left - sectionRect.left + lastRect.width / 2;
-              xFrom = centerX - firstCenter; // make first centered at start
-              xEnd = centerX - lastCenter;   // make last centered at end
-            }
-            const scrollLen = Math.abs(xEnd - xFrom);
+            const computeOffsets = () => {
+              // Measure at neutral position to get correct rects
+              gsap.set(track, { x: 0 });
+              const total = track.scrollWidth;
+              const vw = window.innerWidth;
+              const dist = Math.max(0, total - vw);
+              const sectionRect = pinSection.getBoundingClientRect();
+              const centerX = sectionRect.width / 2;
+              let xFrom = 0;
+              let xEnd = -dist;
+              if (items.length > 0) {
+                const firstRect = items[0].getBoundingClientRect();
+                const lastRect = items[items.length - 1].getBoundingClientRect();
+                const firstCenter = firstRect.left - sectionRect.left + firstRect.width / 2;
+                const lastCenter = lastRect.left - sectionRect.left + lastRect.width / 2;
+                xFrom = centerX - firstCenter;
+                xEnd = centerX - lastCenter;
+              }
+              // Ensure leftward movement on scroll down (x decreases)
+              if (xEnd - xFrom >= 0) {
+                const distOverflow = Math.max(0, total - vw);
+                const mag = Math.max(Math.abs(xEnd - xFrom), distOverflow);
+                xEnd = xFrom - mag;
+              }
+              let scrollLen = Math.abs(xEnd - xFrom);
+              // Fallback: if zero (bad measurement), use dist
+              if (!scrollLen || scrollLen < 8) {
+                xFrom = 0;
+                xEnd = -dist;
+                scrollLen = Math.max(0, dist);
+              }
+              return { xFrom, xEnd, scrollLen };
+            };
 
-      // Save for click-to-center
-      xFromRef.current = xFrom;
-      xEndRef.current = xEnd;
+            // Initial compute (pre-pin); will recompute on pin enter as well
+            let { xFrom, xEnd, scrollLen } = computeOffsets();
+            scrollLenRef.current = scrollLen;
 
-            // Build a single scrubbed timeline we can tap into for center detection and path draw
-            // Ensure initial position is applied immediately to avoid any flicker at pin start
+            // Save for click-to-center
+            xFromRef.current = xFrom;
+            xEndRef.current = xEnd;
+
+            // Build a scrubbed timeline
             gsap.set(track, { x: xFrom });
-      const tl = gsap.timeline({
+            const tl = gsap.timeline({
               defaults: { ease: 'none' },
               scrollTrigger: {
-        trigger: sectionTrigger,
-        start: 'top top', // starts when Experience section hits viewport top
-                end: () => `+=${scrollLen}`,
+                trigger: sectionTrigger,
+                // Start a bit earlier so pinning begins before the heading reaches the top
+                start: 'top top-=120',
+                end: () => `+=${scrollLenRef.current}`,
                 scrub: true,
-        pin: pinSection,
+                pin: pinSection,
                 pinSpacing: true,
                 anticipatePin: 1,
                 invalidateOnRefresh: true,
-                onEnter: () => gsap.set(track, { x: xFrom }),
-                onEnterBack: () => gsap.set(track, { x: xFrom }),
-                onLeave: () => gsap.set(track, { x: xEnd }),
-                onLeaveBack: () => gsap.set(track, { x: xFrom }),
+                onEnter: () => {
+                  // Recompute after pin applied to ensure perfect centering
+                  const off = computeOffsets();
+                  xFromRef.current = off.xFrom;
+                  xEndRef.current = off.xEnd;
+                  scrollLenRef.current = off.scrollLen;
+                  gsap.set(track, { x: off.xFrom });
+                  // Schedule a safe global refresh on next frame so end() picks up new length
+                  requestAnimationFrame(() => {
+                    try { ScrollTrigger.refresh(); } catch {}
+                  });
+                },
+                onEnterBack: () => gsap.set(track, { x: xFromRef.current }),
+                onLeave: () => gsap.set(track, { x: xEndRef.current }),
+                onLeaveBack: () => gsap.set(track, { x: xFromRef.current }),
                 onUpdate: () => {
                   // Determine centered item; enlarge inline instead of opening modal
                   const centerX = window.innerWidth / 2;
@@ -449,21 +600,25 @@ export default function ProfessionalExperience({ id, content }) {
               },
             });
 
-      // Store timeline and its ScrollTrigger for later programmatic control
-      tlRef.current = tl;
-      stRef.current = tl.scrollTrigger;
+            // Store timeline and its ScrollTrigger for later programmatic control
+            tlRef.current = tl;
+            stRef.current = tl.scrollTrigger;
 
             // track movement
-            tl.fromTo(track, { x: xFrom }, { x: xEnd }, 0);
+            tl.fromTo(
+              track,
+              { x: () => xFromRef.current },
+              { x: () => xEndRef.current, immediateRender: true },
+              0
+            );
 
             // Path draw synced with scroll
-            if (hPathRef.current) {
+      if (hPathRef.current) {
               const pl = hPathRef.current.querySelector('polyline');
               if (pl && pl.getTotalLength) {
                 const len = pl.getTotalLength();
-                // Start with the line drawn from the left edge to the center (50%),
-                // then extend to the full length by the end of the scroll.
-                gsap.set(pl, { strokeDasharray: len, strokeDashoffset: len * 0.5 });
+        // Start drawing from the very beginning (left) and extend to full length.
+        gsap.set(pl, { strokeDasharray: len, strokeDashoffset: len });
                 tl.to(pl, { strokeDashoffset: 0 }, 0);
               }
             }
@@ -479,25 +634,38 @@ export default function ProfessionalExperience({ id, content }) {
               img.addEventListener('error', onImgLoad, { once: true });
             }
           });
-          ScrollTrigger.addEventListener('refreshInit', setupHorizontal);
-          // Ensure after refresh the starting position is correct if at the top
+          // Pin the header strip for the duration without extra spacing
+          if (headerRef.current) {
+            ScrollTrigger.create({
+              trigger: sectionTrigger,
+              start: 'top top-=120',
+              end: () => `+=${scrollLenRef.current}`,
+              pin: headerRef.current,
+              pinSpacing: false,
+              anticipatePin: 1,
+              invalidateOnRefresh: true,
+            });
+          }
+
+          // Ensure after refresh the offsets are consistent and position matches current progress
           const onRefresh = () => {
             if (!hContentRef.current) return;
             const track = hContentRef.current;
             const st = stRef.current;
             if (!st) return;
-            const p = st.progress;
-            if (p <= 0.0001) {
-              gsap.set(track, { x: xFromRef.current });
-            } else if (p >= 0.9999) {
-              gsap.set(track, { x: xEndRef.current });
-            }
+            // Recompute offsets via global helper
+            const off = computeOffsetsGlobal();
+            xFromRef.current = off.xFrom;
+            xEndRef.current = off.xEnd;
+            scrollLenRef.current = off.scrollLen;
+            const p = st.progress || 0;
+            const x = xFromRef.current + p * (xEndRef.current - xFromRef.current);
+            gsap.set(track, { x });
           };
           ScrollTrigger.addEventListener('refresh', onRefresh);
           // Cleanup listeners when media query unmatches
           return () => {
             ScrollTrigger.removeEventListener('refresh', onRefresh);
-            ScrollTrigger.removeEventListener('refreshInit', setupHorizontal);
           };
         },
       });
@@ -563,8 +731,8 @@ export default function ProfessionalExperience({ id, content }) {
   return (
   <section id={id} className="py-20" ref={sectionRef}>
       <div className="container mx-auto px-6">
-  {/* Sticky on desktop only; non-sticky on mobile for simpler flow */}
-  <div className="md:sticky md:top-[80px] z-30">
+  {/* Header strip (will be pinned via ScrollTrigger during horizontal scroll) */}
+  <div ref={headerRef} className="z-30">
           <div className="rounded-2xl border border-border-primary/50 bg-bg-primary/80 backdrop-blur-sm px-4 sm:px-6 py-4">
             <motion.div
               initial={{ opacity: 0, y: 50 }}
@@ -597,7 +765,7 @@ export default function ProfessionalExperience({ id, content }) {
 
         {/* Desktop: horizontal sine-curve timeline */}
   <div className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] h-[30rem] lg:h-[36rem] hidden md:block overflow-hidden z-10" ref={hContainerRef}>
-          <div ref={hContentRef} className="relative h-full" style={{ minWidth: `${Math.max(100, experienceList.length * 22)}rem` }}>
+          <div ref={hContentRef} className="relative h-full" style={{ minWidth: `${Math.max(100, experienceList.length * 28)}rem` }}>
           <svg ref={hPathRef} className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 100" preserveAspectRatio="none">
             <polyline fill="none" stroke="var(--accent-lime)" strokeWidth="0.8" points={sinePoints} />
           </svg>
@@ -605,10 +773,10 @@ export default function ProfessionalExperience({ id, content }) {
             const t = experienceList.length > 1 ? idx / (experienceList.length - 1) : 0;
             const y = 50 + Math.sin(2 * Math.PI * t) * amplitude;
             const isFocused = focusedIndex === idx;
-            return (
+      return (
               <div
                 key={idx}
-                className="absolute group"
+                className={`absolute group ${isFocused ? 'z-20' : 'z-10'}`}
                 style={{ left: `${t * 100}%`, top: `${y}%`, transform: 'translate(-50%, -50%)' }}
                 data-exp-item-horizontal
                 role="button"
@@ -618,10 +786,16 @@ export default function ProfessionalExperience({ id, content }) {
                 onFocus={() => setFocusedIndex(idx)}
                 onClick={() => setFocusedIndex(idx)}
               >
-                {/* dot */}
-                <div className={`w-2 h-2 rounded-full bg-accent-lime mb-2 mx-auto transition-transform ${isFocused ? 'scale-150' : 'group-hover:scale-125'}`} />
-                {/* card (expands when focused or on hover) */}
-                <div className={`glass-effect rounded-xl p-4 shadow-lg transition-all ${isFocused ? 'scale-105 min-w-[22rem] max-w-md ring-2 ring-accent-lime' : 'min-w-[16rem] max-w-xs group-hover:scale-105 group-hover:shadow-xl'}`}>
+                <div className="relative z-10 flex flex-col items-stretch">
+                  {/* dot (lily pad) */}
+                  <img
+                    src={withBasePath('/images/lily-pad.png')}
+                    alt=""
+                    className={`w-6 h-6 mb-2 mx-auto transition-transform drop-shadow ${isFocused ? 'scale-150' : 'group-hover:scale-110'}`}
+                  />
+                  {/* card (expands when focused or on hover) */}
+                  <motion.div layout className={`glass-effect rounded-xl p-4 shadow-lg ${isFocused ? 'ring-2 ring-accent-lime min-w-[24rem] max-w-md' : 'min-w-[16rem] max-w-sm'}`}
+          transition={{ type: 'spring', stiffness: 320, damping: 28 }}>
                   <div className="flex items-center gap-3 mb-2">
                     <div className="w-10 h-10 rounded-full glass-effect flex items-center justify-center overflow-hidden">
                       {item.logo ? (
@@ -635,28 +809,31 @@ export default function ProfessionalExperience({ id, content }) {
                       <p className="text-text-primary font-semibold leading-tight md:text-lg">{item.company}</p>
                     </div>
                   </div>
-                  <p className="text-sm md:text-base text-text-secondary/95">{item.role}</p>
+          <p className="text-sm md:text-base text-text-secondary/95">{item.role}</p>
                   {/* details shown when focused or on hover */}
-                  <div className={`${isFocused ? 'block' : 'hidden group-hover:block'} mt-2 text-sm md:text-base text-text-secondary/95 space-y-2`}>
+          <div className={`${isFocused ? 'block' : 'hidden group-hover:block'} mt-2 text-sm md:text-base text-text-secondary/95 space-y-2 transition-opacity duration-150 ${isFocused ? 'opacity-100' : 'group-hover:opacity-100 opacity-0'}`}>
                     {item.description && (
-                      <p className="leading-relaxed">{item.description}</p>
+            <p className="leading-relaxed">{item.description}</p>
                     )}
                     {Array.isArray(item.highlights) && item.highlights.length > 0 && (
-                      <ul className="list-disc list-inside space-y-1.5">
+            <ul className="list-disc list-inside space-y-1.5">
                         {item.highlights.map((h) => (
-                          <li key={h}>{h}</li>
+              <li key={h}>{h}</li>
                         ))}
-                      </ul>
+            </ul>
                     )}
                     {Array.isArray(item.technologies) && item.technologies.length > 0 && (
-                      <div className="flex flex-wrap gap-2 pt-1">
+            <div className="flex flex-wrap gap-2 pt-1">
                         {item.technologies.map((t) => (
-                          <span key={t} className="px-2 py-1 text-xs md:text-sm rounded-full glass-effect border border-border-primary shadow-sm text-text-primary/95">{t}</span>
+              <span key={t} className="px-2 py-1 text-xs md:text-sm rounded-full glass-effect border border-border-primary shadow-sm text-text-primary/95">{t}</span>
                         ))}
-                      </div>
+            </div>
                     )}
-                  </div>
+          </div>
+        </motion.div>
                 </div>
+                {/* Floating pads overlay (beneath content) */}
+                <FloatingPads active={isFocused} />
               </div>
             );
           })}
@@ -664,15 +841,16 @@ export default function ProfessionalExperience({ id, content }) {
           </div>
         </div>
 
-    {/* Mobile: vertical timeline with GSAP progress */}
-  <div className="relative max-w-3xl mx-auto space-y-16 md:hidden z-10 mt-6" ref={containerRef}>
+    {/* Mobile: vertical timeline pinned with ScrollTrigger */}
+    <div className="md:hidden relative" ref={vWrapperRef}>
+      <div className="relative max-w-3xl mx-auto space-y-16 z-10 mt-6" ref={containerRef}>
           <div className="absolute top-0 bottom-0 w-1 bg-border-primary/40 pointer-events-none" style={{ left: 'calc(var(--timeline-x, 2.5rem) - 2px)' }} />
           <div ref={progressRef} className="absolute top-0 bottom-0 w-1 bg-accent-lime origin-top scale-y-0 pointer-events-none" style={{ left: 'calc(var(--timeline-x, 2.5rem) - 2px)' }} />
           {experienceList.map((item, idx) => (
             <ExperienceItem key={idx} item={item} index={idx} />
           ))}
-          {/* trailing ellipsis removed */}
-        </div>
+      </div>
+    </div>
       </div>
 
   {/* No modal: details are expanded inline for the centered item */}
