@@ -338,7 +338,7 @@ export default function About({ id, content }) {
           viewport={{ once: true, amount: 0.2 }}
           className="text-center mb-16"
         >
-          <h2 className="text-5xl md:text-6xl font-bold text-text-primary mb-6">
+          <h2 className="text-4xl md:text-6xl font-bold text-text-primary mb-6">
             <span className="text-gradient">{content.title}</span>
           </h2>
         </motion.div>
@@ -362,9 +362,9 @@ export default function About({ id, content }) {
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true, amount: 0.2 }}
-            className="space-y-6 text-center md:text-left"
+            className="space-y-6 text-center md:text-left min-w-0"
           >
-            <div className="space-y-4 text-text-secondary leading-relaxed text-base md:text-lg">
+            <div className="space-y-4 text-text-secondary leading-relaxed text-base md:text-lg px-1">
               {content.p1 && <p>{content.p1}</p>}
               {content.p2 && <p>{content.p2}</p>}
               {content.p3 && <p>{content.p3}</p>}
@@ -386,7 +386,7 @@ export default function About({ id, content }) {
               ))}
             </div>
             {/* GitHub Contributions */}
-            <div className="pt-4 max-w-full md:max-w-2xl mx-auto md:mx-0">
+            <div className="pt-4 w-full max-w-full md:max-w-2xl mx-auto md:mx-0 min-w-0">
               {/* username inferred from GitHub link */}
               <GitContributions username="freddynewton" />
             </div>
