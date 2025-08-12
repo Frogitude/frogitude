@@ -1,5 +1,6 @@
 // Cloudflare Pages Function: POST /api/chat
 // Free via Workers AI (daily limits). Requires adding an AI binding named "AI" in your Cloudflare Pages project settings.
+import { systemPrompt, knowledgeFullDE, knowledgeFullEN } from '../ai/knowledge';
 
 export const onRequestOptions = async () => {
   return new Response(null, {
@@ -33,9 +34,7 @@ Experience (highlights):
 Contact: via site (contact/hire) or LinkedIn/GitHub.
 `;
 
-const SYSTEM_PROMPT = `You are Frogitude's helpful assistant. Answer briefly, clearly and helpfully.
-If the user writes German, reply in German. If English, reply in English.
-Base your answers on the provided company context. If a question is outside this scope, say so politely.`;
+// System prompt now lives in functions/ai/knowledge.ts
 
 export const onRequestPost = async (context: any) => {
   const { request, env } = context;
@@ -44,7 +43,7 @@ export const onRequestPost = async (context: any) => {
     const messages = Array.isArray(body?.messages) ? body.messages : [];
     const last = messages[messages.length - 1]?.content || '';
     const langIsGerman = /[äöüÄÖÜß]|\b(der|die|das|und|oder|mit|für|über|Projekt|Anfrage)\b/i.test(last);
-    const contextText = langIsGerman ? KNOWLEDGE_DE : KNOWLEDGE_EN;
+  const contextText = langIsGerman ? knowledgeFullDE : knowledgeFullEN;
 
     if (!env || !env.AI) {
       return new Response(JSON.stringify({ error: 'Cloudflare Workers AI binding "AI" is missing. Add it in Pages → Settings → Functions → Bindings.' }), {
@@ -53,11 +52,12 @@ export const onRequestPost = async (context: any) => {
       });
     }
 
-    // Prefer a widely available model; change here if you want a smaller or newer one.
-    const model = '@cf/meta/llama-3-8b-instruct';
+  // Prefer a widely available model; change here if you want a smaller/newer one.
+  // ChatGPT‑5 or Grok are not available via Workers AI. To use them, integrate those vendors directly.
+  const model = env.MODEL || '@cf/meta/llama-3-8b-instruct';
     const resp = await env.AI.run(model, {
       messages: [
-        { role: 'system', content: SYSTEM_PROMPT + '\n\nCONTEXT:\n' + contextText },
+    { role: 'system', content: systemPrompt + '\n\nCONTEXT:\n' + contextText },
         ...messages.slice(-12),
       ],
     });
