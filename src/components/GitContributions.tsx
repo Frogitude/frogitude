@@ -15,6 +15,9 @@ export default function GitContributions({ username = 'freddynewton' }: { userna
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [cell, setCell] = useState(10);
 
+  // Columns known even before data to keep hooks stable
+  const columns = cal?.weeks?.length || 53;
+
   useEffect(() => {
     const ctrl = new AbortController();
     // In local Next dev, Pages Functions don't exist at /api; use deployed origin if provided
@@ -55,23 +58,6 @@ export default function GitContributions({ username = 'freddynewton' }: { userna
     return dict[key] || key;
   };
 
-  if (err) {
-    return (
-      <div className="glass-effect border border-border-primary rounded-2xl p-4 text-text-secondary text-sm">
-        {t('unavailable')}
-      </div>
-    );
-  }
-  if (!cal) {
-    return (
-      <div className="glass-effect border border-border-primary rounded-2xl p-4 text-text-secondary text-sm">
-        {t('loading')}
-      </div>
-    );
-  }
-
-  // 53 columns (weeks) x 7 rows (days)
-  const columns = cal.weeks.length || 53;
   // Compute cell size responsively based on container width (cap for readability)
   useEffect(() => {
     const el = containerRef.current;
@@ -86,6 +72,21 @@ export default function GitContributions({ username = 'freddynewton' }: { userna
     ro.observe(el);
     return () => ro.disconnect();
   }, [columns]);
+
+  if (err) {
+    return (
+      <div className="glass-effect border border-border-primary rounded-2xl p-4 text-text-secondary text-sm">
+        {t('unavailable')}
+      </div>
+    );
+  }
+  if (!cal) {
+    return (
+      <div className="glass-effect border border-border-primary rounded-2xl p-4 text-text-secondary text-sm">
+        {t('loading')}
+      </div>
+    );
+  }
 
   return (
     <div className="glass-effect border border-border-primary rounded-2xl p-4">
