@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useAppContext } from './AppContext';
 
 type Day = { date: string; contributionCount: number; color: string };
@@ -12,6 +12,8 @@ export default function GitContributions({ username = 'freddynewton' }: { userna
   const { language } = useAppContext?.() || { language: 'en' } as any;
   const [cal, setCal] = useState<Calendar | null>(null);
   const [err, setErr] = useState<string | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [cell, setCell] = useState(10);
 
   useEffect(() => {
     const ctrl = new AbortController();
@@ -70,6 +72,20 @@ export default function GitContributions({ username = 'freddynewton' }: { userna
 
   // 53 columns (weeks) x 7 rows (days)
   const columns = cal.weeks.length || 53;
+  // Compute cell size responsively based on container width (cap for readability)
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(() => {
+      const pad = 16; // padding estimation
+      const w = el.clientWidth - pad;
+      const gap = 3;
+      const c = Math.max(6, Math.min(12, Math.floor((w - gap * (columns - 1)) / columns)));
+      setCell(c);
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [columns]);
 
   return (
     <div className="glass-effect border border-border-primary rounded-2xl p-4">
@@ -77,13 +93,13 @@ export default function GitContributions({ username = 'freddynewton' }: { userna
         <div className="font-semibold text-text-primary">{t('title')}</div>
         <div className="text-text-secondary text-sm">{t('lastYear')}: {cal.totalContributions}</div>
       </div>
-      <div className="overflow-x-auto">
+  <div className="overflow-x-auto" ref={containerRef}>
         <div
           className="grid gap-[3px]"
           style={{
-            gridAutoFlow: 'column',
-            gridTemplateRows: 'repeat(7, 10px)',
-            gridAutoColumns: '10px'
+    gridAutoFlow: 'column',
+    gridTemplateRows: `repeat(7, ${cell}px)`,
+    gridAutoColumns: `${cell}px`
           }}
           aria-label="GitHub contribution calendar"
         >

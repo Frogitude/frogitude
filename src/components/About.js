@@ -343,15 +343,15 @@ export default function About({ id, content }) {
           </h2>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-16 items-center mb-20">
+    <div className="grid lg:grid-cols-2 gap-10 md:gap-16 items-center mb-16 md:mb-20">
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7, type: 'spring' }}
             viewport={{ once: true }}
-            className="flex justify-center"
+      className="flex justify-center"
           >
-            <div className="relative w-80 h-80">
+      <div className="relative mx-auto w-56 h-56 sm:w-64 sm:h-64 md:w-72 md:h-72 lg:w-80 lg:h-80">
               <div className="absolute inset-0 bg-gradient-to-br from-accent-lime to-accent-emerald rounded-full blur-2xl opacity-30 dark:opacity-50" />
               <img src={PROFILE_PIC_URL} alt="Fred Newton Akdogan" className="relative w-full h-full object-cover rounded-full shadow-2xl" />
             </div>
@@ -362,16 +362,16 @@ export default function About({ id, content }) {
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true, amount: 0.2 }}
-            className="space-y-6"
+            className="space-y-6 text-center md:text-left"
           >
-            <div className="space-y-4 text-text-secondary leading-relaxed text-lg">
+            <div className="space-y-4 text-text-secondary leading-relaxed text-base md:text-lg">
               {content.p1 && <p>{content.p1}</p>}
               {content.p2 && <p>{content.p2}</p>}
               {content.p3 && <p>{content.p3}</p>}
             </div>
 
             {/* Social buttons */}
-            <div className="flex flex-wrap gap-3 pt-2">
+            <div className="flex flex-wrap gap-3 pt-2 justify-center md:justify-start">
               {socials.map(({ href, label, icon: Icon }) => (
                 <a
                   key={href}
@@ -386,7 +386,7 @@ export default function About({ id, content }) {
               ))}
             </div>
             {/* GitHub Contributions */}
-            <div className="pt-4">
+            <div className="pt-4 max-w-full md:max-w-2xl mx-auto md:mx-0">
               {/* username inferred from GitHub link */}
               <GitContributions username="freddynewton" />
             </div>
