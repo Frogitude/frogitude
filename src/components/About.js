@@ -329,8 +329,8 @@ export default function About({ id, content }) {
   }, [groups, nodes, center]);
   
   return (
-    <section id={id} className="py-20 bg-bg-secondary">
-      <div className="container mx-auto px-6">
+    <section id={id} className="py-16 md:py-20 bg-bg-secondary">
+      <div className="container mx-auto px-4 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}

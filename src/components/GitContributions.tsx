@@ -14,9 +14,24 @@ export default function GitContributions({ username = 'freddynewton' }: { userna
   const [err, setErr] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [cell, setCell] = useState(10);
+  const [isMd, setIsMd] = useState(true);
+
+  // Track breakpoint to decide how many weeks to show
+  useEffect(() => {
+    if (typeof window === 'undefined' || !('matchMedia' in window)) return;
+    const mq = window.matchMedia('(min-width: 768px)');
+    const update = () => setIsMd(!!mq.matches);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, []);
 
   // Columns known even before data to keep hooks stable
-  const columns = cal?.weeks?.length || 53;
+  const plannedColumns = (() => {
+    const total = cal?.weeks?.length || 53;
+    if (!cal?.weeks) return total;
+    return isMd ? total : Math.min(16, total);
+  })();
 
   useEffect(() => {
     const ctrl = new AbortController();
@@ -65,13 +80,14 @@ export default function GitContributions({ username = 'freddynewton' }: { userna
     const ro = new ResizeObserver(() => {
       const pad = 16; // padding estimation
       const w = el.clientWidth - pad;
-      const gap = 3;
-      const c = Math.max(6, Math.min(12, Math.floor((w - gap * (columns - 1)) / columns)));
+      const gap = isMd ? 3 : 2;
+      const columns = plannedColumns;
+      const c = Math.max(isMd ? 6 : 4, Math.min(isMd ? 12 : 10, Math.floor((w - gap * (columns - 1)) / columns)));
       setCell(c);
     });
     ro.observe(el);
     return () => ro.disconnect();
-  }, [columns]);
+  }, [plannedColumns, isMd]);
 
   if (err) {
     return (
@@ -88,6 +104,8 @@ export default function GitContributions({ username = 'freddynewton' }: { userna
     );
   }
 
+  const weeksToShow = isMd ? cal.weeks : cal.weeks.slice(-Math.min(16, cal.weeks.length));
+
   return (
     <div className="glass-effect border border-border-primary rounded-2xl p-4">
       <div className="flex items-center justify-between mb-3">
@@ -96,15 +114,15 @@ export default function GitContributions({ username = 'freddynewton' }: { userna
       </div>
   <div className="overflow-x-auto" ref={containerRef}>
         <div
-          className="grid gap-[3px]"
+          className="grid gap-[2px] md:gap-[3px]"
           style={{
     gridAutoFlow: 'column',
-    gridTemplateRows: `repeat(7, ${cell}px)`,
+            gridTemplateRows: `repeat(7, ${cell}px)`,
     gridAutoColumns: `${cell}px`
           }}
           aria-label="GitHub contribution calendar"
         >
-          {cal.weeks.map((w, x) => (
+          {weeksToShow.map((w, x) => (
             <React.Fragment key={x}>
               {w.contributionDays.map((d, y) => (
                 <div
