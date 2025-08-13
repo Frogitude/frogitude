@@ -15,10 +15,27 @@ export default function GitContributions({ username = 'freddynewton' }: { userna
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [cell, setCell] = useState(10);
   const [gap, setGap] = useState(3);
-  // No breakpoint slicing: always show the full past year
+  // Request fewer weeks on very small screens to reduce columns and improve fit
+  const [requestedWeeks, setRequestedWeeks] = useState<number | null>(null);
+  // No breakpoint slicing by default: full past year unless requestedWeeks is set
 
   // Columns known even before data to keep hooks stable
-  const plannedColumns = cal?.weeks?.length || 53;
+  const plannedColumns = cal?.weeks?.length || (requestedWeeks ?? 53);
+
+  // Decide how many weeks to request based on viewport width
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const compute = () => {
+      const w = window.innerWidth || 0;
+      if (w <= 360) setRequestedWeeks(26); // ~6 months
+      else if (w <= 420) setRequestedWeeks(32);
+      else if (w <= 520) setRequestedWeeks(40);
+      else setRequestedWeeks(null); // full year
+    };
+    compute();
+    window.addEventListener('resize', compute);
+    return () => window.removeEventListener('resize', compute);
+  }, []);
 
   useEffect(() => {
     const ctrl = new AbortController();
@@ -28,7 +45,8 @@ export default function GitContributions({ username = 'freddynewton' }: { userna
         (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'))
         ? (process.env.NEXT_PUBLIC_PAGES_ORIGIN || '')
         : '';
-    const url = `${origin}/api/github-contributions?username=${encodeURIComponent(username)}`;
+    const weeksParam = requestedWeeks ? `&weeks=${requestedWeeks}` : '';
+    const url = `${origin}/api/github-contributions?username=${encodeURIComponent(username)}${weeksParam}`;
     fetch(url, { signal: ctrl.signal })
       .then((r) => r.json())
       .then((j) => {
@@ -36,7 +54,7 @@ export default function GitContributions({ username = 'freddynewton' }: { userna
       })
       .catch((e) => setErr(String(e?.message || e)));
     return () => ctrl.abort();
-  }, [username]);
+  }, [username, requestedWeeks]);
 
   const days: Day[] = useMemo(() => {
     if (!cal) return [];

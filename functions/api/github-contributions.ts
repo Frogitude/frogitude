@@ -69,7 +69,17 @@ export const onRequestGet = async (context: any) => {
       });
     }
     const cal = user.contributionsCollection.contributionCalendar;
-    const body = debug ? { debug: { username }, ...cal } : cal;
+    // Optional: limit weeks for compact mobile rendering
+    const weeksParam = Number(url.searchParams.get('weeks'));
+    let calOut = cal;
+    if (Number.isFinite(weeksParam)) {
+      const totalWeeks = Array.isArray(cal?.weeks) ? cal.weeks.length : 0;
+      const w = Math.max(1, Math.min(totalWeeks || 53, Math.floor(weeksParam)));
+      if (totalWeeks && w < totalWeeks) {
+        calOut = { ...cal, weeks: cal.weeks.slice(-w) };
+      }
+    }
+    const body = debug ? { debug: { username, weeks: calOut?.weeks?.length }, ...calOut } : calOut;
     return new Response(JSON.stringify(body), { headers: { 'content-type': 'application/json', ...CORS } });
   } catch (e: any) {
     return new Response(JSON.stringify({ error: e?.message || 'Request failed' }), {
