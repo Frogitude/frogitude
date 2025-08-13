@@ -56,10 +56,13 @@ export default function ChatWidget() {
     setInput('');
     setLoading(true);
     try {
+  // Use deployed Pages Functions origin in local dev, so /api/chat resolves
+  const isLocal = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+  const base = isLocal ? (process.env.NEXT_PUBLIC_PAGES_ORIGIN || '') : '';
       const payload: { messages: ApiMsg[] } = {
         messages: next.map((m) => ({ role: m.role, content: m.content })),
       };
-      const res = await fetch('/api/chat', {
+  const res = await fetch(`${base}/api/chat`, {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify(payload),
@@ -78,11 +81,13 @@ export default function ChatWidget() {
   }
 
   return (
-    <div className="fixed bottom-4 right-4 z-50">
+  <div className="fixed bottom-4 right-4 z-50" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
       {!open ? (
         <button
           onClick={() => setOpen(true)}
-          className="rounded-full btn-gradient px-4 py-3 font-semibold shadow-lg hover:shadow-xl inline-flex items-center gap-2"
+      className="rounded-full btn-gradient px-4 py-3 font-semibold shadow-lg hover:shadow-xl inline-flex items-center gap-2"
+      style={{ touchAction: 'manipulation' }}
+      aria-label="Open chat"
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <path d="M12 12v.01"/>
@@ -94,10 +99,10 @@ export default function ChatWidget() {
           {language === 'de' ? 'Chat' : 'Chat'}
         </button>
       ) : (
-        <div className="w-[90vw] max-w-sm h-[65vh] max-h-[520px] glass-effect border border-border-primary rounded-2xl shadow-2xl flex flex-col overflow-hidden">
+    <div className="w-[92vw] max-w-sm h-[65vh] max-h-[520px] glass-effect border border-border-primary rounded-2xl shadow-2xl flex flex-col overflow-hidden" role="dialog" aria-label={t.title}>
           <div className="px-4 py-3 bg-bg-secondary/60 flex items-center justify-between">
             <div className="font-semibold text-text-primary">{t.title}</div>
-            <button onClick={() => setOpen(false)} className="text-text-secondary hover:text-text-primary">✕</button>
+      <button onClick={() => setOpen(false)} className="text-text-secondary hover:text-text-primary" aria-label="Close chat" style={{ touchAction: 'manipulation' }}>✕</button>
           </div>
           <div ref={listRef} className="flex-1 overflow-auto p-4 space-y-3">
             {msgs.map((m, i) => (
@@ -122,18 +127,23 @@ export default function ChatWidget() {
               </div>
             )}
           </div>
-          <div className="p-3 flex gap-2">
+      <div className="p-3 flex gap-2" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
             <input
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && send()}
               placeholder={placeholder}
               className="flex-1 rounded-xl border border-border-primary bg-transparent px-3 py-2 text-text-primary outline-none"
+        inputMode="text"
+        autoComplete="off"
+        autoCorrect="on"
+        spellCheck={true}
             />
             <button
               onClick={send}
               disabled={loading}
               className="rounded-xl btn-gradient px-4 py-2 font-semibold disabled:opacity-60"
+        style={{ touchAction: 'manipulation' }}
             >
               {t.send}
             </button>
