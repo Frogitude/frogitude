@@ -4,15 +4,15 @@ Personal portfolio and freelance showcase site for **Frogitude** (Fred Newton Ak
 
 ## Tech Stack
 
-| Layer | Tool |
-|---|---|
-| Framework | Next.js 14 (Pages Router) |
-| Language | TypeScript + JavaScript |
-| Styles | Tailwind CSS + PostCSS |
+| Layer     | Tool                                         |
+| --------- | -------------------------------------------- |
+| Framework | Next.js 14 (Pages Router)                    |
+| Language  | TypeScript + JavaScript                      |
+| Styles    | Tailwind CSS + PostCSS                       |
 | Animation | GSAP (ScrollTrigger) · Motion (motion/react) |
-| State | React Context (theme + language de/en) |
-| AI Chat | Cloudflare Workers AI (`@cf/meta/llama-*`) |
-| Deploy | Cloudflare Pages |
+| State     | React Context (theme + language de/en)       |
+| AI Chat   | Cloudflare Workers AI (`@cf/meta/llama-*`)   |
+| Deploy    | Cloudflare Pages                             |
 
 ## Getting Started
 
@@ -78,12 +78,12 @@ frogitude/
 
 ## Scripts
 
-| Command | Description |
-|---|---|
-| `npm run dev` | Start dev server on port 3000 |
-| `npm run build` | Production build (static export) |
+| Command         | Description                          |
+| --------------- | ------------------------------------ |
+| `npm run dev`   | Start dev server on port 3000        |
+| `npm run build` | Production build (static export)     |
 | `npm run start` | Start production server on port 3000 |
-| `npm run pages` | Build with `/frogitude` base path |
+| `npm run pages` | Build with `/frogitude` base path    |
 
 ## Design System
 

@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { useAppContext } from './AppContext';
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useAppContext } from "./AppContext";
 
 type Day = { date: string; contributionCount: number; color: string };
 
@@ -8,8 +8,12 @@ type Calendar = {
   weeks: { contributionDays: Day[] }[];
 };
 
-export default function GitContributions({ username = 'freddynewton' }: { username?: string }) {
-  const { language } = useAppContext?.() || { language: 'en' } as any;
+export default function GitContributions({
+  username = "freddynewton",
+}: {
+  username?: string;
+}) {
+  const { language } = useAppContext?.() || ({ language: "en" } as any);
   const [cal, setCal] = useState<Calendar | null>(null);
   const [err, setErr] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -24,33 +28,36 @@ export default function GitContributions({ username = 'freddynewton' }: { userna
 
   // Decide how many weeks to request based on viewport width
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
     const compute = () => {
       const w = window.innerWidth || 0;
-      if (w <= 360) setRequestedWeeks(26); // ~6 months
+      if (w <= 360)
+        setRequestedWeeks(26); // ~6 months
       else if (w <= 420) setRequestedWeeks(32);
       else if (w <= 520) setRequestedWeeks(40);
       else setRequestedWeeks(null); // full year
     };
     compute();
-    window.addEventListener('resize', compute);
-    return () => window.removeEventListener('resize', compute);
+    window.addEventListener("resize", compute);
+    return () => window.removeEventListener("resize", compute);
   }, []);
 
   useEffect(() => {
     const ctrl = new AbortController();
     // In local Next dev, Pages Functions don't exist at /api; use deployed origin if provided
     const origin =
-      (typeof window !== 'undefined' &&
-        (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'))
-        ? (process.env.NEXT_PUBLIC_PAGES_ORIGIN || '')
-        : '';
-    const weeksParam = requestedWeeks ? `&weeks=${requestedWeeks}` : '';
+      typeof window !== "undefined" &&
+      (window.location.hostname === "localhost" ||
+        window.location.hostname === "127.0.0.1")
+        ? process.env.NEXT_PUBLIC_PAGES_ORIGIN || ""
+        : "";
+    const weeksParam = requestedWeeks ? `&weeks=${requestedWeeks}` : "";
     const url = `${origin}/api/github-contributions?username=${encodeURIComponent(username)}${weeksParam}`;
     fetch(url, { signal: ctrl.signal })
       .then((r) => r.json())
       .then((j) => {
-        if (j?.error) setErr(String(j.error)); else setCal(j);
+        if (j?.error) setErr(String(j.error));
+        else setCal(j);
       })
       .catch((e) => setErr(String(e?.message || e)));
     return () => ctrl.abort();
@@ -63,18 +70,18 @@ export default function GitContributions({ username = 'freddynewton' }: { userna
 
   const t = (key: string) => {
     const de: Record<string, string> = {
-      title: 'GitHub Beiträge',
-      lastYear: 'Im letzten Jahr',
-      loading: 'Beiträge werden geladen…',
-      unavailable: 'GitHub-Beiträge nicht verfügbar.'
+      title: "GitHub Beiträge",
+      lastYear: "Im letzten Jahr",
+      loading: "Beiträge werden geladen…",
+      unavailable: "GitHub-Beiträge nicht verfügbar.",
     };
     const en: Record<string, string> = {
-      title: 'GitHub Contributions',
-      lastYear: 'Last year',
-      loading: 'Loading contributions…',
-      unavailable: 'GitHub contributions unavailable.'
+      title: "GitHub Contributions",
+      lastYear: "Last year",
+      loading: "Loading contributions…",
+      unavailable: "GitHub contributions unavailable.",
     };
-    const dict = language === 'de' ? de : en;
+    const dict = language === "de" ? de : en;
     return dict[key] || key;
   };
 
@@ -87,10 +94,13 @@ export default function GitContributions({ username = 'freddynewton' }: { userna
       const columns = plannedColumns || 53;
       // Dynamic gap based on density; smaller gap on very tight widths
       const density = w / columns;
-      const g = density < 6 ? 1 : (w < 420 ? 2 : 3);
+      const g = density < 6 ? 1 : w < 420 ? 2 : 3;
       const totalGap = g * (columns - 1);
       // Safety -1 to avoid rounding overflow
-      const c = Math.max(2, Math.min(12, Math.floor((w - totalGap - 1) / columns)));
+      const c = Math.max(
+        2,
+        Math.min(12, Math.floor((w - totalGap - 1) / columns)),
+      );
       setGap(g);
       setCell(c);
     });
@@ -103,14 +113,14 @@ export default function GitContributions({ username = 'freddynewton' }: { userna
   if (err) {
     return (
       <div className="glass-effect border border-border-primary rounded-2xl p-4 text-text-secondary text-sm">
-        {t('unavailable')}
+        {t("unavailable")}
       </div>
     );
   }
   if (!cal) {
     return (
       <div className="glass-effect border border-border-primary rounded-2xl p-4 text-text-secondary text-sm">
-        {t('loading')}
+        {t("loading")}
       </div>
     );
   }
@@ -120,14 +130,18 @@ export default function GitContributions({ username = 'freddynewton' }: { userna
   return (
     <div className="glass-effect border border-border-primary rounded-2xl p-3 sm:p-4">
       <div className="flex items-center justify-between mb-3">
-        <div className="font-semibold text-text-primary text-sm sm:text-base">{t('title')}</div>
-        <div className="text-text-secondary text-xs sm:text-sm">{t('lastYear')}: {cal.totalContributions}</div>
+        <div className="font-semibold text-text-primary text-sm sm:text-base">
+          {t("title")}
+        </div>
+        <div className="text-text-secondary text-xs sm:text-sm">
+          {t("lastYear")}: {cal.totalContributions}
+        </div>
       </div>
-  <div className="w-full min-w-0" ref={containerRef}>
+      <div className="w-full min-w-0" ref={containerRef}>
         <div
           className="grid w-full"
           style={{
-            gridAutoFlow: 'column',
+            gridAutoFlow: "column",
             gridTemplateRows: `repeat(7, ${cell}px)`,
             gridAutoColumns: `${cell}px`,
             columnGap: `${gap}px`,
@@ -138,12 +152,18 @@ export default function GitContributions({ username = 'freddynewton' }: { userna
           {weeksToShow.map((w, x) => (
             <React.Fragment key={x}>
               {w.contributionDays.map((d, y) => {
-                const bg = d.color && d.color !== '#ebedf0' ? d.color : 'var(--border-primary)';
-                const outline = d.contributionCount === 0 ? '1px solid var(--border-primary)' : 'none';
+                const bg =
+                  d.color && d.color !== "#ebedf0"
+                    ? d.color
+                    : "var(--border-primary)";
+                const outline =
+                  d.contributionCount === 0
+                    ? "1px solid var(--border-primary)"
+                    : "none";
                 return (
                   <div
                     key={`${x}-${y}`}
-                    title={`${d.date}: ${d.contributionCount} ${language === 'de' ? 'Beiträge' : 'contributions'}`}
+                    title={`${d.date}: ${d.contributionCount} ${language === "de" ? "Beiträge" : "contributions"}`}
                     className="rounded-[2px]"
                     style={{ backgroundColor: bg, border: outline }}
                   />

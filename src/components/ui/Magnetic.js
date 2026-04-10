@@ -1,6 +1,10 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from "react";
 
-export default function Magnetic({ strength = 0.25, children, className = '' }) {
+export default function Magnetic({
+  strength = 0.25,
+  children,
+  className = "",
+}) {
   const ref = useRef(null);
   const innerRef = useRef(null);
 
@@ -21,20 +25,23 @@ export default function Magnetic({ strength = 0.25, children, className = '' }) 
     };
     const onLeave = () => {
       cancelAnimationFrame(raf);
-      inner.style.transform = 'translate3d(0,0,0)';
+      inner.style.transform = "translate3d(0,0,0)";
     };
 
-    el.addEventListener('mousemove', onMove);
-    el.addEventListener('mouseleave', onLeave);
+    el.addEventListener("mousemove", onMove);
+    el.addEventListener("mouseleave", onLeave);
     return () => {
-      el.removeEventListener('mousemove', onMove);
-      el.removeEventListener('mouseleave', onLeave);
+      el.removeEventListener("mousemove", onMove);
+      el.removeEventListener("mouseleave", onLeave);
     };
   }, [strength]);
 
   return (
-    <span ref={ref} className={className} style={{ display: 'inline-block' }}>
-      <span ref={innerRef} style={{ display: 'inline-block', willChange: 'transform' }}>
+    <span ref={ref} className={className} style={{ display: "inline-block" }}>
+      <span
+        ref={innerRef}
+        style={{ display: "inline-block", willChange: "transform" }}
+      >
         {children}
       </span>
     </span>

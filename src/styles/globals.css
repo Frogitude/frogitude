@@ -62,7 +62,7 @@
 }
 
 /* Optional manual override via data-theme (no JS variables manipulation needed) */
-:root[data-theme='light'] {
+:root[data-theme="light"] {
   --bg-primary: var(--color-bg-primary-light);
   --bg-secondary: var(--color-bg-secondary-light);
   --text-primary: var(--color-text-primary-light);
@@ -76,7 +76,7 @@
   --glass-border: var(--color-glass-border-light);
 }
 
-:root[data-theme='dark'] {
+:root[data-theme="dark"] {
   --bg-primary: var(--color-bg-primary-dark);
   --bg-secondary: var(--color-bg-secondary-dark);
   --text-primary: var(--color-text-primary-dark);
@@ -91,10 +91,14 @@
 }
 
 /* Use programmatic smooth scroll only where needed; default to instant jumps */
-* { scroll-behavior: auto; }
+* {
+  scroll-behavior: auto;
+}
 
 /* Ensure the root app wrapper spans the full viewport width without causing horizontal scroll */
-html, body, #__next {
+html,
+body,
+#__next {
   width: 100%;
   max-width: 100%;
   min-width: 0;
@@ -102,11 +106,24 @@ html, body, #__next {
 }
 
 body {
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell,
-    Noto Sans, Helvetica Neue, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    Segoe UI,
+    Roboto,
+    Ubuntu,
+    Cantarell,
+    Noto Sans,
+    Helvetica Neue,
+    Arial,
+    "Apple Color Emoji",
+    "Segoe UI Emoji";
   background-color: var(--bg-primary);
   color: var(--text-primary);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
   width: 100%;
   min-width: 0;
   box-sizing: border-box;
@@ -125,18 +142,56 @@ body {
 @supports (background: color-mix(in oklab, white 50%, black 50%)) {
   .glass-effect {
     background: color-mix(in oklab, var(--glass-bg) 92%, black 8%);
-    border: 1px solid color-mix(in oklab, var(--glass-border) 75%, var(--accent-lime) 25%);
+    border: 1px solid
+      color-mix(in oklab, var(--glass-border) 75%, var(--accent-lime) 25%);
   }
 }
 
 /* Global interactive hover feedback */
 /* Apply smooth transitions to common interactive or card-like elements */
-:where(a, button, .glass-effect, .card, .chip, .tag, .stat, .panel, .list-item, .nav-link, img, input, textarea, select) {
-  transition: transform 200ms ease, box-shadow 200ms ease, filter 200ms ease, border-color 200ms ease, background-color 200ms ease, color 200ms ease, opacity 200ms ease;
+:where(
+  a,
+  button,
+  .glass-effect,
+  .card,
+  .chip,
+  .tag,
+  .stat,
+  .panel,
+  .list-item,
+  .nav-link,
+  img,
+  input,
+  textarea,
+  select
+) {
+  transition:
+    transform 200ms ease,
+    box-shadow 200ms ease,
+    filter 200ms ease,
+    border-color 200ms ease,
+    background-color 200ms ease,
+    color 200ms ease,
+    opacity 200ms ease;
 }
 
 /* Subtle lift + glow on hover everywhere */
-:where(a, button, .glass-effect, .card, .chip, .tag, .stat, .panel, .list-item, .nav-link, img, input, textarea, select):hover:not([aria-disabled="true"]) {
+:where(
+    a,
+    button,
+    .glass-effect,
+    .card,
+    .chip,
+    .tag,
+    .stat,
+    .panel,
+    .list-item,
+    .nav-link,
+    img,
+    input,
+    textarea,
+    select
+  ):hover:not([aria-disabled="true"]) {
   transform: translateY(-2px);
   box-shadow: 0 8px 24px var(--color-glow);
   border-color: var(--accent-lime);
@@ -167,12 +222,32 @@ img:hover:not([aria-disabled="true"]) {
 }
 @supports (background: color-mix(in oklab, white 50%, black 50%)) {
   .glass-effect:hover {
-    background: color-mix(in oklab, var(--glass-bg) 92%, var(--accent-emerald) 8%);
+    background: color-mix(
+      in oklab,
+      var(--glass-bg) 92%,
+      var(--accent-emerald) 8%
+    );
   }
 }
 
 /* Opt-out: disable global hover glow inside elements marked with [data-no-glow] */
-[data-no-glow] :where(a, button, .glass-effect, .card, .chip, .tag, .stat, .panel, .list-item, .nav-link, img, input, textarea, select):hover {
+[data-no-glow]
+  :where(
+    a,
+    button,
+    .glass-effect,
+    .card,
+    .chip,
+    .tag,
+    .stat,
+    .panel,
+    .list-item,
+    .nav-link,
+    img,
+    input,
+    textarea,
+    select
+  ):hover {
   transform: none;
   box-shadow: none;
   border-color: inherit;
@@ -180,10 +255,45 @@ img:hover:not([aria-disabled="true"]) {
 
 /* Accessibility: honor reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  :where(a, button, .glass-effect, .card, .chip, .tag, .stat, .panel, .list-item, .nav-link, img, input, textarea, select) {
-    transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease, box-shadow 150ms ease, filter 150ms ease;
+  :where(
+    a,
+    button,
+    .glass-effect,
+    .card,
+    .chip,
+    .tag,
+    .stat,
+    .panel,
+    .list-item,
+    .nav-link,
+    img,
+    input,
+    textarea,
+    select
+  ) {
+    transition:
+      background-color 150ms ease,
+      color 150ms ease,
+      border-color 150ms ease,
+      box-shadow 150ms ease,
+      filter 150ms ease;
   }
-  :where(a, button, .glass-effect, .card, .chip, .tag, .stat, .panel, .list-item, .nav-link, img, input, textarea, select):hover:not([aria-disabled="true"]) {
+  :where(
+      a,
+      button,
+      .glass-effect,
+      .card,
+      .chip,
+      .tag,
+      .stat,
+      .panel,
+      .list-item,
+      .nav-link,
+      img,
+      input,
+      textarea,
+      select
+    ):hover:not([aria-disabled="true"]) {
     transform: none;
   }
 }
@@ -192,7 +302,7 @@ img:hover:not([aria-disabled="true"]) {
   background: rgba(15, 23, 42, 0.7);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--border-primary);
-  box-shadow: 0 10px 30px -10px rgba(0,0,0,0.35);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.35);
   /* Ensure text color variables are dark-on-dark for readability in all browsers */
   --text-primary: var(--color-text-primary-dark);
   --text-secondary: var(--color-text-secondary-dark);
@@ -200,7 +310,7 @@ img:hover:not([aria-disabled="true"]) {
 
 /* Light mode: when navbar is scrolled (dark bg), switch to dark-palette variables for readability */
 html.light #navbar.scrolled,
-:root[data-theme='light'] #navbar.scrolled {
+:root[data-theme="light"] #navbar.scrolled {
   --text-primary: var(--color-text-primary-dark);
   --text-secondary: var(--color-text-secondary-dark);
   --border-primary: var(--color-border-primary-dark);
@@ -221,7 +331,13 @@ html.light #navbar.scrolled,
 .text-gradient {
   /* Cross-browser gradient text */
   display: inline-block;
-  background-image: linear-gradient(135deg, var(--accent-emerald) 0%, var(--accent-lime) 40%, var(--accent-emerald) 80%, var(--accent-lime) 100%);
+  background-image: linear-gradient(
+    135deg,
+    var(--accent-emerald) 0%,
+    var(--accent-lime) 40%,
+    var(--accent-emerald) 80%,
+    var(--accent-lime) 100%
+  );
   background-size: 200% 100%;
   background-clip: text;
   -webkit-background-clip: text;
@@ -231,29 +347,49 @@ html.light #navbar.scrolled,
 
 /* Keyframes for FROGITUDE shimmer */
 @keyframes frog-shimmer {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 /* Reusable button gradient with fallback */
 .btn-gradient {
   background-color: #10b981; /* fallback */
-  background-image: linear-gradient(135deg, #059669 0%, #65a30d 50%, #84cc16 100%);
+  background-image: linear-gradient(
+    135deg,
+    #059669 0%,
+    #65a30d 50%,
+    #84cc16 100%
+  );
   color: #fff;
   position: relative;
   overflow: hidden;
 }
 .btn-gradient::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.15) 50%, transparent 100%);
+  background: linear-gradient(
+    135deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.15) 50%,
+    transparent 100%
+  );
   transform: translateX(-100%);
   transition: transform 0.4s ease;
 }
-.btn-gradient:hover::before { transform: translateX(100%); }
-.btn-gradient:hover { filter: brightness(1.05); }
+.btn-gradient:hover::before {
+  transform: translateX(100%);
+}
+.btn-gradient:hover {
+  filter: brightness(1.05);
+}
 
 /* Secondary outline button variant */
 .btn-outline {
@@ -264,21 +400,36 @@ html.light #navbar.scrolled,
   overflow: hidden;
 }
 .btn-outline::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, var(--accent-emerald), var(--accent-lime));
+  background: linear-gradient(
+    135deg,
+    var(--accent-emerald),
+    var(--accent-lime)
+  );
   opacity: 0;
   transition: opacity 0.3s ease;
   z-index: -1;
 }
-.btn-outline:hover::before { opacity: 1; }
-.btn-outline:hover { color: #fff; border-color: transparent; }
+.btn-outline:hover::before {
+  opacity: 1;
+}
+.btn-outline:hover {
+  color: #fff;
+  border-color: transparent;
+}
 
 /* Section divider — decorative gradient line */
 .section-divider {
   height: 1px;
-  background: linear-gradient(90deg, transparent 0%, var(--accent-emerald) 30%, var(--accent-lime) 70%, transparent 100%);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--accent-emerald) 30%,
+    var(--accent-lime) 70%,
+    transparent 100%
+  );
   opacity: 0.4;
   border: none;
   margin: 0;
@@ -290,7 +441,7 @@ html.light #navbar.scrolled,
   overflow: hidden;
 }
 .glass-card-accent::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -300,7 +451,9 @@ html.light #navbar.scrolled,
   opacity: 0;
   transition: opacity 0.3s ease;
 }
-.glass-card-accent:hover::before { opacity: 1; }
+.glass-card-accent:hover::before {
+  opacity: 1;
+}
 
 /* Floating glow orb (hero background decoration) */
 .glow-orb {
@@ -319,8 +472,15 @@ html.light #navbar.scrolled,
 
 /* Scroll indicator bounce */
 @keyframes scroll-bounce {
-  0%, 100% { transform: translateY(0); opacity: 0.6; }
-  50% { transform: translateY(8px); opacity: 1; }
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(8px);
+    opacity: 1;
+  }
 }
 .scroll-indicator {
   animation: scroll-bounce 2s ease-in-out infinite;
@@ -328,11 +488,17 @@ html.light #navbar.scrolled,
 
 /* Pulse ring animation for stat icons */
 @keyframes pulse-ring {
-  0% { transform: scale(1); opacity: 0.4; }
-  100% { transform: scale(1.8); opacity: 0; }
+  0% {
+    transform: scale(1);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
 }
 .pulse-ring::after {
-  content: '';
+  content: "";
   position: absolute;
   inset: -4px;
   border-radius: inherit;
@@ -341,22 +507,34 @@ html.light #navbar.scrolled,
 }
 
 /* Mind map: stable dash animations for SVG lines (avoid rerender resets) */
-@keyframes mm-dash-80 { to { stroke-dashoffset: -80; } }
-@keyframes mm-dash-108 { to { stroke-dashoffset: -108; } }
-.mm-line-dash-80 { animation: mm-dash-80 2.2s linear infinite; }
-.mm-line-dash-108 { animation: mm-dash-108 2s linear infinite; }
+@keyframes mm-dash-80 {
+  to {
+    stroke-dashoffset: -80;
+  }
+}
+@keyframes mm-dash-108 {
+  to {
+    stroke-dashoffset: -108;
+  }
+}
+.mm-line-dash-80 {
+  animation: mm-dash-80 2.2s linear infinite;
+}
+.mm-line-dash-108 {
+  animation: mm-dash-108 2s linear infinite;
+}
 
 /* Dark-mode readability for specific partner logos (CSS-only) */
-:root[data-theme='dark'] img[src*="superswipelogo"],
-:root[data-theme='dark'] img[src*="FRIDIE_black_wordmark"] {
+:root[data-theme="dark"] img[src*="superswipelogo"],
+:root[data-theme="dark"] img[src*="FRIDIE_black_wordmark"] {
   /* Make logos white in dark mode (preserve transparency) */
   filter: invert(1) brightness(1.15) contrast(1.1) saturate(0);
 }
 
 /* Also respect OS dark when no explicit light theme is set */
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) img[src*="superswipelogo"],
-  :root:not([data-theme='light']) img[src*="FRIDIE_black_wordmark"] {
+  :root:not([data-theme="light"]) img[src*="superswipelogo"],
+  :root:not([data-theme="light"]) img[src*="FRIDIE_black_wordmark"] {
     filter: invert(1) brightness(1.15) contrast(1.1) saturate(0);
   }
 }

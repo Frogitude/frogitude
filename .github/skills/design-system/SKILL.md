@@ -1,7 +1,7 @@
 ---
 name: design-system
 description: "Use when: creating, editing, or reviewing UI components, styling, Tailwind classes, design tokens, colour palettes, dark mode, accessibility, responsive layout, or GSAP animations in the Frogitude project. Integrates awesome-design-md tooling with the project's Tailwind config and CSS custom-property theming system."
-argument-hint: 'Describe the UI component or design task'
+argument-hint: "Describe the UI component or design task"
 ---
 
 # Design System — Frogitude
@@ -29,12 +29,12 @@ Both scaffold a `design.md` specification file and optionally output Tailwind-co
 
 Run the CLI at the project root. It will ask:
 
-| Prompt | Value |
-|---|---|
-| Project name | `Frogitude` |
+| Prompt         | Value                                                                                    |
+| -------------- | ---------------------------------------------------------------------------------------- |
+| Project name   | `Frogitude`                                                                              |
 | Primary colour | Match `tailwind.config.js` → CSS var `--accent-lime` (light: `#65a30d`, dark: `#84cc16`) |
-| Font | System stack from `globals.css` body rule |
-| Dark mode | `class` via `html[data-theme="dark"]` (already set in Tailwind config) |
+| Font           | System stack from `globals.css` body rule                                                |
+| Dark mode      | `class` via `html[data-theme="dark"]` (already set in Tailwind config)                   |
 
 Output: `design.md` (do **not** commit — it's a working document).
 
@@ -46,30 +46,41 @@ After scaffolding, verify that generated tokens match the project sources of tru
 
 The project maps Tailwind colours to CSS custom properties. These are the canonical tokens:
 
-| Token | Tailwind key | CSS var | Light | Dark |
-|---|---|---|---|---|
-| BG primary | `bg-primary` | `--bg-primary` | `#f0fdf4` | `#0f172a` |
-| BG secondary | `bg-secondary` | `--bg-secondary` | `#dcfce7` | `#1e293b` |
-| Text primary | `text-primary` | `--text-primary` | `#1f2937` | `#f1f5f9` |
+| Token          | Tailwind key     | CSS var            | Light     | Dark      |
+| -------------- | ---------------- | ------------------ | --------- | --------- |
+| BG primary     | `bg-primary`     | `--bg-primary`     | `#f0fdf4` | `#0f172a` |
+| BG secondary   | `bg-secondary`   | `--bg-secondary`   | `#dcfce7` | `#1e293b` |
+| Text primary   | `text-primary`   | `--text-primary`   | `#1f2937` | `#f1f5f9` |
 | Text secondary | `text-secondary` | `--text-secondary` | `#4b5563` | `#94a3b8` |
 | Border primary | `border-primary` | `--border-primary` | `#d1d5db` | `#334155` |
-| Accent lime | `accent-lime` | `--accent-lime` | `#65a30d` | `#84cc16` |
+| Accent lime    | `accent-lime`    | `--accent-lime`    | `#65a30d` | `#84cc16` |
 | Accent emerald | `accent-emerald` | `--accent-emerald` | `#059669` | `#34d399` |
 
 Additional non-Tailwind CSS vars used in `globals.css`:
 
-| CSS var | Purpose |
-|---|---|
-| `--color-glow` | Lime glow for effects |
+| CSS var                  | Purpose                  |
+| ------------------------ | ------------------------ |
+| `--color-glow`           | Lime glow for effects    |
 | `--color-glow-secondary` | Emerald glow for effects |
-| `--glass-bg` | Glassmorphism background |
-| `--glass-border` | Glassmorphism border |
+| `--glass-bg`             | Glassmorphism background |
+| `--glass-border`         | Glassmorphism border     |
 
 #### Typography — `globals.css` body
 
 ```css
-font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu,
-  Cantarell, Noto Sans, Helvetica Neue, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+font-family:
+  ui-sans-serif,
+  system-ui,
+  -apple-system,
+  Segoe UI,
+  Roboto,
+  Ubuntu,
+  Cantarell,
+  Noto Sans,
+  Helvetica Neue,
+  Arial,
+  "Apple Color Emoji",
+  "Segoe UI Emoji";
 ```
 
 No custom `fontFamily` is declared in `tailwind.config.js` — the system stack is used directly.
@@ -120,9 +131,11 @@ Run through every item before opening a PR:
   ```ts
   // Check at runtime — no helper exists yet; use this pattern:
   const reducedMotion =
-    typeof window !== 'undefined' &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (!reducedMotion) { /* animate */ }
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!reducedMotion) {
+    /* animate */
+  }
   ```
 - [ ] No animation on critical-path content (LCP elements)
 

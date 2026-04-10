@@ -1,22 +1,28 @@
-import React, { createContext, useState, useEffect, useContext } from 'react';
+import React, { createContext, useState, useEffect, useContext } from "react";
 
 const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
-  const [theme, setTheme] = useState('dark');
-  const [language, setLanguage] = useState('en');
+  const [theme, setTheme] = useState("dark");
+  const [language, setLanguage] = useState("en");
 
   useEffect(() => {
-    const storedTheme = typeof window !== 'undefined' ? (localStorage.getItem('theme') || '') : '';
-    const storedLang = typeof window !== 'undefined' ? (localStorage.getItem('language') || '') : '';
+    const storedTheme =
+      typeof window !== "undefined" ? localStorage.getItem("theme") || "" : "";
+    const storedLang =
+      typeof window !== "undefined"
+        ? localStorage.getItem("language") || ""
+        : "";
     // Initialize theme: stored value or OS preference
-    if (typeof window !== 'undefined') {
-      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const initialTheme = storedTheme || (prefersDark ? 'dark' : 'light');
+    if (typeof window !== "undefined") {
+      const prefersDark =
+        window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const initialTheme = storedTheme || (prefersDark ? "dark" : "light");
       setTheme(initialTheme);
-      if (typeof document !== 'undefined') {
+      if (typeof document !== "undefined") {
         const root = document.documentElement;
-        root.setAttribute('data-theme', initialTheme);
+        root.setAttribute("data-theme", initialTheme);
         root.style.colorScheme = initialTheme;
       }
     }
@@ -26,23 +32,23 @@ export const AppProvider = ({ children }) => {
   }, []);
 
   const toggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
+    const newTheme = theme === "light" ? "dark" : "light";
     setTheme(newTheme);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('theme', newTheme);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("theme", newTheme);
     }
-    if (typeof document !== 'undefined') {
+    if (typeof document !== "undefined") {
       const root = document.documentElement;
-      root.setAttribute('data-theme', newTheme);
+      root.setAttribute("data-theme", newTheme);
       root.style.colorScheme = newTheme;
     }
   };
-  
+
   const toggleLanguage = () => {
-    setLanguage(prev => {
-      const next = prev === 'de' ? 'en' : 'de';
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('language', next);
+    setLanguage((prev) => {
+      const next = prev === "de" ? "en" : "de";
+      if (typeof window !== "undefined") {
+        localStorage.setItem("language", next);
       }
       return next;
     });
@@ -50,13 +56,15 @@ export const AppProvider = ({ children }) => {
 
   // Persist language when changed externally via setLanguage
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('language', language);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("language", language);
     }
   }, [language]);
 
   return (
-    <AppContext.Provider value={{ theme, toggleTheme, language, toggleLanguage, setLanguage }}>
+    <AppContext.Provider
+      value={{ theme, toggleTheme, language, toggleLanguage, setLanguage }}
+    >
       {children}
     </AppContext.Provider>
   );

@@ -1,86 +1,220 @@
-import React, { useMemo, useRef, useState, useEffect } from 'react';
-import { motion } from 'motion/react';
-import { useAppContext } from '../AppContext';
-import GitContributions from '../GitContributions';
-import { Youtube, Instagram, Linkedin, Github, Twitter, MessageSquare, Briefcase } from 'lucide-react';
+import React, { useMemo, useRef, useState, useEffect } from "react";
+import { motion } from "motion/react";
+import { useAppContext } from "../AppContext";
+import GitContributions from "../GitContributions";
+import {
+  Youtube,
+  Instagram,
+  Linkedin,
+  Github,
+  Twitter,
+  MessageSquare,
+  Briefcase,
+} from "lucide-react";
 
-const PROFILE_PIC_URL = '/images/ggbavaria2.jpg';
+const PROFILE_PIC_URL = "/images/ggbavaria2.jpg";
 
 const techStack = [
   // Game engines & runtimes
-  { name: 'Unity', logo: '/images/unity-logo.png' },
-  { name: 'Unreal Engine', logo: '/placeholder-logo.svg' },
-  { name: 'Godot', logo: '/images/godot-logo.png' },
+  { name: "Unity", logo: "/images/unity-logo.png" },
+  { name: "Unreal Engine", logo: "/placeholder-logo.svg" },
+  { name: "Godot", logo: "/images/godot-logo.png" },
 
   // Programming languages & frameworks
-  { name: 'C# / .NET', logo: '/images/csharp-logo.png' },
-  { name: 'Python', logo: '/images/python-logo.png' },
-  { name: 'JavaScript', logo: '/placeholder-logo.svg' },
-  { name: 'TypeScript', logo: '/placeholder-logo.svg' },
-  { name: 'HTML/CSS', logo: '/placeholder-logo.svg' },
-  { name: 'Node.js', logo: '/placeholder-logo.svg' },
+  { name: "C# / .NET", logo: "/images/csharp-logo.png" },
+  { name: "Python", logo: "/images/python-logo.png" },
+  { name: "JavaScript", logo: "/placeholder-logo.svg" },
+  { name: "TypeScript", logo: "/placeholder-logo.svg" },
+  { name: "HTML/CSS", logo: "/placeholder-logo.svg" },
+  { name: "Node.js", logo: "/placeholder-logo.svg" },
 
   // XR, devices & SDKs
-  { name: 'HoloLens', logo: '/placeholder-logo.svg' },
-  { name: 'MRTK 2/3', logo: '/placeholder-logo.svg' },
-  { name: 'OpenXR', logo: '/placeholder-logo.svg' },
-  { name: 'WebXR', logo: '/placeholder-logo.svg' },
-  { name: 'VisionLib', logo: '/placeholder-logo.svg' },
-  { name: 'ARKit', logo: '/placeholder-logo.svg' },
-  { name: 'ARCore', logo: '/placeholder-logo.svg' },
-  { name: 'Meta Quest', logo: '/placeholder-logo.svg' },
+  { name: "HoloLens", logo: "/placeholder-logo.svg" },
+  { name: "MRTK 2/3", logo: "/placeholder-logo.svg" },
+  { name: "OpenXR", logo: "/placeholder-logo.svg" },
+  { name: "WebXR", logo: "/placeholder-logo.svg" },
+  { name: "VisionLib", logo: "/placeholder-logo.svg" },
+  { name: "ARKit", logo: "/placeholder-logo.svg" },
+  { name: "ARCore", logo: "/placeholder-logo.svg" },
+  { name: "Meta Quest", logo: "/placeholder-logo.svg" },
 
   // Tools & pipelines
-  { name: 'Unity Cloud Services', logo: '/placeholder-logo.svg' },
-  { name: 'Git / GitHub', logo: '/placeholder-logo.svg' },
-  { name: 'GitLab', logo: '/placeholder-logo.svg' },
-  { name: 'Jira', logo: '/placeholder-logo.svg' },
-  { name: 'Confluence', logo: '/placeholder-logo.svg' },
-  { name: 'Cloudflare', logo: '/placeholder-logo.svg' },
+  { name: "Unity Cloud Services", logo: "/placeholder-logo.svg" },
+  { name: "Git / GitHub", logo: "/placeholder-logo.svg" },
+  { name: "GitLab", logo: "/placeholder-logo.svg" },
+  { name: "Jira", logo: "/placeholder-logo.svg" },
+  { name: "Confluence", logo: "/placeholder-logo.svg" },
+  { name: "Cloudflare", logo: "/placeholder-logo.svg" },
 
   // Art & DCC
-  { name: 'Blender', logo: '/images/blender-logo.png' },
-  { name: 'Aseprite', logo: '/images/aseprite-logo.png' },
+  { name: "Blender", logo: "/images/blender-logo.png" },
+  { name: "Aseprite", logo: "/images/aseprite-logo.png" },
 ];
 
 export default function About({ id, content }) {
   const { theme } = useAppContext();
   const TikTokIcon = (props) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-music-4" {...props}><path d="M9 18V5l12-2v13"/><path d="M9 18a4 4 0 1 1-4-4 4 4 0 0 1 4 4Z"/><path d="M21 16a4 4 0 1 1-4-4 4 4 0 0 1 4 4Z"/></svg>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="lucide lucide-music-4"
+      {...props}
+    >
+      <path d="M9 18V5l12-2v13" />
+      <path d="M9 18a4 4 0 1 1-4-4 4 4 0 0 1 4 4Z" />
+      <path d="M21 16a4 4 0 1 1-4-4 4 4 0 0 1 4 4Z" />
+    </svg>
   );
   // Minimal brand-like glyphs for Fiverr and Upwork using letters inside a circle
   const FiverrIcon = (props) => (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" {...props}>
-      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" fill="none" />
-      <text x="12" y="16" textAnchor="middle" fontSize="10" fontFamily="ui-sans-serif, system-ui" fill="currentColor" fontWeight="700">Fv</text>
+      <circle
+        cx="12"
+        cy="12"
+        r="10"
+        stroke="currentColor"
+        strokeWidth="2"
+        fill="none"
+      />
+      <text
+        x="12"
+        y="16"
+        textAnchor="middle"
+        fontSize="10"
+        fontFamily="ui-sans-serif, system-ui"
+        fill="currentColor"
+        fontWeight="700"
+      >
+        Fv
+      </text>
     </svg>
   );
   const UpworkIcon = (props) => (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" {...props}>
-      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" fill="none" />
-      <text x="12" y="16" textAnchor="middle" fontSize="10" fontFamily="ui-sans-serif, system-ui" fill="currentColor" fontWeight="700">Up</text>
+      <circle
+        cx="12"
+        cy="12"
+        r="10"
+        stroke="currentColor"
+        strokeWidth="2"
+        fill="none"
+      />
+      <text
+        x="12"
+        y="16"
+        textAnchor="middle"
+        fontSize="10"
+        fontFamily="ui-sans-serif, system-ui"
+        fill="currentColor"
+        fontWeight="700"
+      >
+        Up
+      </text>
     </svg>
   );
   const socials = [
-    { href: 'https://discord.gg/Bfsx9sTDfh', label: 'Discord', icon: MessageSquare },
-    { href: 'https://www.linkedin.com/in/fred-newton-akdogan-b6a775257/', label: 'LinkedIn', icon: Linkedin },
-    { href: 'https://github.com/freddynewton', label: 'GitHub', icon: Github },
-    { href: 'https://www.youtube.com/@Frogitude_dev', label: 'YouTube', icon: Youtube },
-    { href: 'https://www.instagram.com/frogitude.dev/', label: 'Instagram', icon: Instagram },
-    { href: 'https://www.tiktok.com/@frogitude.dev', label: 'TikTok', icon: TikTokIcon },
-    { href: 'https://freddynewton.github.io/', label: 'X / Twitter', icon: Twitter },
-  { href: 'https://de.fiverr.com/s/R7ybW0l', label: 'Fiverr', icon: FiverrIcon },
-  { href: 'https://www.upwork.com/freelancers/~01af64a6c98eeeae40', label: 'Upwork', icon: UpworkIcon },
+    {
+      href: "https://discord.gg/Bfsx9sTDfh",
+      label: "Discord",
+      icon: MessageSquare,
+    },
+    {
+      href: "https://www.linkedin.com/in/fred-newton-akdogan-b6a775257/",
+      label: "LinkedIn",
+      icon: Linkedin,
+    },
+    { href: "https://github.com/freddynewton", label: "GitHub", icon: Github },
+    {
+      href: "https://www.youtube.com/@Frogitude_dev",
+      label: "YouTube",
+      icon: Youtube,
+    },
+    {
+      href: "https://www.instagram.com/frogitude.dev/",
+      label: "Instagram",
+      icon: Instagram,
+    },
+    {
+      href: "https://www.tiktok.com/@frogitude.dev",
+      label: "TikTok",
+      icon: TikTokIcon,
+    },
+    {
+      href: "https://freddynewton.github.io/",
+      label: "X / Twitter",
+      icon: Twitter,
+    },
+    {
+      href: "https://de.fiverr.com/s/R7ybW0l",
+      label: "Fiverr",
+      icon: FiverrIcon,
+    },
+    {
+      href: "https://www.upwork.com/freelancers/~01af64a6c98eeeae40",
+      label: "Upwork",
+      icon: UpworkIcon,
+    },
   ];
 
   // Mind map data (grouped)
-  const groups = useMemo(() => ([
-    { title: 'Game Dev', items: ['Unity', 'C#', 'Clean Code', 'Design Patterns', 'Dependency Injection', 'Procedural Generation', 'Game AI', 'Godot', 'Unreal Engine', 'C++', 'GDScript'] },
-    { title: 'XR', items: ['OpenXR', 'WebXR', 'MRTK', 'HoloLens', 'Quest', 'VisionLib', 'Meta'] },
-    { title: 'Software', items: ['TypeScript', 'JavaScript', 'Python', 'React', 'Next.js', 'Node.js', 'GSAP', 'WebGL'] },
-  { title: 'Tools', items: ['Git / GitHub', 'Jira', 'Unity Cloud', 'Cloudflare'] },
-    { title: 'Art', items: ['Blender', 'Aseprite', 'Gimp'] },
-  ]), []);
+  const groups = useMemo(
+    () => [
+      {
+        title: "Game Dev",
+        items: [
+          "Unity",
+          "C#",
+          "Clean Code",
+          "Design Patterns",
+          "Dependency Injection",
+          "Procedural Generation",
+          "Game AI",
+          "Godot",
+          "Unreal Engine",
+          "C++",
+          "GDScript",
+        ],
+      },
+      {
+        title: "XR",
+        items: [
+          "OpenXR",
+          "WebXR",
+          "MRTK",
+          "HoloLens",
+          "Quest",
+          "VisionLib",
+          "Meta",
+        ],
+      },
+      {
+        title: "Software",
+        items: [
+          "TypeScript",
+          "JavaScript",
+          "Python",
+          "React",
+          "Next.js",
+          "Node.js",
+          "GSAP",
+          "WebGL",
+        ],
+      },
+      {
+        title: "Tools",
+        items: ["Git / GitHub", "Jira", "Unity Cloud", "Cloudflare"],
+      },
+      { title: "Art", items: ["Blender", "Aseprite", "Gimp"] },
+    ],
+    [],
+  );
 
   const initialPositions = useMemo(() => {
     const center = { x: 50, y: 50 };
@@ -88,20 +222,35 @@ export default function About({ id, content }) {
     const angles = [270, 342, 54, 126, 198]; // spread around a circle
     return angles.map((deg) => {
       const rad = (deg * Math.PI) / 180;
-      return { x: center.x + radius * Math.cos(rad), y: center.y + radius * Math.sin(rad) };
+      return {
+        x: center.x + radius * Math.cos(rad),
+        y: center.y + radius * Math.sin(rad),
+      };
     });
   }, []);
   const [nodes, setNodes] = useState(initialPositions);
   const [center, setCenter] = useState({ x: 50, y: 50 });
   const containerRef = useRef(null);
-  const draggingRef = useRef({ idx: -1, mode: 'none', startX: 0, startY: 0, nodes: [], center: { x: 50, y: 50 } });
+  const draggingRef = useRef({
+    idx: -1,
+    mode: "none",
+    startX: 0,
+    startY: 0,
+    nodes: [],
+    center: { x: 50, y: 50 },
+  });
   const [highlightIdx, setHighlightIdx] = useState(-1);
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
-  const spring = { type: 'spring', stiffness: 260, damping: 20, mass: 0.6 };
+  const spring = { type: "spring", stiffness: 260, damping: 20, mass: 0.6 };
   // View mode: 'tags' (default) or 'map'
-  const [viewMode, setViewMode] = useState('tags');
+  const [viewMode, setViewMode] = useState("tags");
   // Physics model refs
-  const physRef = useRef({ running: false, raf: 0, calmFrames: 0, lastCommit: 0 });
+  const physRef = useRef({
+    running: false,
+    raf: 0,
+    calmFrames: 0,
+    lastCommit: 0,
+  });
   const posRef = useRef({ nodes: [], center: { x: 50, y: 50 } });
   const velRef = useRef({ nodes: [], center: { x: 0, y: 0 } });
   const targetRef = useRef({ nodes: [], center: { x: 50, y: 50 } });
@@ -121,7 +270,7 @@ export default function About({ id, content }) {
     if (physRef.current.running) return;
     physRef.current.running = true;
     const k = 0.12; // spring constant
-    const damping = 0.80; // velocity damping per frame
+    const damping = 0.8; // velocity damping per frame
     const epsV = 0.03;
     const epsP = 0.06;
     const step = () => {
@@ -130,7 +279,10 @@ export default function About({ id, content }) {
       const tgt = targetRef.current;
       let maxV = 0;
       let maxP = 0;
-  const now = (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
+      const now =
+        typeof performance !== "undefined" && performance.now
+          ? performance.now()
+          : Date.now();
       // Nodes
       for (let i = 0; i < pos.nodes.length; i++) {
         const ax = (tgt.nodes[i].x - pos.nodes[i].x) * k;
@@ -139,8 +291,16 @@ export default function About({ id, content }) {
         vel.nodes[i].y = (vel.nodes[i].y + ay) * damping;
         pos.nodes[i].x = clamp(pos.nodes[i].x + vel.nodes[i].x, 4, 96);
         pos.nodes[i].y = clamp(pos.nodes[i].y + vel.nodes[i].y, 4, 96);
-        maxV = Math.max(maxV, Math.abs(vel.nodes[i].x), Math.abs(vel.nodes[i].y));
-        maxP = Math.max(maxP, Math.abs(tgt.nodes[i].x - pos.nodes[i].x), Math.abs(tgt.nodes[i].y - pos.nodes[i].y));
+        maxV = Math.max(
+          maxV,
+          Math.abs(vel.nodes[i].x),
+          Math.abs(vel.nodes[i].y),
+        );
+        maxP = Math.max(
+          maxP,
+          Math.abs(tgt.nodes[i].x - pos.nodes[i].x),
+          Math.abs(tgt.nodes[i].y - pos.nodes[i].y),
+        );
       }
       // Center
       const acx = (tgt.center.x - pos.center.x) * k;
@@ -150,7 +310,11 @@ export default function About({ id, content }) {
       pos.center.x = clamp(pos.center.x + vel.center.x, 4, 96);
       pos.center.y = clamp(pos.center.y + vel.center.y, 4, 96);
       maxV = Math.max(maxV, Math.abs(vel.center.x), Math.abs(vel.center.y));
-      maxP = Math.max(maxP, Math.abs(tgt.center.x - pos.center.x), Math.abs(tgt.center.y - pos.center.y));
+      maxP = Math.max(
+        maxP,
+        Math.abs(tgt.center.x - pos.center.x),
+        Math.abs(tgt.center.y - pos.center.y),
+      );
 
       // Push to state at ~30fps to reduce render cost
       if (now - physRef.current.lastCommit > 33) {
@@ -164,7 +328,10 @@ export default function About({ id, content }) {
       } else {
         physRef.current.calmFrames = 0;
       }
-      if (physRef.current.calmFrames > 8 && draggingRef.current.mode === 'none') {
+      if (
+        physRef.current.calmFrames > 8 &&
+        draggingRef.current.mode === "none"
+      ) {
         // Final commit to ensure latest positions are reflected
         setNodes(pos.nodes.map((n) => ({ x: n.x, y: n.y })));
         setCenter({ x: pos.center.x, y: pos.center.y });
@@ -179,34 +346,60 @@ export default function About({ id, content }) {
 
   // Color palette per parent group (primary stroke color)
   // Added a softer "tag" background color for chip styling
-  const groupColors = useMemo(() => [
-    { primary: 'rgb(16,185,129)', child: 'rgba(16,185,129,0.7)', tag: 'rgba(16,185,129,0.16)' },   // emerald
-    { primary: 'rgb(59,130,246)', child: 'rgba(59,130,246,0.7)', tag: 'rgba(59,130,246,0.16)' },   // blue
-    { primary: 'rgb(245,158,11)', child: 'rgba(245,158,11,0.8)', tag: 'rgba(245,158,11,0.18)' },   // amber
-    { primary: 'rgb(139,92,246)', child: 'rgba(139,92,246,0.75)', tag: 'rgba(139,92,246,0.16)' },  // violet
-    { primary: 'rgb(239,68,68)', child: 'rgba(239,68,68,0.75)', tag: 'rgba(239,68,68,0.16)' },    // red
-  ], []);
+  const groupColors = useMemo(
+    () => [
+      {
+        primary: "rgb(16,185,129)",
+        child: "rgba(16,185,129,0.7)",
+        tag: "rgba(16,185,129,0.16)",
+      }, // emerald
+      {
+        primary: "rgb(59,130,246)",
+        child: "rgba(59,130,246,0.7)",
+        tag: "rgba(59,130,246,0.16)",
+      }, // blue
+      {
+        primary: "rgb(245,158,11)",
+        child: "rgba(245,158,11,0.8)",
+        tag: "rgba(245,158,11,0.18)",
+      }, // amber
+      {
+        primary: "rgb(139,92,246)",
+        child: "rgba(139,92,246,0.75)",
+        tag: "rgba(139,92,246,0.16)",
+      }, // violet
+      {
+        primary: "rgb(239,68,68)",
+        child: "rgba(239,68,68,0.75)",
+        tag: "rgba(239,68,68,0.16)",
+      }, // red
+    ],
+    [],
+  );
 
   // Detect desktop to control map availability and toggle visibility on mobile
   const [isDesktop, setIsDesktop] = useState(false);
   useEffect(() => {
-    const mq = typeof window !== 'undefined' && window.matchMedia ? window.matchMedia('(min-width: 768px)') : null;
+    const mq =
+      typeof window !== "undefined" && window.matchMedia
+        ? window.matchMedia("(min-width: 768px)")
+        : null;
     const update = () => setIsDesktop(!!(mq && mq.matches));
     update();
     if (mq) {
-      if (mq.addEventListener) mq.addEventListener('change', update);
+      if (mq.addEventListener) mq.addEventListener("change", update);
       else if (mq.addListener) mq.addListener(update);
     }
     return () => {
       if (mq) {
-        if (mq.removeEventListener) mq.removeEventListener('change', update);
+        if (mq.removeEventListener) mq.removeEventListener("change", update);
         else if (mq.removeListener) mq.removeListener(update);
       }
     };
   }, []);
   // Ensure mobile always shows tags view
   useEffect(() => {
-    if (!isDesktop && viewMode === 'map') setViewMode('tags');
+    if (!isDesktop && viewMode === "map") setViewMode("tags");
   }, [isDesktop, viewMode]);
 
   const clamp = (val, min, max) => Math.max(min, Math.min(max, val));
@@ -214,7 +407,7 @@ export default function About({ id, content }) {
   const onPointerDown = (idx) => (e) => {
     e.preventDefault();
     draggingRef.current.idx = idx;
-    draggingRef.current.mode = 'physics';
+    draggingRef.current.mode = "physics";
     if (containerRef.current) {
       const rect = containerRef.current.getBoundingClientRect();
       draggingRef.current.startX = ((e.clientX - rect.left) / rect.width) * 100;
@@ -222,14 +415,14 @@ export default function About({ id, content }) {
     }
     draggingRef.current.nodes = nodes.map((n) => ({ ...n }));
     draggingRef.current.center = { ...center };
-    window.addEventListener('pointermove', onPointerMove);
-    window.addEventListener('pointerup', onPointerUp);
+    window.addEventListener("pointermove", onPointerMove);
+    window.addEventListener("pointerup", onPointerUp);
     startPhysics();
   };
   const onPointerDownRoot = (e) => {
     e.preventDefault();
-    draggingRef.current.idx = 'root';
-    draggingRef.current.mode = 'physics-root';
+    draggingRef.current.idx = "root";
+    draggingRef.current.mode = "physics-root";
     if (containerRef.current) {
       const rect = containerRef.current.getBoundingClientRect();
       draggingRef.current.startX = ((e.clientX - rect.left) / rect.width) * 100;
@@ -237,8 +430,8 @@ export default function About({ id, content }) {
     }
     draggingRef.current.nodes = nodes.map((n) => ({ ...n }));
     draggingRef.current.center = { ...center };
-    window.addEventListener('pointermove', onPointerMove);
-    window.addEventListener('pointerup', onPointerUp);
+    window.addEventListener("pointermove", onPointerMove);
+    window.addEventListener("pointerup", onPointerUp);
     startPhysics();
   };
   const onPointerMove = (e) => {
@@ -249,11 +442,14 @@ export default function About({ id, content }) {
     const yPerc = clamp(((e.clientY - rect.top) / rect.height) * 100, 6, 94);
     const baseNodes = draggingRef.current.nodes;
     const baseCenter = draggingRef.current.center;
-    if (draggingRef.current.mode === 'physics-root') {
+    if (draggingRef.current.mode === "physics-root") {
       // Root drives: set root target to pointer, others follow via weighted attraction
       const dx = xPerc - baseCenter.x;
       const dy = yPerc - baseCenter.y;
-      targetRef.current.center = { x: clamp(baseCenter.x + dx, 4, 96), y: clamp(baseCenter.y + dy, 4, 96) };
+      targetRef.current.center = {
+        x: clamp(baseCenter.x + dx, 4, 96),
+        y: clamp(baseCenter.y + dy, 4, 96),
+      };
       targetRef.current.nodes = baseNodes.map((n, j) => {
         // attraction weight by distance to center
         const dist = Math.hypot(n.x - baseCenter.x, n.y - baseCenter.y);
@@ -265,20 +461,24 @@ export default function About({ id, content }) {
       const dx = xPerc - baseNodes[i].x;
       const dy = yPerc - baseNodes[i].y;
       targetRef.current.nodes = baseNodes.map((n, j) => {
-        if (j === i) return { x: clamp(n.x + dx, 4, 96), y: clamp(n.y + dy, 4, 96) };
+        if (j === i)
+          return { x: clamp(n.x + dx, 4, 96), y: clamp(n.y + dy, 4, 96) };
         const dist = Math.hypot(n.x - baseNodes[i].x, n.y - baseNodes[i].y);
         const w = 0.65 * Math.exp(-dist / 26); // nearby groups follow more
         return { x: clamp(n.x + dx * w, 4, 96), y: clamp(n.y + dy * w, 4, 96) };
       });
       // Center follows a bit too
-      targetRef.current.center = { x: clamp(baseCenter.x + dx * 0.5, 4, 96), y: clamp(baseCenter.y + dy * 0.5, 4, 96) };
+      targetRef.current.center = {
+        x: clamp(baseCenter.x + dx * 0.5, 4, 96),
+        y: clamp(baseCenter.y + dy * 0.5, 4, 96),
+      };
     }
   };
   const onPointerUp = () => {
     draggingRef.current.idx = -1;
-    draggingRef.current.mode = 'none';
-    window.removeEventListener('pointermove', onPointerMove);
-    window.removeEventListener('pointerup', onPointerUp);
+    draggingRef.current.mode = "none";
+    window.removeEventListener("pointermove", onPointerMove);
+    window.removeEventListener("pointerup", onPointerUp);
   };
 
   const onMouseMoveContainer = (e) => {
@@ -299,15 +499,15 @@ export default function About({ id, content }) {
       const items = groups[i].items;
       const n = items.length;
       // Angle pointing from center to group
-  const baseRad = Math.atan2(cy - center.y, cx - center.x);
+      const baseRad = Math.atan2(cy - center.y, cx - center.x);
       const baseDeg = (baseRad * 180) / Math.PI;
-  // Wedge span scales with count (tighter for clustering)
-  const wedge = n <= 6 ? 90 : n <= 10 ? 120 : 150; // degrees
+      // Wedge span scales with count (tighter for clustering)
+      const wedge = n <= 6 ? 90 : n <= 10 ? 120 : 150; // degrees
       const startDeg = baseDeg - wedge / 2;
       const endDeg = baseDeg + wedge / 2;
-  // Radii tuned: a bit closer while readable
-  const outerRadius = Math.min(18, 11 + Math.ceil(n / 2)); // percent
-  const innerRadius = Math.max(8, outerRadius - 5);
+      // Radii tuned: a bit closer while readable
+      const outerRadius = Math.min(18, 11 + Math.ceil(n / 2)); // percent
+      const innerRadius = Math.max(8, outerRadius - 5);
       // Distribute across one or two arcs
       const maxPerArc = 8;
       const useTwoArcs = n > maxPerArc;
@@ -344,309 +544,363 @@ export default function About({ id, content }) {
     }
     return all;
   }, [groups, nodes, center]);
-  
+
   return (
     <section id={id} className="py-16 md:py-20">
       <div className="container mx-auto px-4 sm:px-6">
         {/* Glass card wrapper with generous inner padding */}
         <div className="glass-effect rounded-3xl border border-border-primary/60 p-6 sm:p-8 md:p-10">
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true, amount: 0.2 }}
-          className="text-center mb-10 md:mb-12"
-        >
-          <h2 className="text-4xl md:text-6xl font-bold text-text-primary mb-6">
-            <span className="text-gradient">{content.title}</span>
-          </h2>
-        </motion.div>
-
-    <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center mb-10 md:mb-12">
           <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7, type: 'spring' }}
-            viewport={{ once: true }}
-      className="flex justify-center"
-          >
-      <div className="relative mx-auto w-56 h-56 sm:w-64 sm:h-64 md:w-72 md:h-72 lg:w-80 lg:h-80">
-              <div className="absolute inset-0 bg-gradient-to-br from-accent-lime to-accent-emerald rounded-full blur-2xl opacity-30 dark:opacity-50" />
-              <img src={PROFILE_PIC_URL} alt="Fred Newton Akdogan" className="relative w-full h-full object-cover rounded-full shadow-2xl" />
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true, amount: 0.2 }}
-            className="space-y-6 text-center md:text-left min-w-0"
+            className="text-center mb-10 md:mb-12"
           >
-            <div className="space-y-4 text-text-secondary leading-relaxed text-base md:text-lg px-1">
-              {content.p1 && <p>{content.p1}</p>}
-              {content.p2 && <p>{content.p2}</p>}
-              {content.p3 && <p>{content.p3}</p>}
-            </div>
-
-            {/* Social buttons */}
-            <div className="flex flex-wrap gap-3 pt-2 justify-center md:justify-start">
-              {socials.map(({ href, label, icon: Icon }) => (
-                <a
-                  key={href}
-                  href={href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-border-primary glass-effect hover:border-accent-lime hover:shadow-lg text-text-primary/90"
-                >
-                  <Icon className="w-5 h-5" />
-                  <span className="text-sm md:text-base">{label}</span>
-                </a>
-              ))}
-            </div>
-            {/* GitHub Contributions */}
-            <div className="pt-4 w-full max-w-full md:max-w-2xl mx-auto md:mx-0 min-w-0">
-              {/* username inferred from GitHub link */}
-              <GitContributions username="freddynewton" />
-            </div>
+            <h2 className="text-4xl md:text-6xl font-bold text-text-primary mb-6">
+              <span className="text-gradient">{content.title}</span>
+            </h2>
           </motion.div>
-        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          viewport={{ once: true, amount: 0.2 }}
-        >
-          <h3 className="text-3xl font-bold text-text-primary text-center mb-6">{content.techStackTitle}</h3>
-          {/* View toggle moved under "My Tech Stack" heading (hidden on mobile) */}
-          <div className="hidden md:flex justify-center mb-8">
-            <div className="inline-flex items-center gap-1 bg-bg-secondary/60 border border-border-primary rounded-full p-1 select-none">
-              <button
-                onClick={() => setViewMode('tags')}
-                className={`px-3 py-1.5 text-sm rounded-full transition-colors ${viewMode === 'tags' ? 'bg-bg-primary text-text-primary' : 'text-text-secondary hover:text-text-primary'}`}
-              >
-                Tags
-              </button>
-              <button
-                onClick={() => setViewMode('map')}
-                className={`px-3 py-1.5 text-sm rounded-full transition-colors ${viewMode === 'map' ? 'bg-bg-primary text-text-primary' : 'text-text-secondary hover:text-text-primary'}`}
-              >
-                Mind Map
-              </button>
-            </div>
-          </div>
-          {/* Mind map only on desktop when selected (responsive height) */}
-          {isDesktop && viewMode === 'map' && (
-            <div>
-              <div
-                className="relative w-full h-[420px] md:h-[560px] rounded-3xl overflow-hidden border border-border-primary/60"
-                ref={containerRef}
-                onMouseMove={onMouseMoveContainer}
-                onPointerMove={onMouseMoveContainer}
-                style={{ touchAction: 'none' }}
-              >
-              {/* background dot grid */}
-              <svg className="absolute inset-0 w-full h-full" aria-hidden="true">
-                <defs>
-                  <pattern id="mm-dots" width="26" height="26" patternUnits="userSpaceOnUse">
-                    <circle cx="2" cy="2" r="1.5" fill="var(--accent-emerald)" opacity="0.12" />
-                  </pattern>
-                </defs>
-                <rect width="100%" height="100%" fill="url(#mm-dots)" />
-              </svg>
-              {/* mouse-follow glow */}
-              <div
-                className="absolute inset-0 pointer-events-none"
-                style={{
-                  background: `radial-gradient(320px circle at ${mouse.x}px ${mouse.y}px, rgba(34,197,94,0.14), rgba(34,197,94,0.0) 60%)`,
-                }}
-              />
-              {/* rounded border with inner glow */}
-              <div className="absolute inset-2 rounded-3xl border border-border-primary/60 shadow-[inset_0_0_80px_rgba(34,197,94,0.10)] pointer-events-none" />
-              {/* connecting lines */}
-              <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-                <defs>
-                  <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-                    <feGaussianBlur stdDeviation="1.8" result="coloredBlur" />
-                    <feMerge>
-                      <feMergeNode in="coloredBlur" />
-                      <feMergeNode in="SourceGraphic" />
-                    </feMerge>
-                  </filter>
-                </defs>
-                {/* Center to group lines (solid) */}
-                {nodes.map((p, i) => {
-                  const active = i === highlightIdx;
-                  const color = groupColors[i % groupColors.length].primary;
-                  const width = active ? 1.6 : 0.8;
-                  const opacity = active ? 1 : 0.85;
-                  // shorten to avoid underlapping the group chip
-                  const dx = p.x - center.x;
-                  const dy = p.y - center.y;
-                  const len = Math.hypot(dx, dy) || 1;
-                  const padStart = 2.0; // around root chip edge in viewBox units
-                  const padEnd = 3.0;   // around group chip edge
-                  const x1 = center.x + (dx / len) * padStart;
-                  const y1 = center.y + (dy / len) * padStart;
-                  const x2 = p.x - (dx / len) * padEnd;
-                  const y2 = p.y - (dy / len) * padEnd;
-                  return (
-                    <line
-                      key={`c-${i}`}
-                      x1={x1}
-                      y1={y1}
-                      x2={x2}
-                      y2={y2}
-                      stroke={color}
-                      strokeLinecap="round"
-                      style={{ transition: 'stroke-width 200ms ease, stroke-opacity 200ms ease' }}
-                      filter={active ? 'url(#glow)' : undefined}
-                      strokeWidth={width}
-                      strokeOpacity={opacity}
-                    />
-                  );
-                })}
-                {/* Group to child lines (solid) */}
-                {childPositions.map((list, i) => (
-                  list.map((cp, j) => {
-                    const active = i === highlightIdx;
-                    const color = groupColors[i % groupColors.length].child;
-                    const width = active ? 0.65 : 0.5;
-                    const opacity = active ? 0.92 : 0.8;
-                    // shorten so line meets child chip edge
-                    const dx = cp.x - nodes[i].x;
-                    const dy = cp.y - nodes[i].y;
-                    const len = Math.hypot(dx, dy) || 1;
-                    const padStart = 3.0; // around group chip edge
-                    const padEnd = 2.2;   // around child chip edge
-                    const x1 = nodes[i].x + (dx / len) * padStart;
-                    const y1 = nodes[i].y + (dy / len) * padStart;
-                    const x2 = cp.x - (dx / len) * padEnd;
-                    const y2 = cp.y - (dy / len) * padEnd;
-                    return (
-                      <line
-                        key={`g-${i}-${j}`}
-                        x1={x1}
-                        y1={y1}
-                        x2={x2}
-                        y2={y2}
-                        stroke={color}
-                        strokeLinecap="round"
-                        style={{ transition: 'stroke-width 200ms ease, stroke-opacity 200ms ease' }}
-                        strokeWidth={width}
-                        strokeOpacity={opacity}
-                      />
-                    );
-                  })
+          <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center mb-10 md:mb-12">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.7, type: "spring" }}
+              viewport={{ once: true }}
+              className="flex justify-center"
+            >
+              <div className="relative mx-auto w-56 h-56 sm:w-64 sm:h-64 md:w-72 md:h-72 lg:w-80 lg:h-80">
+                <div className="absolute inset-0 bg-gradient-to-br from-accent-lime to-accent-emerald rounded-full blur-2xl opacity-30 dark:opacity-50" />
+                <img
+                  src={PROFILE_PIC_URL}
+                  alt="Fred Newton Akdogan"
+                  className="relative w-full h-full object-cover rounded-full shadow-2xl"
+                />
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true, amount: 0.2 }}
+              className="space-y-6 text-center md:text-left min-w-0"
+            >
+              <div className="space-y-4 text-text-secondary leading-relaxed text-base md:text-lg px-1">
+                {content.p1 && <p>{content.p1}</p>}
+                {content.p2 && <p>{content.p2}</p>}
+                {content.p3 && <p>{content.p3}</p>}
+              </div>
+
+              {/* Social buttons */}
+              <div className="flex flex-wrap gap-3 pt-2 justify-center md:justify-start">
+                {socials.map(({ href, label, icon: Icon }) => (
+                  <a
+                    key={href}
+                    href={href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-border-primary glass-effect hover:border-accent-lime hover:shadow-lg text-text-primary/90"
+                  >
+                    <Icon className="w-5 h-5" />
+                    <span className="text-sm md:text-base">{label}</span>
+                  </a>
                 ))}
-              </svg>
-              {/* center node (draggable) */}
-              <motion.div
-                className="absolute -translate-x-1/2 -translate-y-1/2 px-5 py-3 rounded-2xl glass-effect border border-border-primary shadow text-text-primary font-semibold select-none cursor-grab active:cursor-grabbing z-20 pointer-events-auto hover:scale-100"
-                style={{ left: `${center.x}%`, top: `${center.y}%` }}
-                onPointerDown={onPointerDownRoot}
-                transition={spring}
-              >
-                Tech Stack
-              </motion.div>
-              {/* children nodes (rendered at container level for correct positioning) */}
-              {groups.map((g, i) => (
-                childPositions[i].map((cp, j) => (
-                  <motion.div
-                    key={`${g.title}-${j}`}
-                    className="absolute -translate-x-1/2 -translate-y-1/2 z-0 select-none"
+              </div>
+              {/* GitHub Contributions */}
+              <div className="pt-4 w-full max-w-full md:max-w-2xl mx-auto md:mx-0 min-w-0">
+                {/* username inferred from GitHub link */}
+                <GitContributions username="freddynewton" />
+              </div>
+            </motion.div>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            viewport={{ once: true, amount: 0.2 }}
+          >
+            <h3 className="text-3xl font-bold text-text-primary text-center mb-6">
+              {content.techStackTitle}
+            </h3>
+            {/* View toggle moved under "My Tech Stack" heading (hidden on mobile) */}
+            <div className="hidden md:flex justify-center mb-8">
+              <div className="inline-flex items-center gap-1 bg-bg-secondary/60 border border-border-primary rounded-full p-1 select-none">
+                <button
+                  onClick={() => setViewMode("tags")}
+                  className={`px-3 py-1.5 text-sm rounded-full transition-colors ${viewMode === "tags" ? "bg-bg-primary text-text-primary" : "text-text-secondary hover:text-text-primary"}`}
+                >
+                  Tags
+                </button>
+                <button
+                  onClick={() => setViewMode("map")}
+                  className={`px-3 py-1.5 text-sm rounded-full transition-colors ${viewMode === "map" ? "bg-bg-primary text-text-primary" : "text-text-secondary hover:text-text-primary"}`}
+                >
+                  Mind Map
+                </button>
+              </div>
+            </div>
+            {/* Mind map only on desktop when selected (responsive height) */}
+            {isDesktop && viewMode === "map" && (
+              <div>
+                <div
+                  className="relative w-full h-[420px] md:h-[560px] rounded-3xl overflow-hidden border border-border-primary/60"
+                  ref={containerRef}
+                  onMouseMove={onMouseMoveContainer}
+                  onPointerMove={onMouseMoveContainer}
+                  style={{ touchAction: "none" }}
+                >
+                  {/* background dot grid */}
+                  <svg
+                    className="absolute inset-0 w-full h-full"
+                    aria-hidden="true"
+                  >
+                    <defs>
+                      <pattern
+                        id="mm-dots"
+                        width="26"
+                        height="26"
+                        patternUnits="userSpaceOnUse"
+                      >
+                        <circle
+                          cx="2"
+                          cy="2"
+                          r="1.5"
+                          fill="var(--accent-emerald)"
+                          opacity="0.12"
+                        />
+                      </pattern>
+                    </defs>
+                    <rect width="100%" height="100%" fill="url(#mm-dots)" />
+                  </svg>
+                  {/* mouse-follow glow */}
+                  <div
+                    className="absolute inset-0 pointer-events-none"
                     style={{
-                      left: `${cp.x}%`,
-                      top: `${cp.y}%`,
-                      willChange: 'transform',
+                      background: `radial-gradient(320px circle at ${mouse.x}px ${mouse.y}px, rgba(34,197,94,0.14), rgba(34,197,94,0.0) 60%)`,
                     }}
-                    onMouseEnter={() => setHighlightIdx(i)}
-                    onMouseLeave={() => setHighlightIdx(-1)}
-                    onFocus={() => setHighlightIdx(i)}
-                    onBlur={() => setHighlightIdx(-1)}
+                  />
+                  {/* rounded border with inner glow */}
+                  <div className="absolute inset-2 rounded-3xl border border-border-primary/60 shadow-[inset_0_0_80px_rgba(34,197,94,0.10)] pointer-events-none" />
+                  {/* connecting lines */}
+                  <svg
+                    className="absolute inset-0 w-full h-full"
+                    viewBox="0 0 100 100"
+                    preserveAspectRatio="none"
+                  >
+                    <defs>
+                      <filter
+                        id="glow"
+                        x="-50%"
+                        y="-50%"
+                        width="200%"
+                        height="200%"
+                      >
+                        <feGaussianBlur
+                          stdDeviation="1.8"
+                          result="coloredBlur"
+                        />
+                        <feMerge>
+                          <feMergeNode in="coloredBlur" />
+                          <feMergeNode in="SourceGraphic" />
+                        </feMerge>
+                      </filter>
+                    </defs>
+                    {/* Center to group lines (solid) */}
+                    {nodes.map((p, i) => {
+                      const active = i === highlightIdx;
+                      const color = groupColors[i % groupColors.length].primary;
+                      const width = active ? 1.6 : 0.8;
+                      const opacity = active ? 1 : 0.85;
+                      // shorten to avoid underlapping the group chip
+                      const dx = p.x - center.x;
+                      const dy = p.y - center.y;
+                      const len = Math.hypot(dx, dy) || 1;
+                      const padStart = 2.0; // around root chip edge in viewBox units
+                      const padEnd = 3.0; // around group chip edge
+                      const x1 = center.x + (dx / len) * padStart;
+                      const y1 = center.y + (dy / len) * padStart;
+                      const x2 = p.x - (dx / len) * padEnd;
+                      const y2 = p.y - (dy / len) * padEnd;
+                      return (
+                        <line
+                          key={`c-${i}`}
+                          x1={x1}
+                          y1={y1}
+                          x2={x2}
+                          y2={y2}
+                          stroke={color}
+                          strokeLinecap="round"
+                          style={{
+                            transition:
+                              "stroke-width 200ms ease, stroke-opacity 200ms ease",
+                          }}
+                          filter={active ? "url(#glow)" : undefined}
+                          strokeWidth={width}
+                          strokeOpacity={opacity}
+                        />
+                      );
+                    })}
+                    {/* Group to child lines (solid) */}
+                    {childPositions.map((list, i) =>
+                      list.map((cp, j) => {
+                        const active = i === highlightIdx;
+                        const color = groupColors[i % groupColors.length].child;
+                        const width = active ? 0.65 : 0.5;
+                        const opacity = active ? 0.92 : 0.8;
+                        // shorten so line meets child chip edge
+                        const dx = cp.x - nodes[i].x;
+                        const dy = cp.y - nodes[i].y;
+                        const len = Math.hypot(dx, dy) || 1;
+                        const padStart = 3.0; // around group chip edge
+                        const padEnd = 2.2; // around child chip edge
+                        const x1 = nodes[i].x + (dx / len) * padStart;
+                        const y1 = nodes[i].y + (dy / len) * padStart;
+                        const x2 = cp.x - (dx / len) * padEnd;
+                        const y2 = cp.y - (dy / len) * padEnd;
+                        return (
+                          <line
+                            key={`g-${i}-${j}`}
+                            x1={x1}
+                            y1={y1}
+                            x2={x2}
+                            y2={y2}
+                            stroke={color}
+                            strokeLinecap="round"
+                            style={{
+                              transition:
+                                "stroke-width 200ms ease, stroke-opacity 200ms ease",
+                            }}
+                            strokeWidth={width}
+                            strokeOpacity={opacity}
+                          />
+                        );
+                      }),
+                    )}
+                  </svg>
+                  {/* center node (draggable) */}
+                  <motion.div
+                    className="absolute -translate-x-1/2 -translate-y-1/2 px-5 py-3 rounded-2xl glass-effect border border-border-primary shadow text-text-primary font-semibold select-none cursor-grab active:cursor-grabbing z-20 pointer-events-auto hover:scale-100"
+                    style={{ left: `${center.x}%`, top: `${center.y}%` }}
+                    onPointerDown={onPointerDownRoot}
                     transition={spring}
                   >
-                    {(() => {
-                      const dim = highlightIdx !== -1 && i !== highlightIdx;
-                      return (
-                        <div
-                          className="px-2.5 py-1.5 text-xs rounded-xl shadow-sm select-none"
-                          style={{
-                            border: `1px solid ${groupColors[i % groupColors.length].primary}`,
-                            background: `linear-gradient(180deg, ${groupColors[i % groupColors.length].child} 0%, rgba(0,0,0,0) 100%)`,
-                            color: 'var(--text-primary)',
-                            filter: dim ? 'grayscale(1)' : 'none',
-                            opacity: dim ? 0.5 : 1,
-                            transition: 'filter 200ms ease, opacity 200ms ease',
-                          }}
-                        >
-                          {g.items[j]}
-                        </div>
-                      );
-                    })()}
+                    Tech Stack
                   </motion.div>
-                ))
-              ))}
-              {/* group nodes on top */}
-              {groups.map((g, i) => (
-                <motion.div
-                  key={g.title}
-                  className="absolute -translate-x-1/2 -translate-y-1/2 z-10"
-                  style={{ left: `${nodes[i].x}%`, top: `${nodes[i].y}%`, willChange: 'transform' }}
-                >
-                  {(() => {
-                    const dim = highlightIdx !== -1 && i !== highlightIdx;
-                    return (
-                      <div
-                        className="rounded-2xl glass-effect border px-4 py-2 w-[180px] text-center shadow-md select-none"
+                  {/* children nodes (rendered at container level for correct positioning) */}
+                  {groups.map((g, i) =>
+                    childPositions[i].map((cp, j) => (
+                      <motion.div
+                        key={`${g.title}-${j}`}
+                        className="absolute -translate-x-1/2 -translate-y-1/2 z-0 select-none"
                         style={{
-                          borderColor: groupColors[i % groupColors.length].primary,
-                          boxShadow: `inset 0 0 16px ${groupColors[i % groupColors.length].child}`,
-                          filter: dim ? 'grayscale(1)' : 'none',
-                          opacity: dim ? 0.55 : 1,
-                          transition: 'filter 200ms ease, opacity 200ms ease',
+                          left: `${cp.x}%`,
+                          top: `${cp.y}%`,
+                          willChange: "transform",
                         }}
-                        // no drag for groups in simplified mode
                         onMouseEnter={() => setHighlightIdx(i)}
                         onMouseLeave={() => setHighlightIdx(-1)}
                         onFocus={() => setHighlightIdx(i)}
                         onBlur={() => setHighlightIdx(-1)}
+                        transition={spring}
                       >
-                        <div className="text-text-primary font-semibold">{g.title}</div>
-                      </div>
-                    );
-                  })()}
-                </motion.div>
-              ))}
-              </div>
-            </div>
-          )}
-          {/* Tags view (default): shown on all screens when selected; on mobile it's the only option */}
-          {viewMode === 'tags' && (
-            <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {groups.map((g, i) => (
-                <div key={g.title} className="rounded-2xl glass-effect border border-border-primary p-4">
-                  <div className="text-text-primary font-semibold mb-2">{g.title}</div>
-                  <div className="flex flex-wrap gap-2">
-                    {g.items.map((it) => (
-                      <span
-                        key={it}
-                        className="px-2 py-1 text-xs rounded-full border text-text-primary/90"
-                        style={{
-                          borderColor: groupColors[i % groupColors.length].primary,
-                          background: groupColors[i % groupColors.length].tag,
-                        }}
-                      >
-                        {it}
-                      </span>
-                    ))}
-                  </div>
+                        {(() => {
+                          const dim = highlightIdx !== -1 && i !== highlightIdx;
+                          return (
+                            <div
+                              className="px-2.5 py-1.5 text-xs rounded-xl shadow-sm select-none"
+                              style={{
+                                border: `1px solid ${groupColors[i % groupColors.length].primary}`,
+                                background: `linear-gradient(180deg, ${groupColors[i % groupColors.length].child} 0%, rgba(0,0,0,0) 100%)`,
+                                color: "var(--text-primary)",
+                                filter: dim ? "grayscale(1)" : "none",
+                                opacity: dim ? 0.5 : 1,
+                                transition:
+                                  "filter 200ms ease, opacity 200ms ease",
+                              }}
+                            >
+                              {g.items[j]}
+                            </div>
+                          );
+                        })()}
+                      </motion.div>
+                    )),
+                  )}
+                  {/* group nodes on top */}
+                  {groups.map((g, i) => (
+                    <motion.div
+                      key={g.title}
+                      className="absolute -translate-x-1/2 -translate-y-1/2 z-10"
+                      style={{
+                        left: `${nodes[i].x}%`,
+                        top: `${nodes[i].y}%`,
+                        willChange: "transform",
+                      }}
+                    >
+                      {(() => {
+                        const dim = highlightIdx !== -1 && i !== highlightIdx;
+                        return (
+                          <div
+                            className="rounded-2xl glass-effect border px-4 py-2 w-[180px] text-center shadow-md select-none"
+                            style={{
+                              borderColor:
+                                groupColors[i % groupColors.length].primary,
+                              boxShadow: `inset 0 0 16px ${groupColors[i % groupColors.length].child}`,
+                              filter: dim ? "grayscale(1)" : "none",
+                              opacity: dim ? 0.55 : 1,
+                              transition:
+                                "filter 200ms ease, opacity 200ms ease",
+                            }}
+                            // no drag for groups in simplified mode
+                            onMouseEnter={() => setHighlightIdx(i)}
+                            onMouseLeave={() => setHighlightIdx(-1)}
+                            onFocus={() => setHighlightIdx(i)}
+                            onBlur={() => setHighlightIdx(-1)}
+                          >
+                            <div className="text-text-primary font-semibold">
+                              {g.title}
+                            </div>
+                          </div>
+                        );
+                      })()}
+                    </motion.div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          )}
-        </motion.div>
+              </div>
+            )}
+            {/* Tags view (default): shown on all screens when selected; on mobile it's the only option */}
+            {viewMode === "tags" && (
+              <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {groups.map((g, i) => (
+                  <div
+                    key={g.title}
+                    className="rounded-2xl glass-effect border border-border-primary p-4"
+                  >
+                    <div className="text-text-primary font-semibold mb-2">
+                      {g.title}
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {g.items.map((it) => (
+                        <span
+                          key={it}
+                          className="px-2 py-1 text-xs rounded-full border text-text-primary/90"
+                          style={{
+                            borderColor:
+                              groupColors[i % groupColors.length].primary,
+                            background: groupColors[i % groupColors.length].tag,
+                          }}
+                        >
+                          {it}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </motion.div>
         </div>
       </div>
     </section>

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState } from "react";
 
 export default function AnimatedBackground() {
   const [mounted, setMounted] = useState(false);
@@ -17,10 +17,11 @@ export default function AnimatedBackground() {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const ctx = canvas.getContext('2d');
-    let width = 0, height = 0;
+    const ctx = canvas.getContext("2d");
+    let width = 0,
+      height = 0;
     const particles = [];
-  const count = 80; // keep it modest for perf
+    const count = 80; // keep it modest for perf
     const mouse = { x: -9999, y: -9999 };
 
     function resize() {
@@ -31,20 +32,22 @@ export default function AnimatedBackground() {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
 
-    function rand(min, max) { return Math.random() * (max - min) + min; }
+    function rand(min, max) {
+      return Math.random() * (max - min) + min;
+    }
 
-  function init() {
+    function init() {
       particles.length = 0;
-  for (let i = 0; i < count; i++) {
+      for (let i = 0; i < count; i++) {
         particles.push({
           x: rand(0, width),
           y: rand(0, height),
-  // base drift ensures particles always move
-  bx: rand(-0.2, 0.2),
-  by: rand(-0.2, 0.2),
-  // interaction velocity (mouse attraction, jitter)
-  vx: 0,
-  vy: 0,
+          // base drift ensures particles always move
+          bx: rand(-0.2, 0.2),
+          by: rand(-0.2, 0.2),
+          // interaction velocity (mouse attraction, jitter)
+          vx: 0,
+          vy: 0,
           r: rand(1.5, 8),
         });
       }
@@ -71,16 +74,32 @@ export default function AnimatedBackground() {
         }
         // clamp interactive velocity
         const maxS = 1 * SPEED;
-        if (p.vx > maxS) p.vx = maxS; if (p.vx < -maxS) p.vx = -maxS;
-        if (p.vy > maxS) p.vy = maxS; if (p.vy < -maxS) p.vy = -maxS;
+        if (p.vx > maxS) p.vx = maxS;
+        if (p.vx < -maxS) p.vx = -maxS;
+        if (p.vy > maxS) p.vy = maxS;
+        if (p.vy < -maxS) p.vy = -maxS;
         // apply base drift + interactive velocity
         p.x += p.bx + p.vx;
         p.y += p.by + p.vy;
         // bounce off edges and flip base drift on collision to keep motion
-  if (p.x < 0) { p.x = 0; p.bx = Math.abs(p.bx); p.vx *= -1; }
-  else if (p.x > width) { p.x = width; p.bx = -Math.abs(p.bx); p.vx *= -1; }
-  if (p.y < 0) { p.y = 0; p.by = Math.abs(p.by); p.vy *= -1; }
-  else if (p.y > height) { p.y = height; p.by = -Math.abs(p.by); p.vy *= -1; }
+        if (p.x < 0) {
+          p.x = 0;
+          p.bx = Math.abs(p.bx);
+          p.vx *= -1;
+        } else if (p.x > width) {
+          p.x = width;
+          p.bx = -Math.abs(p.bx);
+          p.vx *= -1;
+        }
+        if (p.y < 0) {
+          p.y = 0;
+          p.by = Math.abs(p.by);
+          p.vy *= -1;
+        } else if (p.y > height) {
+          p.y = height;
+          p.by = -Math.abs(p.by);
+          p.vy *= -1;
+        }
       }
       // lines
       const maxDist2 = 110 * 110;
@@ -89,18 +108,22 @@ export default function AnimatedBackground() {
         for (let j = i + 1; j < particles.length; j++) {
           const a = particles[i];
           const b = particles[j];
-          const dx = a.x - b.x, dy = a.y - b.y;
+          const dx = a.x - b.x,
+            dy = a.y - b.y;
           const d2 = dx * dx + dy * dy;
           if (d2 < maxDist2) {
             const alpha = 1 - d2 / maxDist2;
             ctx.strokeStyle = `rgba(132, 204, 22, ${0.08 * alpha})`; // softer
-            ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.stroke();
           }
         }
       }
       // points
       for (const p of particles) {
-        ctx.fillStyle = 'rgba(52, 211, 153, 0.6)'; // emerald-400-ish
+        ctx.fillStyle = "rgba(52, 211, 153, 0.6)"; // emerald-400-ish
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fill();
@@ -114,9 +137,10 @@ export default function AnimatedBackground() {
       mouse.y = e.clientY - rect.top;
     }
     function onMouseLeave() {
-      mouse.x = -9999; mouse.y = -9999;
+      mouse.x = -9999;
+      mouse.y = -9999;
     }
-  function onScroll() {
+    function onScroll() {
       // tiny random jitter instead of speed amplification
       for (const p of particles) {
         // very small change to base drift to keep motion organic
@@ -124,29 +148,39 @@ export default function AnimatedBackground() {
         p.by += rand(-0.0015, 0.0015);
         // clamp base drift
         const maxB = 0.5;
-        if (p.bx > maxB) p.bx = maxB; if (p.bx < -maxB) p.bx = -maxB;
-        if (p.by > maxB) p.by = maxB; if (p.by < -maxB) p.by = -maxB;
+        if (p.bx > maxB) p.bx = maxB;
+        if (p.bx < -maxB) p.bx = -maxB;
+        if (p.by > maxB) p.by = maxB;
+        if (p.by < -maxB) p.by = -maxB;
       }
     }
 
-    resize(); init(); draw();
-    window.addEventListener('resize', () => { resize(); init(); });
-    window.addEventListener('scroll', onScroll, { passive: true });
-    canvas.addEventListener('mousemove', onMouseMove);
-    canvas.addEventListener('mouseleave', onMouseLeave);
+    resize();
+    init();
+    draw();
+    window.addEventListener("resize", () => {
+      resize();
+      init();
+    });
+    window.addEventListener("scroll", onScroll, { passive: true });
+    canvas.addEventListener("mousemove", onMouseMove);
+    canvas.addEventListener("mouseleave", onMouseLeave);
 
     return () => {
       cancelAnimationFrame(raf);
-      window.removeEventListener('scroll', onScroll);
-      canvas.removeEventListener('mousemove', onMouseMove);
-      canvas.removeEventListener('mouseleave', onMouseLeave);
+      window.removeEventListener("scroll", onScroll);
+      canvas.removeEventListener("mousemove", onMouseMove);
+      canvas.removeEventListener("mouseleave", onMouseLeave);
     };
   }, [mounted]);
 
   if (!mounted) return null;
 
   return (
-    <div className="fixed inset-0 overflow-hidden pointer-events-none z-0" suppressHydrationWarning>
+    <div
+      className="fixed inset-0 overflow-hidden pointer-events-none z-0"
+      suppressHydrationWarning
+    >
       <div className="absolute inset-0 bg-bg-primary" />
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
     </div>

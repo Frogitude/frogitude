@@ -56,7 +56,7 @@ const AArrowUpIcon = forwardRef<AArrowUpIconHandle, AArrowUpIconProps>(
           controls.start("animate");
         }
       },
-      [controls, onMouseEnter]
+      [controls, onMouseEnter],
     );
 
     const handleMouseLeave = useCallback(
@@ -67,7 +67,7 @@ const AArrowUpIcon = forwardRef<AArrowUpIconHandle, AArrowUpIconProps>(
           controls.start("normal");
         }
       },
-      [controls, onMouseLeave]
+      [controls, onMouseLeave],
     );
 
     return (
@@ -112,7 +112,7 @@ const AArrowUpIcon = forwardRef<AArrowUpIconHandle, AArrowUpIconProps>(
         </svg>
       </div>
     );
-  }
+  },
 );
 
 AArrowUpIcon.displayName = "AArrowUpIcon";

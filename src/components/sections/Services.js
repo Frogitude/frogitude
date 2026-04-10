@@ -1,8 +1,21 @@
-import React from 'react';
-import { motion } from 'motion/react';
-import { Scan, Smartphone, Layers, Headset, GraduationCap, BookOpen, Package, Map, Code, Square, Globe, Megaphone } from 'lucide-react';
-import { useAppContext } from '../AppContext';
-import { content } from '../content';
+import React from "react";
+import { motion } from "motion/react";
+import {
+  Scan,
+  Smartphone,
+  Layers,
+  Headset,
+  GraduationCap,
+  BookOpen,
+  Package,
+  Map,
+  Code,
+  Square,
+  Globe,
+  Megaphone,
+} from "lucide-react";
+import { useAppContext } from "../AppContext";
+import { content } from "../content";
 
 const iconMap = {
   xr: Layers,
@@ -35,28 +48,28 @@ export default function Services({ id }) {
   // Category mapping for filters
   const categoryMap = {
     // Games
-    unity_dev: ['games'],
-    mobile_games: ['games'],
-    porting_opt: ['games'],
+    unity_dev: ["games"],
+    mobile_games: ["games"],
+    porting_opt: ["games"],
     // XR
-    xr: ['xr'],
-    ar: ['xr'],
-    vr: ['xr'],
-    mr_enterprise: ['xr'],
-    app_dev: ['xr'],
-    training: ['xr', 'consulting'],
-    product_demo: ['xr'],
-    tours: ['xr'],
-    workshops: ['xr', 'consulting'],
+    xr: ["xr"],
+    ar: ["xr"],
+    vr: ["xr"],
+    mr_enterprise: ["xr"],
+    app_dev: ["xr"],
+    training: ["xr", "consulting"],
+    product_demo: ["xr"],
+    tours: ["xr"],
+    workshops: ["xr", "consulting"],
     // Web & Ads
-    webar: ['web'],
-    immersive_web: ['web'],
-    interactive_ads: ['web'],
+    webar: ["web"],
+    immersive_web: ["web"],
+    interactive_ads: ["web"],
   };
-  const [filter, setFilter] = React.useState('all'); // 'all' | 'games' | 'xr' | 'consulting' | 'web'
+  const [filter, setFilter] = React.useState("all"); // 'all' | 'games' | 'xr' | 'consulting' | 'web'
 
   const filtered = items.filter((it) => {
-    if (filter === 'all') return true;
+    if (filter === "all") return true;
     const cats = categoryMap[it.key] || [];
     return cats.includes(filter);
   });
@@ -72,7 +85,9 @@ export default function Services({ id }) {
           className="text-center mb-12"
         >
           <h2 className="text-4xl md:text-6xl font-black tracking-tightest">
-            <span className="text-gradient">{t.services?.title || 'Services'}</span>
+            <span className="text-gradient">
+              {t.services?.title || "Services"}
+            </span>
           </h2>
           <p className="text-text-secondary mt-4 max-w-3xl mx-auto text-lg">
             {t.services?.subtitle}
@@ -80,19 +95,22 @@ export default function Services({ id }) {
           {/* Filter buttons */}
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
             {[
-              { id: 'all', label: t.services?.filters?.all || 'All' },
-              { id: 'games', label: t.services?.filters?.games || 'Games' },
-              { id: 'xr', label: t.services?.filters?.xr || 'XR' },
-              { id: 'consulting', label: t.services?.filters?.consulting || 'Consulting' },
-              { id: 'web', label: t.services?.filters?.web || 'Web & Ads' },
+              { id: "all", label: t.services?.filters?.all || "All" },
+              { id: "games", label: t.services?.filters?.games || "Games" },
+              { id: "xr", label: t.services?.filters?.xr || "XR" },
+              {
+                id: "consulting",
+                label: t.services?.filters?.consulting || "Consulting",
+              },
+              { id: "web", label: t.services?.filters?.web || "Web & Ads" },
             ].map((b) => (
               <button
                 key={b.id}
                 onClick={() => setFilter(b.id)}
                 className={`px-5 py-2.5 rounded-full border font-medium text-sm transition-all duration-200 ${
                   filter === b.id
-                    ? 'btn-gradient border-transparent shadow-glow-lime'
-                    : 'glass-effect text-text-secondary hover:border-accent-lime hover:text-text-primary'
+                    ? "btn-gradient border-transparent shadow-glow-lime"
+                    : "glass-effect text-text-secondary hover:border-accent-lime hover:text-text-primary"
                 }`}
               >
                 {b.label}
@@ -101,10 +119,10 @@ export default function Services({ id }) {
           </div>
         </motion.div>
 
-  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {filtered.map(({ icon: Icon, title, blurb, key }) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filtered.map(({ icon: Icon, title, blurb, key }) => (
             <motion.article
-        key={key}
+              key={key}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.15 }}
@@ -113,11 +131,18 @@ export default function Services({ id }) {
             >
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 rounded-xl glass-effect border border-border-primary flex items-center justify-center shrink-0 shadow-glow-lime/30">
-                  {(Icon || Square) && React.createElement(Icon || Square, { className: 'w-6 h-6 text-accent-lime' })}
+                  {(Icon || Square) &&
+                    React.createElement(Icon || Square, {
+                      className: "w-6 h-6 text-accent-lime",
+                    })}
                 </div>
-        <div className="flex-1">
-                  <h3 className="text-xl md:text-2xl font-semibold text-text-primary">{title}</h3>
-                  <p className="text-text-secondary mt-1 text-sm md:text-base leading-relaxed">{blurb}</p>
+                <div className="flex-1">
+                  <h3 className="text-xl md:text-2xl font-semibold text-text-primary">
+                    {title}
+                  </h3>
+                  <p className="text-text-secondary mt-1 text-sm md:text-base leading-relaxed">
+                    {blurb}
+                  </p>
                 </div>
               </div>
             </motion.article>

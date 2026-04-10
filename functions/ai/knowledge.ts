@@ -14,17 +14,20 @@ You are the Frogitude Assistant — a friendly, concise sales-oriented helper fo
 `;
 
 export const socialLinks = [
-  { label: 'Discord', href: 'https://discord.gg/Bfsx9sTDfh' },
-  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/fred-newton-akdogan-b6a775257/' },
-  { label: 'GitHub', href: 'https://github.com/freddynewton' },
-  { label: 'itch.io', href: 'https://freddynewton.itch.io/' },
-  { label: 'YouTube', href: 'https://www.youtube.com/@Frogitude_dev' },
-  { label: 'Instagram', href: 'https://www.instagram.com/frogitude.dev/' },
-  { label: 'TikTok', href: 'https://www.tiktok.com/@frogitude.dev' },
-  { label: 'Portfolio', href: 'https://freddynewton.github.io/' },
-  { label: 'Frogitude', href: 'https://frogitude.com/' },
-  { label: 'superswipe.games', href: 'https://superswipe.games/' },
-  { label: 'SumoVolley', href: 'https://sumovolley.com/' },
+  { label: "Discord", href: "https://discord.gg/Bfsx9sTDfh" },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/fred-newton-akdogan-b6a775257/",
+  },
+  { label: "GitHub", href: "https://github.com/freddynewton" },
+  { label: "itch.io", href: "https://freddynewton.itch.io/" },
+  { label: "YouTube", href: "https://www.youtube.com/@Frogitude_dev" },
+  { label: "Instagram", href: "https://www.instagram.com/frogitude.dev/" },
+  { label: "TikTok", href: "https://www.tiktok.com/@frogitude.dev" },
+  { label: "Portfolio", href: "https://freddynewton.github.io/" },
+  { label: "Frogitude", href: "https://frogitude.com/" },
+  { label: "superswipe.games", href: "https://superswipe.games/" },
+  { label: "SumoVolley", href: "https://sumovolley.com/" },
 ];
 
 export const knowledgeDE = `
@@ -43,7 +46,7 @@ Ausgewählte Erfahrungen/Projekte:
 - Indie/Prototypen (z. B. Broomstick Barry) — Fokus auf Game Feel & schnelle Iteration.
 
 Kontakt & Socials:
-${socialLinks.map((s) => `- ${s.label}: ${s.href}`).join('\n')}
+${socialLinks.map((s) => `- ${s.label}: ${s.href}`).join("\n")}
 
 Hinweise:
 - Keine Ausgabe persönlicher Daten wie Adresse/Telefon. Nur info@frogitude.com.
@@ -66,7 +69,7 @@ Selected experience/projects:
 - Indie/prototypes (e.g., Broomstick Barry) — game feel and rapid iteration.
 
 Contact & Socials:
-${socialLinks.map((s) => `- ${s.label}: ${s.href}`).join('\n')}
+${socialLinks.map((s) => `- ${s.label}: ${s.href}`).join("\n")}
 
 Notes:
 - Do not output personal address/phone. Only info@frogitude.com.

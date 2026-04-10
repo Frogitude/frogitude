@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { gsap } from '@/lib/gsap';
+import React, { useEffect, useRef, useState } from "react";
+import { gsap } from "@/lib/gsap";
 
 // Decorative scroll-reactive sine waves, inspired by hexagoncircle "scroll waves"
 export default function ScrollWaves({ lines = 6, height = 140 }) {
@@ -16,7 +16,7 @@ export default function ScrollWaves({ lines = 6, height = 140 }) {
     if (!mounted) return;
     const svg = svgRef.current;
     if (!svg) return;
-    const polylines = Array.from(svg.querySelectorAll('polyline'));
+    const polylines = Array.from(svg.querySelectorAll("polyline"));
 
     function resize() {
       const rect = svg.getBoundingClientRect();
@@ -37,10 +37,12 @@ export default function ScrollWaves({ lines = 6, height = 140 }) {
         const pts = [];
         const amp = data.current.amp * (1 - i / (lines + 2)) * 1.2;
         for (let x = 0; x <= VBW; x += 6) {
-          const y = mid + Math.sin((x + data.current.drift + i * 20) / wavelength) * amp;
+          const y =
+            mid +
+            Math.sin((x + data.current.drift + i * 20) / wavelength) * amp;
           pts.push(`${x},${y.toFixed(2)}`);
         }
-        pl.setAttribute('points', pts.join(' '));
+        pl.setAttribute("points", pts.join(" "));
         pl.style.opacity = String(0.2 + (0.6 * (lines - i)) / lines);
       });
 
@@ -58,22 +60,38 @@ export default function ScrollWaves({ lines = 6, height = 140 }) {
 
     resize();
     render();
-    window.addEventListener('resize', resize);
-    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener("resize", resize);
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
       cancelAnimationFrame(frame.current);
-      window.removeEventListener('resize', resize);
-      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener("resize", resize);
+      window.removeEventListener("scroll", onScroll);
     };
   }, [height, lines, mounted]);
 
   if (!mounted) return null;
 
   return (
-    <div className="pointer-events-none select-none" aria-hidden suppressHydrationWarning>
-      <svg ref={svgRef} className="w-full" height={height} viewBox={`0 0 800 ${height}`} preserveAspectRatio="none">
+    <div
+      className="pointer-events-none select-none"
+      aria-hidden
+      suppressHydrationWarning
+    >
+      <svg
+        ref={svgRef}
+        className="w-full"
+        height={height}
+        viewBox={`0 0 800 ${height}`}
+        preserveAspectRatio="none"
+      >
         {Array.from({ length: lines }).map((_, i) => (
-          <polyline key={i} fill="none" stroke="var(--accent-lime)" strokeWidth={2} strokeLinejoin="round" />
+          <polyline
+            key={i}
+            fill="none"
+            stroke="var(--accent-lime)"
+            strokeWidth={2}
+            strokeLinejoin="round"
+          />
         ))}
       </svg>
     </div>

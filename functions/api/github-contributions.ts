@@ -2,23 +2,27 @@
 // Fetches GitHub contributions via GraphQL. Requires a secret binding GITHUB_TOKEN.
 
 const CORS = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type',
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type",
 };
 
-export const onRequestOptions = async () => new Response(null, { headers: CORS });
+export const onRequestOptions = async () =>
+  new Response(null, { headers: CORS });
 
 export const onRequestGet = async (context: any) => {
   const { env, request } = context;
   const url = new URL(request.url);
-  const username = url.searchParams.get('username') || 'freddynewton';
-  const debug = url.searchParams.get('debug') === '1';
+  const username = url.searchParams.get("username") || "freddynewton";
+  const debug = url.searchParams.get("debug") === "1";
 
   if (!env.GITHUB_TOKEN) {
     return new Response(
-      JSON.stringify({ error: 'Missing GITHUB_TOKEN secret in Pages → Settings → Functions → Environment variables.' }),
-      { status: 500, headers: { 'content-type': 'application/json', ...CORS } }
+      JSON.stringify({
+        error:
+          "Missing GITHUB_TOKEN secret in Pages → Settings → Functions → Environment variables.",
+      }),
+      { status: 500, headers: { "content-type": "application/json", ...CORS } },
     );
   }
 
@@ -36,41 +40,48 @@ export const onRequestGet = async (context: any) => {
   `;
 
   try {
-    const res = await fetch('https://api.github.com/graphql', {
-      method: 'POST',
+    const res = await fetch("https://api.github.com/graphql", {
+      method: "POST",
       headers: {
-        'content-type': 'application/json',
-        'user-agent': 'frogitude-pages-function',
-        'accept': 'application/json',
+        "content-type": "application/json",
+        "user-agent": "frogitude-pages-function",
+        accept: "application/json",
         Authorization: `Bearer ${env.GITHUB_TOKEN}`,
       },
       body: JSON.stringify({ query, variables: { login: username } }),
     });
     const text = await res.text();
     let data: any = null;
-    try { data = JSON.parse(text); } catch { /* keep raw text */ }
+    try {
+      data = JSON.parse(text);
+    } catch {
+      /* keep raw text */
+    }
 
     if (!res.ok || (data && data.errors)) {
       const payload = {
         status: res.status,
         statusText: res.statusText,
-        error: data?.errors || text || 'Upstream error',
+        error: data?.errors || text || "Upstream error",
       };
       return new Response(JSON.stringify(payload), {
         status: 500,
-        headers: { 'content-type': 'application/json', ...CORS },
+        headers: { "content-type": "application/json", ...CORS },
       });
     }
     const user = data?.data?.user;
     if (!user) {
-      return new Response(JSON.stringify({ error: 'User not found', username }), {
-        status: 404,
-        headers: { 'content-type': 'application/json', ...CORS },
-      });
+      return new Response(
+        JSON.stringify({ error: "User not found", username }),
+        {
+          status: 404,
+          headers: { "content-type": "application/json", ...CORS },
+        },
+      );
     }
     const cal = user.contributionsCollection.contributionCalendar;
     // Optional: limit weeks for compact mobile rendering
-    const weeksParam = Number(url.searchParams.get('weeks'));
+    const weeksParam = Number(url.searchParams.get("weeks"));
     let calOut = cal;
     if (Number.isFinite(weeksParam)) {
       const totalWeeks = Array.isArray(cal?.weeks) ? cal.weeks.length : 0;
@@ -79,12 +90,19 @@ export const onRequestGet = async (context: any) => {
         calOut = { ...cal, weeks: cal.weeks.slice(-w) };
       }
     }
-    const body = debug ? { debug: { username, weeks: calOut?.weeks?.length }, ...calOut } : calOut;
-    return new Response(JSON.stringify(body), { headers: { 'content-type': 'application/json', ...CORS } });
-  } catch (e: any) {
-    return new Response(JSON.stringify({ error: e?.message || 'Request failed' }), {
-      status: 500,
-      headers: { 'content-type': 'application/json', ...CORS },
+    const body = debug
+      ? { debug: { username, weeks: calOut?.weeks?.length }, ...calOut }
+      : calOut;
+    return new Response(JSON.stringify(body), {
+      headers: { "content-type": "application/json", ...CORS },
     });
+  } catch (e: any) {
+    return new Response(
+      JSON.stringify({ error: e?.message || "Request failed" }),
+      {
+        status: 500,
+        headers: { "content-type": "application/json", ...CORS },
+      },
+    );
   }
 };
