@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { Briefcase, Layers, Cpu, Users } from 'lucide-react';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
 import { useIsomorphicLayoutEffect } from '@/lib/hooks';
@@ -33,17 +33,19 @@ const StatItem = ({ icon: Icon, value, label, delay }) => {
   }, [value]);
   return (
     <motion.div
-  className="text-center glass-effect rounded-2xl p-6 shadow-lg hover:shadow-xl"
+  className="text-center glass-effect glass-card-accent rounded-2xl p-8 shadow-lg hover:shadow-glow-lime"
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay }}
       viewport={{ once: true }}
     >
-      <div className="flex items-center justify-center gap-2">
-        <Icon className="w-10 h-10 text-accent-lime" />
-        <span ref={valueRef} className="text-5xl font-bold text-text-primary">0</span>
+      <div className="flex items-center justify-center gap-3 mb-2">
+        <div className="relative rounded-xl p-2 pulse-ring">
+          <Icon className="w-8 h-8 text-accent-lime" />
+        </div>
+        <span ref={valueRef} className="text-5xl font-black tracking-tightest text-text-primary">0</span>
       </div>
-      <p className="text-text-secondary mt-2">{label}</p>
+      <p className="text-text-secondary mt-2 text-sm font-medium uppercase tracking-wide">{label}</p>
     </motion.div>
   );
 };
@@ -58,9 +60,10 @@ export default function Stats({ content }) {
   ];
 
   return (
-    <section id="stats" className="py-20 bg-bg-secondary">
+    <section id="stats" className="py-24 bg-bg-secondary/60 relative">
+      <div className="section-divider absolute top-0 left-0 right-0" />
       <div className="container mx-auto px-6">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {stats.map((stat, index) => (
             <StatItem key={index} {...stat} />
           ))}

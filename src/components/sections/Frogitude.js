@@ -1,8 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { Play, Pause, ChevronDown } from 'lucide-react';
-import { useAppContext } from './AppContext';
-import { content } from './content';
+import { useAppContext } from '../AppContext';
+import { content } from '../content';
 import { withBasePath } from '@/lib/basePath';
 
 export default function WhatIsFrogitude({ id }) {

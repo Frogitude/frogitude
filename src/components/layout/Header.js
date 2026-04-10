@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { Sun, Moon, Languages } from 'lucide-react';
-import { useAppContext } from './AppContext';
+import { useAppContext } from '../AppContext';
 import { gsap } from '@/lib/gsap';
-import { content } from './content';
+import { content } from '../content';
 import { withBasePath } from '@/lib/basePath';
 
 const LOGO_URL = withBasePath('/images/small-frog.png');

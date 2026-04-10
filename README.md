@@ -1,26 +1,100 @@
-# Frogitude New Website
+# Frogitude
 
-A Next.js + Tailwind portfolio site based on provided components.
+Personal portfolio and freelance showcase site for **Frogitude** (Fred Newton Akdogan) — Unity Game & XR Developer.
 
 ## Tech Stack
 
-- Next.js (Pages Router)
-- React + TypeScript
-- Tailwind CSS
-- GSAP (ScrollTrigger, ScrollTo) for horizontal experience scroller
-- Framer Motion for micro‑interactions and collapsible sections
-- HTML5 Canvas for animated dots/lines background
+| Layer | Tool |
+|---|---|
+| Framework | Next.js 14 (Pages Router) |
+| Language | TypeScript + JavaScript |
+| Styles | Tailwind CSS + PostCSS |
+| Animation | GSAP (ScrollTrigger) · Motion (motion/react) |
+| State | React Context (theme + language de/en) |
+| AI Chat | Cloudflare Workers AI (`@cf/meta/llama-*`) |
+| Deploy | Cloudflare Pages |
 
-## Run locally
+## Getting Started
 
-1. Install dependencies
-```powershell
+### Prerequisites
+
+- **Node.js** 18+ and **npm**
+
+### Install dependencies
+
+```bash
 npm install
 ```
-2. Start dev server
-```powershell
+
+### Run locally
+
+```bash
 npm run dev
 ```
-Open http://localhost:3000
 
-Assets are under `public/images` pre-populated from your provided `public` folder.
+Open [http://localhost:3000](http://localhost:3000)
+
+### Production build
+
+```bash
+npm run build
+```
+
+Outputs a static export ready for Cloudflare Pages.
+
+### Start production server locally
+
+```bash
+npm run build
+npm run start
+```
+
+## Project Structure
+
+```
+frogitude/
+├── src/
+│   ├── pages/              # Next.js pages (_app, index, impressum, …)
+│   ├── components/
+│   │   ├── sections/       # Page sections (Hero, About, Stats, …)
+│   │   ├── layout/         # Header
+│   │   ├── effects/        # AnimatedBackground, ClickBurst, ScrollWaves
+│   │   ├── ui/             # Button, Magnetic, PlayPauseMorph
+│   │   ├── AppContext.js   # Global state provider
+│   │   ├── content.js      # Bilingual content (de/en)
+│   │   ├── ChatWidget.tsx  # AI chat widget
+│   │   └── GitContributions.tsx
+│   ├── lib/                # Shared helpers (gsap, tilt, hooks, basePath)
+│   └── styles/             # globals.css (Tailwind base + design tokens)
+├── functions/
+│   ├── api/                # Cloudflare Functions (chat, github-contributions)
+│   └── ai/                 # AI knowledge base
+├── public/                 # Static assets (images, sounds)
+├── DESIGN.md               # Design system reference
+├── tailwind.config.js
+├── next.config.js
+└── tsconfig.json
+```
+
+## Scripts
+
+| Command | Description |
+|---|---|
+| `npm run dev` | Start dev server on port 3000 |
+| `npm run build` | Production build (static export) |
+| `npm run start` | Start production server on port 3000 |
+| `npm run pages` | Build with `/frogitude` base path |
+
+## Design System
+
+See [DESIGN.md](DESIGN.md) for the full design token reference — colours, typography, glassmorphism, and component patterns.
+
+Both light and dark themes are supported via `data-theme` on `<html>` and `prefers-color-scheme`.
+
+## Deploy
+
+Cloudflare Pages deploys automatically on push to `main` via GitHub Actions (`.github/workflows/cloudflare-pages.yml`).
+
+## License
+
+See [LICENSE](LICENSE).

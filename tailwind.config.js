@@ -19,6 +19,14 @@ module.exports = {
         'accent-lime': 'var(--accent-lime)',
         'accent-emerald': 'var(--accent-emerald)'
       },
+      letterSpacing: {
+        'tightest': '-0.04em',
+      },
+      boxShadow: {
+        'glow-lime': '0 0 20px var(--color-glow)',
+        'glow-emerald': '0 0 20px var(--color-glow-secondary)',
+        'glow-lg': '0 0 40px var(--color-glow), 0 0 80px var(--color-glow-secondary)',
+      },
     },
   },
   plugins: [],

@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
-import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
+import { motion } from 'motion/react';
+import { Button } from '@/components/ui/Button';
 import Magnetic from '@/components/ui/Magnetic';
 import { gsap } from '@/lib/gsap';
 import { withBasePath } from '@/lib/basePath';
@@ -47,6 +47,11 @@ export default function Hero({ id, content }) {
 
   return (
     <section id={id} className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Decorative glow orbs */}
+      <div className="glow-orb glow-orb--lime w-[400px] h-[400px] -top-32 -left-32" />
+      <div className="glow-orb glow-orb--emerald w-[300px] h-[300px] -bottom-20 -right-20" />
+      <div className="glow-orb glow-orb--lime w-[200px] h-[200px] top-1/3 right-1/4 opacity-20" />
+
       <div className="container mx-auto px-6 text-center relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
@@ -62,40 +67,40 @@ export default function Hero({ id, content }) {
             viewport={{ once: true }}
             transition={{ duration: 0.6, type: 'spring', stiffness: 120 }}
           >
-            <img ref={logoRef} src={LOGO_URL} alt="Frogitude Logo" className="w-40 h-40 mb-4" />
+            <img ref={logoRef} src={LOGO_URL} alt="Frogitude Logo" className="w-40 h-40 mb-4 drop-shadow-[0_0_30px_var(--color-glow)]" />
             <h1
-              className="text-7xl md:text-9xl font-black leading-none px-[25px] md:px-0 text-gradient"
-              style={{ backgroundSize: '200% 100%', textShadow: '0 2px 20px rgba(132,204,22,0.25)', animation: 'frog-shimmer 5s linear infinite' }}
+              className="text-7xl md:text-9xl font-black leading-none tracking-tightest px-[25px] md:px-0 text-gradient"
+              style={{ backgroundSize: '200% 100%', textShadow: '0 4px 30px rgba(132,204,22,0.3)', animation: 'frog-shimmer 5s linear infinite' }}
             >
               FROGITUDE
             </h1>
           </motion.div>
 
           <motion.h2 
-            className="text-2xl md:text-4xl font-semibold text-text-primary/90 mb-4"
-            initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
+            className="text-2xl md:text-4xl font-semibold text-text-primary/90 mb-4 tracking-tight"
+            initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }}
           >
             {content.subtitle}
           </motion.h2>
           <motion.p 
-            className="text-xl text-text-secondary/95 max-w-2xl mx-auto leading-relaxed mb-12"
-            initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-lg md:text-xl text-text-secondary/95 max-w-2xl mx-auto leading-relaxed mb-14"
+            initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.2 }}
           >
             {content.description}
           </motion.p>
           
           <motion.div
-            className="flex flex-col sm:flex-row gap-6 justify-center"
+            className="flex flex-col sm:flex-row gap-5 justify-center"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.15 }}
+            transition={{ duration: 0.6, delay: 0.25 }}
             ref={ctaRef}
           >
             <Magnetic>
               <Button
                 onClick={() => scrollToSection('projects')}
-                className="btn-gradient px-8 py-4 rounded-full font-extrabold text-2xl shadow-lg shadow-emerald-900 transition-all duration-300 transform hover:scale-105"
+                className="btn-gradient px-10 py-4 rounded-full font-extrabold text-xl shadow-glow-lime transition-all duration-300 transform hover:scale-105"
                 style={{ position: 'relative', opacity: 1 }}
               >
                 {content.button1 || 'CTA1'}
@@ -104,12 +109,31 @@ export default function Hero({ id, content }) {
             <Magnetic>
               <Button
                 onClick={() => scrollToSection('contact')}
-                className="btn-gradient px-8 py-4 rounded-full font-extrabold text-2xl shadow-lg shadow-emerald-900 transition-all duration-300 transform hover:scale-105"
+                className="btn-outline px-10 py-4 rounded-full font-extrabold text-xl transition-all duration-300 transform hover:scale-105"
                 style={{ position: 'relative', opacity: 1 }}
               >
                 {content.button2 || 'CTA2'}
               </Button>
             </Magnetic>
+          </motion.div>
+
+          {/* Scroll indicator */}
+          <motion.div
+            className="mt-16 flex justify-center"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+          >
+            <button
+              onClick={() => scrollToSection('stats')}
+              className="scroll-indicator text-text-secondary/50 hover:text-accent-lime transition-colors"
+              aria-label="Scroll down"
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M7 13l5 5 5-5" /><path d="M7 6l5 5 5-5" />
+              </svg>
+            </button>
           </motion.div>
         </motion.div>
       </div>

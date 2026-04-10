@@ -1,7 +1,7 @@
 import React, { useRef, useState, useMemo, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 import { Briefcase, Building, Gamepad2 } from 'lucide-react';
-import { useAppContext } from './AppContext';
+import { useAppContext } from '../AppContext';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
 import { useIsomorphicLayoutEffect } from '@/lib/hooks';
 import { withBasePath } from '@/lib/basePath';

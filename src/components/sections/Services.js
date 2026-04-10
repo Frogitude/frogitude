@@ -1,8 +1,8 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { Scan, Smartphone, Layers, Headset, GraduationCap, BookOpen, Package, Map, Code, Square, Globe, Megaphone } from 'lucide-react';
-import { useAppContext } from './AppContext';
-import { content } from './content';
+import { useAppContext } from '../AppContext';
+import { content } from '../content';
 
 const iconMap = {
   xr: Layers,
@@ -61,23 +61,24 @@ export default function Services({ id }) {
     return cats.includes(filter);
   });
   return (
-    <section id={id} className="py-20 bg-bg-secondary/40">
+    <section id={id} className="py-24 bg-bg-secondary/40 relative">
+      <div className="section-divider absolute top-0 left-0 right-0" />
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-10"
+          className="text-center mb-12"
         >
-          <h2 className="text-4xl md:text-6xl font-bold">
+          <h2 className="text-4xl md:text-6xl font-black tracking-tightest">
             <span className="text-gradient">{t.services?.title || 'Services'}</span>
           </h2>
-          <p className="text-text-secondary mt-3 max-w-3xl mx-auto">
+          <p className="text-text-secondary mt-4 max-w-3xl mx-auto text-lg">
             {t.services?.subtitle}
           </p>
           {/* Filter buttons */}
-          <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
             {[
               { id: 'all', label: t.services?.filters?.all || 'All' },
               { id: 'games', label: t.services?.filters?.games || 'Games' },
@@ -88,8 +89,10 @@ export default function Services({ id }) {
               <button
                 key={b.id}
                 onClick={() => setFilter(b.id)}
-                className={`px-4 py-2 rounded-full border transition-colors ${
-                  filter === b.id ? 'bg-accent-lime text-white border-accent-lime' : 'glass-effect text-text-secondary'
+                className={`px-5 py-2.5 rounded-full border font-medium text-sm transition-all duration-200 ${
+                  filter === b.id
+                    ? 'btn-gradient border-transparent shadow-glow-lime'
+                    : 'glass-effect text-text-secondary hover:border-accent-lime hover:text-text-primary'
                 }`}
               >
                 {b.label}
@@ -106,10 +109,10 @@ export default function Services({ id }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.15 }}
               transition={{ duration: 0.4 }}
-              className="glass-effect rounded-2xl p-6 border border-border-primary hover:shadow-xl transition-shadow"
+              className="glass-effect glass-card-accent rounded-2xl p-6 border border-border-primary hover:shadow-glow-lime transition-all"
             >
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-xl glass-effect border border-border-primary flex items-center justify-center shrink-0">
+                <div className="w-12 h-12 rounded-xl glass-effect border border-border-primary flex items-center justify-center shrink-0 shadow-glow-lime/30">
                   {(Icon || Square) && React.createElement(Icon || Square, { className: 'w-6 h-6 text-accent-lime' })}
                 </div>
         <div className="flex-1">

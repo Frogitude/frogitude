@@ -1,7 +1,7 @@
 import React, { useMemo, useRef, useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { useAppContext } from './AppContext';
-import GitContributions from './GitContributions';
+import { motion } from 'motion/react';
+import { useAppContext } from '../AppContext';
+import GitContributions from '../GitContributions';
 import { Youtube, Instagram, Linkedin, Github, Twitter, MessageSquare, Briefcase } from 'lucide-react';
 
 const PROFILE_PIC_URL = '/images/ggbavaria2.jpg';

@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { Gamepad2, BrainCircuit, Code, Users } from 'lucide-react';
-import { useAppContext } from './AppContext';
+import { useAppContext } from '../AppContext';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Tooltip } from 'recharts';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
 import { useIsomorphicLayoutEffect } from '@/lib/hooks';
@@ -139,14 +139,15 @@ export default function Skills({ id, content }) {
   }, [selectedCategory]);
 
   return (
-    <section id={id} className="py-20">
+    <section id={id} className="py-24 relative">
+      <div className="section-divider absolute top-0 left-0 right-0" />
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }} viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-5xl md:text-6xl font-bold text-text-primary mb-6">
+          <h2 className="text-5xl md:text-6xl font-black tracking-tightest text-text-primary mb-6">
             <span className="text-gradient">{content.title}</span>
           </h2>
           <p className="text-xl text-text-secondary max-w-3xl mx-auto">{content.description}</p>
@@ -160,7 +161,7 @@ export default function Skills({ id, content }) {
               <motion.button
                 key={key}
                 onClick={() => setSelectedCategory(key)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-full border ${active ? 'bg-accent-lime text-white border-accent-lime' : 'glass-effect text-text-secondary'}`}
+                className={`flex items-center gap-2 px-5 py-2.5 rounded-full border font-medium text-sm transition-all duration-200 ${active ? 'btn-gradient border-transparent shadow-glow-lime' : 'glass-effect text-text-secondary hover:border-accent-lime hover:text-text-primary'}`}
                 whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
               >
                 <Icon className="w-5 h-5" />
@@ -170,7 +171,7 @@ export default function Skills({ id, content }) {
           })}
         </div>
 
-        <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-center glass-effect rounded-3xl p-8 shadow-2xl hover:shadow-emerald-500/10 overflow-visible">
+        <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-center glass-effect glass-card-accent rounded-3xl p-8 shadow-2xl hover:shadow-glow-lg overflow-visible">
           <div className="overflow-visible -mx-2 sm:mx-0">
             <SkillRadarChart
               data={yearSkills}

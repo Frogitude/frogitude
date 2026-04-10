@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { Briefcase, Building, Gamepad2 } from 'lucide-react';
 import { applyTilt } from '@/lib/tilt';
-import { useAppContext } from './AppContext';
-import { content as translations } from './content';
+import { useAppContext } from '../AppContext';
+import { content as translations } from '../content';
 import { withBasePath } from '@/lib/basePath';
 
 export default function Projects({ id, content }) {

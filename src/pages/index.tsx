@@ -2,20 +2,20 @@ import React, { useEffect } from 'react';
 import Head from 'next/head';
 import { AppProvider, useAppContext } from '@/components/AppContext';
 import { content } from '@/components/content';
-import Header from '@/components/Header';
-import Hero from '@/components/Hero';
-import Stats from '@/components/Stats';
-import About from '@/components/About';
-import ProfessionalExperience from '@/components/ProfessionalExperience';
-import WhatIsFrogitude from '@/components/WhatIsFrogitude';
-import Faq from '../components/Faq';
-import Skills from '@/components/Skills';
-import Projects from '@/components/Projects';
-import Contact from '@/components/Contact';
-import Services from '@/components/Services';
-import AnimatedBackground from '@/components/AnimatedBackground';
-import ScrollWaves from '@/components/ScrollWaves';
-import ClickBurst from '@/components/ClickBurst';
+import Header from '@/components/layout/Header';
+import Hero from '@/components/sections/Hero';
+import Stats from '@/components/sections/Stats';
+import About from '@/components/sections/About';
+import Experience from '@/components/sections/Experience';
+import Frogitude from '@/components/sections/Frogitude';
+import Faq from '@/components/sections/Faq';
+import Skills from '@/components/sections/Skills';
+import Projects from '@/components/sections/Projects';
+import Contact from '@/components/sections/Contact';
+import Services from '@/components/sections/Services';
+import AnimatedBackground from '@/components/effects/AnimatedBackground';
+import ScrollWaves from '@/components/effects/ScrollWaves';
+import ClickBurst from '@/components/effects/ClickBurst';
 import ChatWidget from '@/components/ChatWidget';
 import { Youtube, Instagram, Linkedin, Github, Twitter, MessageSquare } from 'lucide-react';
 import { withBasePath } from '@/lib/basePath';
@@ -76,35 +76,36 @@ function PageContent() {
           <Hero id="hero" content={t.hero} />
           <Stats content={t.stats} />
           <About id="about" content={t.about} />
-          <ProfessionalExperience id="experience" content={t.experience} />
+          <Experience id="experience" content={t.experience} />
           <Skills id="skills" content={t.skills} />
           <Services id="services" />
           <Projects id="projects" content={t.projects} />
           <Contact id="contact" content={t.contact} />
           <Faq id="faq" />
-          <WhatIsFrogitude id="frogitude" />
+          <Frogitude id="frogitude" />
         </main>
   <ChatWidget />
         
-        <footer className="py-12 border-t border-border-primary">
+        <footer className="relative py-16">
+          <div className="section-divider absolute top-0 left-0 right-0" />
           <div className="container mx-auto px-6 text-center">
-            <div className="flex justify-center items-center gap-4 text-3xl font-bold mb-4">
-              <img src={LOGO_URL} alt="Frogitude Logo" className="w-12 h-12" />
-              <span className="text-text-primary">FROGITUDE</span>
+            <div className="flex justify-center items-center gap-4 text-3xl font-black tracking-tightest mb-4">
+              <img src={LOGO_URL} alt="Frogitude Logo" className="w-12 h-12 drop-shadow-[0_0_15px_var(--color-glow)]" />
+              <span className="text-gradient">FROGITUDE</span>
             </div>
-            <p className="text-text-secondary mb-6">{t.footer.subtitle}</p>
-            <div className="flex justify-center space-x-6 mb-6">
+            <p className="text-text-secondary mb-8 text-lg">{t.footer.subtitle}</p>
+            <div className="flex justify-center space-x-5 mb-8">
               {socialLinks.map(({ href, icon: Icon }) => (
-                <a key={href} href={href} target="_blank" rel="noreferrer" className="text-text-secondary hover:text-accent-lime transition-colors">
+                <a key={href} href={href} target="_blank" rel="noreferrer" className="text-text-secondary hover:text-accent-lime transition-all duration-200 hover:scale-110">
                   <Icon className="w-6 h-6" />
                 </a>
               ))}
             </div>
             <div className="text-sm text-text-secondary/60 space-x-4">
               <span>© {new Date().getFullYear()} Frogitude. All rights reserved.</span>
-              <a href={withBasePath('/impressum')} className="underline hover:text-accent-lime">{t.footer?.imprintLabel || 'Impressum'}</a>
-              <a href={withBasePath('/privacy-policy')} className="underline hover:text-accent-lime">{t.footer?.privacyLabel || 'Privacy Policy'}</a>
-              <a href={withBasePath('/terms')} className="underline hover:text-accent-lime">{t.footer?.termsLabel || 'Terms & Conditions'}</a>
+              <a href={withBasePath('/impressum')} className="underline hover:text-accent-lime transition-colors">{t.footer?.imprintLabel || 'Impressum'}</a>
+              <a href={withBasePath('/privacy-policy')} className="underline hover:text-accent-lime transition-colors">{t.footer?.privacyLabel || 'Privacy Policy'}</a>
+              <a href={withBasePath('/terms')} className="underline hover:text-accent-lime transition-colors">{t.footer?.termsLabel || 'Terms & Conditions'}</a>
               <span className="block mt-2 sm:mt-0 sm:inline">{t.footer?.techStackLine}</span>
             </div>
           </div>
